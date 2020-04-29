@@ -1,0 +1,19 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.card-deck .card {
+  min-width: 220px;
+}
+
+footer {
+  position: relative;
+  bottom:0;
+  width: 100%;
+}

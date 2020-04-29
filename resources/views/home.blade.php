@@ -1,0 +1,131 @@
+@extends('layouts.app')
+
+@section('title', 'Home')
+
+@section('javascript')
+<script type="text/javascript" 
+    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/home.js') }}"></script>
+@endsection
+
+@section('content')
+
+<div class="panel-body">
+    <!-- Main row -->
+    <div class="row">
+
+        <!-- Left col -->
+        <section class="col-lg-8 connectedSortable">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Bem Vindo a Ouvidoria da FIPECq Vida</h1>
+                    <br/>
+                    Desde, 09 de junho de 2014, foi inaugurada a Ouvidoria Fipecq Vida. Este é um importante canal de comunicação entre os Associados, parceiros e gestores da FIPECq Vida. Por meio da Ouvidoria você poderá enviar elogios, sugestões, denúncias, informações, solicitações e reclamações inerentes aos serviços prestados pela Caixa de Assistência Social da FIPECq que, por algum motivo, não puderam ser solucionadas pelos habituais canais de atendimento.
+                    <br/><br/>
+                    A Ouvidoria FIPECq Vida tem a responsabilidade de representar a voz dos usuários (Associados, parceiros, fornecedores, funcionários etc.) dentro da empresa, propondo melhorias contínuas, capazes de satisfazer aspectos legais, como os previstos no Código de Defesa do Consumidor, ANS, SUSEP , Estatuto do Idoso ou de Gestão Interna, sugerindo ações e soluções para tornar a gestão da FIPECq Vida mais transparente, ética e social.
+                    <br/><br/>
+                </div>
+            </div>
+
+            <form id="formSearchSolicitacaoOuvidoria" 
+                class="form-horizontal" role="form" method="POST" action="{{ route('solicitacao-ouvidoria.acompanhar') }}">
+                @csrf
+
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <button id="btnFaleComOuvidor" type="button" class="btn btn-danger" style="width: 100%;">
+                            <i class="fas fa-phone-volume"></i>&nbsp;
+                            Fale com o ouvidor
+                        </button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div id="divInputProtocolo" style="display: none;">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="basic-addon1">
+                                      <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="solicitacao_ouvidoria_protocolo_psq" name="solicitacao_ouvidoria_protocolo_psq" placeholder="Protocolo Nº" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div id="divInputCPF" style="display: none;">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="basic-addon1">
+                                      <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="solicitante_cpf_psq" name="solicitante_cpf_psq" placeholder="CPF Nº" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="inlineRadio1" name="docC" value="prot" onclick="showProtocoloCPF();" checked />
+                            <label class="form-check-label" for="inlineRadio1">Protocolo</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="inlineRadio2" name="docC" value="cpf" onclick="showProtocoloCPF();" />
+                            <label class="form-check-label" for="inlineRadio2">CPF</label>
+                        </div>
+
+                    </div>
+                </div>
+            
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <button id="btnCartaServico" type="button" class="btn btn-warning" style="width: 100%;">
+                            <i class="far fa-file-alt"></i>&nbsp;
+                            Carta de Serviço
+                        </button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-dark" style="width: 100%;" onclick="return validar()">
+                            Acompanhe sua demanda
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        
+        </section>
+        <!-- /.Left col -->
+
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-4 connectedSortable">
+
+            <div class="card border-danger mb-3" style="max-width: 18rem;">
+              <div class="card-body text-danger" style="text-align:center;">
+                <h5 class="card-title"><span class="badge badge-pill badge-danger">Missão</span></h5>
+                <p class="card-text">Acolher e apoiar os seus associados na busca pela saúde e bem-estar de forma humanizada.</p>
+              </div>
+            </div>
+
+            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                <div class="card-body text-primary" style="text-align:center;">
+                  <h5 class="card-title"><span class="badge badge-pill badge-primary">Visão</span></h5>
+                  <p class="card-text">Ser referência como meio efetivo de participação dos associados, a fim de aperfeiçoar continuamente os serviços prestados pela FIPECq Vida.</p>
+                </div>
+            </div>
+
+            <div class="card border-warning mb-3" style="max-width: 18rem;">
+              <div class="card-body text-warning" style="text-align:center;">
+                <h5 class="card-title"><span class="badge badge-pill badge-warning">Valores</span></h5>
+                <p class="card-text">Ética, respeito, transparência, responsabilidade, imparcialidade e solidariedade.</p>
+              </div>
+            </div>
+
+        </section>
+        <!-- right col -->
+
+    </div>   
+    <!-- /.row (main row) -->
+</div>
+
+@endsection

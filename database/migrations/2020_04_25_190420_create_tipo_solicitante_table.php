@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateTipoSolicitanteTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('tipo_solicitante', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('tipo_solicitante_cod');
+            $table->string('tipo_solicitante_descricao', 100);
+            $table->boolean('tipo_solicitante_status');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('tipo_solicitante');
+    }
+}
