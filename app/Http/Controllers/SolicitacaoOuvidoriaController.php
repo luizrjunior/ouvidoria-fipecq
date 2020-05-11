@@ -8,45 +8,44 @@ use App\Models\TipoSolicitacao;
 use App\Models\SolicitacaoOuvidoria;
 use App\Models\TipoSolicitante;
 use App\Models\Solicitante;
-use App\Models\UF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class SolicitacaoOuvidoriaController extends Controller
 {
     const MESSAGES_ERRORS = [
-        'tipo_solicitacao_cod.required' => 'O Tipo de Solicitação precisa ser informado. Por favor, '
+        'tipo_solicitacao_id.required' => 'O Tipo de Solicitação precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'tipo_solicitante_cod.required' => 'O Tipo de Solicitante - Você é precisa ser informado. Por favor, '
+        'tipo_solicitante_id.required' => 'O Tipo de Solicitante - Você é precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'solicitante_cpf.required' => 'O CPF precisa ser informado. Por favor, '
+        'cpf.required' => 'O CPF precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'solicitante_cpf.cpf' => 'O CPF precisa ser válido. Por favor, '
-        . 'você pode verificar isso?',
-
-        'solicitante_nome.required' => 'O Nome precisa ser informado. Por favor, '
+        'cpf.cpf' => 'O CPF precisa ser válido. Por favor, '
         . 'você pode verificar isso?',
 
-        'institutora_cod.required' => 'A Institutora/Empresa precisa ser informado. Por favor, '
+        'nome.required' => 'O Nome precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'solicitante_uf.required' => 'O Estado precisa ser informado. Por favor, '
+        'institutora_id.required' => 'A Institutora/Empresa precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'solicitante_cidade.required' => 'A Cidade precisa ser informado. Por favor, '
+        'uf.required' => 'O Estado precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'solicitante_email.required' => 'O E-mail precisa ser informado. Por favor, '
-        . 'você pode verificar isso?',
-        'solicitante_email.email' => 'Ops, E-mail precisa ser um endereço de e-mail válido. Por favor, '
+        'cidade.required' => 'A Cidade precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'solicitante_celular.required' => 'O Celular precisa ser informado. Por favor, '
+        'email.required' => 'O E-mail precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
+        'email.email' => 'Ops, E-mail precisa ser um endereço de e-mail válido. Por favor, '
         . 'você pode verificar isso?',
 
-        'solicitacao_ouvidoria_mensagem.required' => 'A Mensagem precisa ser informado. Por favor, '
+        'celular.required' => 'O Celular precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
+
+        'mensagem.required' => 'A Mensagem precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
     ];
 
@@ -58,52 +57,52 @@ class SolicitacaoOuvidoriaController extends Controller
     const MESSAGE_DESTROY_SUCCESS = "Solicitação de Ouvidoria removido com sucesso!";
 
     const UFS = [
-        ["uf_sigla" => "AC", "uf_descricao" => "ACRE"],
-        ["uf_sigla" => "AL", "uf_descricao" => "ALAGOAS"],
-        ["uf_sigla" => "AP", "uf_descricao" => "AMAPÁ"],
-        ["uf_sigla" => "AM", "uf_descricao" => "AMAZONAS"],
-        ["uf_sigla" => "BA", "uf_descricao" => "BAHIA"],
-        ["uf_sigla" => "CE", "uf_descricao" => "CEARÁ"],
-        ["uf_sigla" => "DF", "uf_descricao" => "DISTRITO FEDERAL"],
-        ["uf_sigla" => "ES", "uf_descricao" => "ESPÍRITO SANTO"],
-        ["uf_sigla" => "GO", "uf_descricao" => "GOIÁS"],
-        ["uf_sigla" => "MA", "uf_descricao" => "MARANHÃO"],
-        ["uf_sigla" => "MG", "uf_descricao" => "MINAS GERAIS"],
-        ["uf_sigla" => "MT", "uf_descricao" => "MATO GROSSO"],
-        ["uf_sigla" => "MS", "uf_descricao" => "MATO GROSSO DO SUL"],
-        ["uf_sigla" => "PA", "uf_descricao" => "PARÁ"],
-        ["uf_sigla" => "PB", "uf_descricao" => "PARAÍBA"],
-        ["uf_sigla" => "PR", "uf_descricao" => "PARANÁ"],
-        ["uf_sigla" => "PE", "uf_descricao" => "PERNAMBUCO"],
-        ["uf_sigla" => "PI", "uf_descricao" => "PIAUÍ"],
-        ["uf_sigla" => "RJ", "uf_descricao" => "RIO DE JANEIRO"],
-        ["uf_sigla" => "RN", "uf_descricao" => "RIO GRANDE DO NORTE"],
-        ["uf_sigla" => "RS", "uf_descricao" => "RIO GRANDE DO SUL"],
-        ["uf_sigla" => "RO", "uf_descricao" => "RONDÔNIA"],
-        ["uf_sigla" => "RR", "uf_descricao" => "RORAIMA"],
-        ["uf_sigla" => "SC", "uf_descricao" => "SANTA CATARINA"],
-        ["uf_sigla" => "SP", "uf_descricao" => "SÃO PAULO"],
-        ["uf_sigla" => "SE", "uf_descricao" => "SERGIPE"],
-        ["uf_sigla" => "TO", "uf_descricao" => "TOCANTINS"]
+        ["sigla" => "AC", "descricao" => "ACRE"],
+        ["sigla" => "AL", "descricao" => "ALAGOAS"],
+        ["sigla" => "AP", "descricao" => "AMAPÁ"],
+        ["sigla" => "AM", "descricao" => "AMAZONAS"],
+        ["sigla" => "BA", "descricao" => "BAHIA"],
+        ["sigla" => "CE", "descricao" => "CEARÁ"],
+        ["sigla" => "DF", "descricao" => "DISTRITO FEDERAL"],
+        ["sigla" => "ES", "descricao" => "ESPÍRITO SANTO"],
+        ["sigla" => "GO", "descricao" => "GOIÁS"],
+        ["sigla" => "MA", "descricao" => "MARANHÃO"],
+        ["sigla" => "MG", "descricao" => "MINAS GERAIS"],
+        ["sigla" => "MT", "descricao" => "MATO GROSSO"],
+        ["sigla" => "MS", "descricao" => "MATO GROSSO DO SUL"],
+        ["sigla" => "PA", "descricao" => "PARÁ"],
+        ["sigla" => "PB", "descricao" => "PARAÍBA"],
+        ["sigla" => "PR", "descricao" => "PARANÁ"],
+        ["sigla" => "PE", "descricao" => "PERNAMBUCO"],
+        ["sigla" => "PI", "descricao" => "PIAUÍ"],
+        ["sigla" => "RJ", "descricao" => "RIO DE JANEIRO"],
+        ["sigla" => "RN", "descricao" => "RIO GRANDE DO NORTE"],
+        ["sigla" => "RS", "descricao" => "RIO GRANDE DO SUL"],
+        ["sigla" => "RO", "descricao" => "RONDÔNIA"],
+        ["sigla" => "RR", "descricao" => "RORAIMA"],
+        ["sigla" => "SC", "descricao" => "SANTA CATARINA"],
+        ["sigla" => "SP", "descricao" => "SÃO PAULO"],
+        ["sigla" => "SE", "descricao" => "SERGIPE"],
+        ["sigla" => "TO", "descricao" => "TOCANTINS"]
     ];
 
     public function index(Request $request)
     {
         $data = $request->except('_token');
-        if (empty($data['solicitante_cpf_psq'])) {
-            $data['solicitante_cpf_psq'] = "";
+        if (empty($data['cpf_psq'])) {
+            $data['cpf_psq'] = "";
         }
 
-        if (empty($data['solicitante_nome_psq'])) {
-            $data['solicitante_nome_psq'] = "";
+        if (empty($data['nome_psq'])) {
+            $data['nome_psq'] = "";
         }
 
-        if (empty($data['tipo_solicitacao_cod_psq'])) {
-            $data['tipo_solicitacao_cod_psq'] = "";
+        if (empty($data['tipo_solicitacao_id_psq'])) {
+            $data['tipo_solicitacao_id_psq'] = "";
         }
 
-        if (empty($data['tipo_solicitante_cod_psq'])) {
-            $data['tipo_solicitante_cod_psq'] = "";
+        if (empty($data['tipo_solicitante_id_psq'])) {
+            $data['tipo_solicitante_id_psq'] = "";
         }
 
         if (empty($data['data_inicio'])) {
@@ -133,112 +132,112 @@ class SolicitacaoOuvidoriaController extends Controller
             $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
         }
 
-        return SolicitacaoOuvidoria::select('solicitacao_ouvidoria.solicitacao_ouvidoria_cod',
-                'solicitacao_ouvidoria.solicitacao_ouvidoria_protocolo as protocolo',
-                'tipo_solicitacao.tipo_solicitacao_nome as noTipoSolicitacao',
-                'tipo_solicitante.tipo_solicitante_descricao as dsTipoSolicitante',
-                'solicitante.solicitante_nome as noSolicitante',
-                'solicitacao_ouvidoria.created_at as dtCriacao')
-            ->join('tipo_solicitacao', 'solicitacao_ouvidoria.tipo_solicitacao_cod', '=', 'tipo_solicitacao.tipo_solicitacao_cod')
-            ->join('solicitante', 'solicitacao_ouvidoria.solicitante_cod', '=', 'solicitante.solicitante_cod')
-            ->join('tipo_solicitante', 'solicitante.tipo_solicitante_cod', '=', 'tipo_solicitante.tipo_solicitante_cod')
+        return SolicitacaoOuvidoria::select('fv_ouv_solicitacao_ouvidoria.id',
+                'fv_ouv_solicitacao_ouvidoria.protocolo as protocolo',
+                'fv_ouv_tipo_solicitacao.nome as noTipoSolicitacao',
+                'fv_ouv_tipo_solicitante.descricao as dsTipoSolicitante',
+                'fv_ouv_solicitante.nome as noSolicitante',
+                'fv_ouv_solicitacao_ouvidoria.created_at as dtCriacao')
+            ->join('fv_ouv_tipo_solicitacao', 'fv_ouv_solicitacao_ouvidoria.tipo_solicitacao_id', '=', 'fv_ouv_tipo_solicitacao.id')
+            ->join('fv_ouv_solicitante', 'fv_ouv_solicitacao_ouvidoria.solicitante_id', '=', 'fv_ouv_solicitante.id')
+            ->join('fv_ouv_tipo_solicitante', 'fv_ouv_solicitante.tipo_solicitante_id', '=', 'fv_ouv_tipo_solicitante.id')
             ->where(function ($query) use ($data) {
-                if (isset($data['solicitacao_ouvidoria_protocolo_psq']) && $data['solicitacao_ouvidoria_protocolo_psq'] != "") {
-                    $query->where('solicitacao_ouvidoria.solicitacao_ouvidoria_protocolo', '=', $data['solicitacao_ouvidoria_protocolo_psq']);
+                if (isset($data['protocolo_psq']) && $data['protocolo_psq'] != "") {
+                    $query->where('fv_ouv_solicitacao_ouvidoria.protocolo', '=', $data['protocolo_psq']);
                 }
-                if (isset($data['solicitante_cpf_psq']) && $data['solicitante_cpf_psq'] != "") {
-                    $query->where('solicitante.solicitante_cpf', '=', $data['solicitante_cpf_psq']);
+                if (isset($data['cpf_psq']) && $data['cpf_psq'] != "") {
+                    $query->where('fv_ouv_solicitante.cpf', '=', $data['cpf_psq']);
                 }
-                if (isset($data['solicitante_nome_psq']) && $data['solicitante_nome_psq'] != "") {
-                    $query->where('solicitante.solicitante_nome', 'LIKE', "%" . $data['solicitante_nome_psq'] . "%");
+                if (isset($data['nome_psq']) && $data['nome_psq'] != "") {
+                    $query->where('fv_ouv_solicitante.nome', 'LIKE', "%" . $data['nome_psq'] . "%");
                 }
-                if (isset($data['tipo_solicitacao_cod_psq']) && $data['tipo_solicitacao_cod_psq'] != "") {
-                    $query->where('solicitacao_ouvidoria.tipo_solicitacao_cod', $data['tipo_solicitacao_cod_psq']);
+                if (isset($data['tipo_solicitacao_id_psq']) && $data['tipo_solicitacao_id_psq'] != "") {
+                    $query->where('fv_ouv_solicitacao_ouvidoria.tipo_solicitacao_id', $data['tipo_solicitacao_id_psq']);
                 }
-                if (isset($data['tipo_solicitante_cod_psq']) && $data['tipo_solicitante_cod_psq'] != "") {
-                    $query->where('solicitante.tipo_solicitante_cod', $data['tipo_solicitante_cod_psq']);
+                if (isset($data['tipo_solicitante_id_psq']) && $data['tipo_solicitante_id_psq'] != "") {
+                    $query->where('fv_ouv_solicitante.tipo_solicitante_id', $data['tipo_solicitante_id_psq']);
                 }
                 if (isset($data['data_inicio']) && $data['data_inicio'] != "") {
-                    $query->where('solicitacao_ouvidoria.created_at', '>=', $data['data_inicio'] . ' 00:00:00');
+                    $query->where('fv_ouv_solicitacao_ouvidoria.created_at', '>=', $data['data_inicio'] . ' 00:00:00');
                 }
                 if (isset($data['data_termino']) && $data['data_termino'] != "") {
-                    $query->where('solicitacao_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
+                    $query->where('fv_ouv_solicitacao_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
                 }
-            })->orderBy('solicitacao_ouvidoria.created_at')->paginate($data['totalPage']);
+            })->orderBy('fv_ouv_solicitacao_ouvidoria.created_at')->paginate($data['totalPage']);
             // })->toSql();
     }
 
     public function create(Request $request)
     {   
-        $tipo_solicitacao_cod = $request->tipo_solicitacao_cod;
+        $tipo_solicitacao_id = $request->tipo_solicitacao_id;
         $tipo_solicitacaos = TipoSolicitacao::get();
         $tipo_solicitantes = TipoSolicitante::get();
         $institutoras = Institutora::get();
         $ufs = self::UFS;
 
         return view('ouvidoria.solicitacao-ouvidoria.create', compact(
-            'tipo_solicitacao_cod', 'tipo_solicitacaos', 'tipo_solicitantes', 'institutoras', 'ufs'));
+            'tipo_solicitacao_id', 'tipo_solicitacaos', 'tipo_solicitantes', 'institutoras', 'ufs'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'tipo_solicitacao_cod'=>'required',
-            'tipo_solicitante_cod'=>'required',
-            'solicitante_cpf'=>'required|cpf',
-            'solicitante_nome'=>'required|max:120',
-            'institutora_cod'=>'required',
-            'solicitante_uf'=>'required',
-            'solicitante_cidade'=>'required|max:120',
-            'solicitante_email'=>'required|max:120',
-            'solicitante_celular'=>'required|max:15',
-            'solicitacao_ouvidoria_mensagem'=>'required|max:255',
+            'tipo_solicitacao_id'=>'required',
+            'tipo_solicitante_id'=>'required',
+            'cpf'=>'required|cpf',
+            'nome'=>'required|max:120',
+            'institutora_id'=>'required',
+            'uf'=>'required',
+            'cidade'=>'required|max:120',
+            'email'=>'required|max:120',
+            'celular'=>'required|max:15',
+            'mensagem'=>'required|max:255',
         ], self::MESSAGES_ERRORS);
 
-        if ($request->solicitante_cod == "") {
+        if ($request->solicitante_id == "") {
             $solicitante = new Solicitante([
-                'solicitante_cpf' => $request->solicitante_cpf,
-                'solicitante_nome' => $request->solicitante_nome,
-                'solicitante_email' => $request->solicitante_email,
-                'solicitante_telefone' => $request->solicitante_telefone,
-                'solicitante_celular' => $request->solicitante_celular,
-                'solicitante_uf' => $request->solicitante_uf,
-                'solicitante_cidade' => $request->solicitante_cidade,
-                'institutora_cod' => $request->institutora_cod,
-                'tipo_solicitante_cod' => $request->tipo_solicitante_cod,
+                'cpf' => $request->cpf,
+                'nome' => $request->nome,
+                'email' => $request->email,
+                'telefone' => $request->telefone,
+                'celular' => $request->celular,
+                'uf' => $request->uf,
+                'cidade' => $request->cidade,
+                'institutora_id' => $request->institutora_id,
+                'tipo_solicitante_id' => $request->tipo_solicitante_id,
             ]);
         } else {
-            $solicitante = Solicitante::find($request->solicitante_cod);
-            $solicitante->solicitante_cpf = $request->solicitante_cpf;
-            $solicitante->solicitante_nome = $request->solicitante_nome;
-            $solicitante->solicitante_email = $request->solicitante_email;
-            $solicitante->solicitante_telefone = $request->solicitante_telefone;
-            $solicitante->solicitante_celular = $request->solicitante_celular;
-            $solicitante->solicitante_uf = $request->solicitante_uf;
-            $solicitante->solicitante_cidade = $request->solicitante_cidade;
-            $solicitante->institutora_cod = $request->institutora_cod;
-            $solicitante->tipo_solicitante_cod = $request->tipo_solicitante_cod;
+            $solicitante = Solicitante::find($request->solicitante_id);
+            $solicitante->cpf = $request->cpf;
+            $solicitante->nome = $request->nome;
+            $solicitante->email = $request->email;
+            $solicitante->telefone = $request->telefone;
+            $solicitante->celular = $request->celular;
+            $solicitante->uf = $request->uf;
+            $solicitante->cidade = $request->cidade;
+            $solicitante->institutora_id = $request->institutora_id;
+            $solicitante->tipo_solicitante_id = $request->tipo_solicitante_id;
         }
         $solicitante->save();
 
-        $solicitacao_ouvidoria_protocolo = SolicitacaoOuvidoria::get();
-        $numero = count($solicitacao_ouvidoria_protocolo)+1;
+        $protocolo = SolicitacaoOuvidoria::get();
+        $numero = count($protocolo)+1;
         $protocolo = $numero . date('dmY');
 
-        $solicitacao_ouvidoria_anexo = $this->anexarArquivo($request);
+        $anexo = $this->anexarArquivo($request);
         
         $solicitacao_ouvidoria = new SolicitacaoOuvidoria([
-            'solicitacao_ouvidoria_protocolo' => $protocolo,
-            'solicitacao_ouvidoria_mensagem' => trim($request->solicitacao_ouvidoria_mensagem),
-            'solicitacao_ouvidoria_anexo' => $solicitacao_ouvidoria_anexo,
-            'tipo_solicitacao_cod' => $request->tipo_solicitacao_cod,
-            'solicitante_cod' => $solicitante->solicitante_cod
+            'protocolo' => $protocolo,
+            'mensagem' => trim($request->mensagem),
+            'anexo' => $anexo,
+            'tipo_solicitacao_id' => $request->tipo_solicitacao_id,
+            'solicitante_id' => $solicitante->solicitante_id
         ]);
         $solicitacao_ouvidoria->save();
 
-        $this->enviarEmailSolicitacaoOuvidoria($solicitante->solicitante_email, $solicitacao_ouvidoria);
+        $this->enviarEmailSolicitacaoOuvidoria($solicitante->email, $solicitacao_ouvidoria);
 
-        $protocolo = $solicitacao_ouvidoria->solicitacao_ouvidoria_protocolo;
+        $protocolo = $solicitacao_ouvidoria->protocolo;
 
         return redirect('/fale-com-ouvidor')
             ->with('success', self::MESSAGE_ADD_SUCCESS . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
@@ -247,9 +246,9 @@ class SolicitacaoOuvidoriaController extends Controller
     private function anexarArquivo($request)
     {
         $nameFile = null;
-        if ($request->hasFile('solicitacao_ouvidoria_anexo') && $request->file('solicitacao_ouvidoria_anexo')->isValid()) {
-            $nameFile = $request->solicitacao_ouvidoria_anexo->getClientOriginalName();
-            $upload = $request->solicitacao_ouvidoria_anexo->storeAs('anexos', $nameFile);
+        if ($request->hasFile('anexo') && $request->file('anexo')->isValid()) {
+            $nameFile = date('YmdHis') . $request->anexo->getClientOriginalName();
+            $upload = $request->anexo->storeAs('anexos', $nameFile);
             if (!$upload) {
                 return redirect()->back()->with('error', 'Falha ao fazer upload')->withInput();
             }
@@ -266,20 +265,20 @@ class SolicitacaoOuvidoriaController extends Controller
     public function acompanharSolicitacao(Request $request)
     {
         $data = $request->except('_token');
-        if (empty($data['solicitante_cpf_psq'])) {
-            $data['solicitante_cpf_psq'] = "";
+        if (empty($data['cpf_psq'])) {
+            $data['cpf_psq'] = "";
         }
 
-        if (empty($data['solicitante_nome_psq'])) {
-            $data['solicitante_nome_psq'] = "";
+        if (empty($data['nome_psq'])) {
+            $data['nome_psq'] = "";
         }
 
-        if (empty($data['tipo_solicitacao_cod_psq'])) {
-            $data['tipo_solicitacao_cod_psq'] = "";
+        if (empty($data['tipo_solicitacao_id_psq'])) {
+            $data['tipo_solicitacao_id_psq'] = "";
         }
 
-        if (empty($data['tipo_solicitante_cod_psq'])) {
-            $data['tipo_solicitante_cod_psq'] = "";
+        if (empty($data['tipo_solicitante_id_psq'])) {
+            $data['tipo_solicitante_id_psq'] = "";
         }
 
         if (empty($data['data_inicio'])) {
@@ -298,14 +297,14 @@ class SolicitacaoOuvidoriaController extends Controller
             return redirect()->back()->with('error', 'Falha ao fazer upload')->withInput();
         }
         if (count($solicitacao_ouvidorias) == 1) {
-            $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->solicitacao_ouvidoria_cod);
-            $data['solicitacao_ouvidoria_protocolo_psq'] = "";
-            $data['solicitante_cpf_psq'] = $solicitacao_ouvidoria->solicitante->solicitante_cpf;
+            $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->id);
+            $data['protocolo_psq'] = "";
+            $data['cpf_psq'] = $solicitacao_ouvidoria->solicitante->cpf;
         }
         if (count($solicitacao_ouvidorias) > 1) {
-            $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->solicitacao_ouvidoria_cod);
+            $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->id);
             $data['solicitacao_ouvidoria_protocolo_psq'] = "";
-            $data['solicitante_cpf_psq'] = $solicitacao_ouvidoria->solicitante->solicitante_cpf;
+            $data['cpf_psq'] = $solicitacao_ouvidoria->solicitante->cpf;
             $solicitacao_ouvidoria = null;
         }
         $solicitacao_ouvidorias = $this->getSolicitacaoOuvidorias($data);
@@ -319,54 +318,54 @@ class SolicitacaoOuvidoriaController extends Controller
 
     }
 
-    public function edit(int $solicitacao_cod)
+    public function edit(int $solicitacao_id)
     {
-        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_cod);
+        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_id);
         $ufs = self::UFS;
 
         return view('ouvidoria.solicitacao-ouvidoria.edit', compact('solicitacao_ouvidoria', 'ufs'));
     }
 
-    public function update(Request $request, int $solicitacao_cod)
+    public function update(Request $request, int $solicitacao_id)
     {
-        $solicitacao_ouvidoria_edit = SolicitacaoOuvidoria::find($solicitacao_cod);
+        $solicitacao_ouvidoria_edit = SolicitacaoOuvidoria::find($solicitacao_id);
 
         $request->validate([
-            'solicitante_cpf'=>'required|cpf|unique:solicitante,solicitante_cpf,' . $solicitacao_ouvidoria_edit->solicitante_cod,
-            'solicitante_nome'=>'required|max:120',
-            'institutora_cod'=>'required',
+            'cpf'=>'required|cpf|unique:solicitante,cpf,' . $solicitacao_ouvidoria_edit->id,
+            'nome'=>'required|max:120',
+            'institutora_id'=>'required',
             'uf_sigla'=>'required',
-            'solicitante_cidade'=>'required|max:120',
-            'solicitante_email'=>'required|max:120',
-            'solicitante_telefone'=>'required|max:15',
-            'solicitante_celular'=>'required|max:15',
-            'solicitacao_ouvidoria_mensagem'=>'required|max:255'
+            'cidade'=>'required|max:120',
+            'email'=>'required|max:120',
+            'telefone'=>'required|max:15',
+            'celular'=>'required|max:15',
+            'mensagem'=>'required|max:255'
         ], self::MESSAGES_ERRORS);
 
         unset($solicitacao_ouvidoria_edit);
         
-        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_cod);
-        $solicitacao_ouvidoria->solicitacao_ouvidoria_protocolo = $request->get('solicitacao_ouvidoria_protocolo');
-        $solicitacao_ouvidoria->solicitacao_ouvidoria_mensagem = $request->get('solicitacao_ouvidoria_mensagem');
-        $solicitacao_ouvidoria->solicitacao_ouvidoria_anexo = $request->get('solicitacao_ouvidoria_anexo');
-        $solicitacao_ouvidoria->tipo_solicitacao_cod = $request->get('tipo_solicitacao_cod');
-        $solicitacao_ouvidoria->solicitante_cod = $request->get('solicitante_cod');
-        $solicitacao_ouvidoria->tipo_prestador_cod = $request->get('tipo_prestador_cod');
-        $solicitacao_ouvidoria->sub_classificacao_cod = $request->get('sub_classificacao_cod');
-        $solicitacao_ouvidoria->assunto_cod = $request->get('assunto_cod');
-        $solicitacao_ouvidoria->canal_atendimento_cod = $request->get('canal_atendimento_cod');
+        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_id);
+        $solicitacao_ouvidoria->protocolo = $request->get('protocolo');
+        $solicitacao_ouvidoria->mensagem = $request->get('mensagem');
+        $solicitacao_ouvidoria->anexo = $request->get('anexo');
+        $solicitacao_ouvidoria->tipo_solicitacao_id = $request->get('tipo_solicitacao_id');
+        $solicitacao_ouvidoria->solicitante_id = $request->get('solicitante_id');
+        $solicitacao_ouvidoria->tipo_prestador_id = $request->get('tipo_prestador_id');
+        $solicitacao_ouvidoria->sub_classificacao_id = $request->get('sub_classificacao_id');
+        $solicitacao_ouvidoria->assunto_id = $request->get('assunto_id');
+        $solicitacao_ouvidoria->canal_atendimento_id = $request->get('canal_atendimento_id');
         $solicitacao_ouvidoria->save();
         
-        $solicitante = Solicitante::find($solicitacao_ouvidoria->solicitante_cod);
-        $solicitante->solicitante_cpf = $request->get('solicitante_cpf');
-        $solicitante->solicitante_nome = $request->get('solicitante_nome');
-        $solicitante->solicitante_email = $request->get('solicitante_email');
-        $solicitante->solicitante_telefone = $request->get('solicitante_telefone');
-        $solicitante->solicitante_celular = $request->get('solicitante_celular');
-        $solicitante->solicitante_uf = $request->get('solicitante_uf');
-        $solicitante->solicitante_cidade = $request->get('solicitante_cidade');
-        $solicitante->institutora_cod = $request->get('institutora_cod');
-        $solicitante->tipo_solicitante_cod = $request->get('tipo_solicitante_cod');
+        $solicitante = Solicitante::find($solicitacao_ouvidoria->id);
+        $solicitante->cpf = $request->get('cpf');
+        $solicitante->nome = $request->get('nome');
+        $solicitante->email = $request->get('email');
+        $solicitante->telefone = $request->get('telefone');
+        $solicitante->celular = $request->get('celular');
+        $solicitante->uf = $request->get('uf');
+        $solicitante->cidade = $request->get('cidade');
+        $solicitante->institutora_id = $request->get('institutora_id');
+        $solicitante->tipo_solicitante_id = $request->get('tipo_solicitante_id');
         $solicitante->save();
 
         return redirect('/solicitacao-ouvidoria/create')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -383,7 +382,7 @@ class SolicitacaoOuvidoriaController extends Controller
     public function carregarSolicitantePorCPF(Request $request)
     {
         $solicitante = null;
-        $solicitante_request = Solicitante::where('solicitante_cpf', $request->solicitante_cpf)->get();
+        $solicitante_request = Solicitante::where('cpf', $request->cpf)->get();
         if (count($solicitante_request) > 0) {
             $solicitante = $solicitante_request[0];
         }

@@ -13,11 +13,12 @@ class CreateTipoPrestadorTable extends Migration
      */
     public function up()
     {
-        Schema::create('internet.FV_OUV_TIPO_PRESTADOR', function (Blueprint $table) {
+        // Schema::create('fv_ouv_tipo_prestador', function (Blueprint $table) {
+        Schema::create('internet.fv_ouv_tipo_prestador', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('ID');
-            $table->string('DESCRICAO', 100);
-            $table->boolean('STATUS');
+            $table->bigIncrements('id');
+            $table->string('descricao', 100);
+            $table->boolean('status');
             $table->timestamps();
         });
     }
@@ -29,6 +30,7 @@ class CreateTipoPrestadorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('internet.FV_OUV_TIPO_PRESTADOR');
+        // Schema::dropIfExists('fv_ouv_tipo_prestador');
+        Schema::dropIfExists('internet.fv_ouv_tipo_prestador');
     }
 }

@@ -12,14 +12,7 @@ class CanalAtendimento extends Model
      *
      * @var string
      */
-    public $table = 'canal_atendimento';
-
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'canal_atendimento_cod';
+    public $table = 'fv_ouv_canal_atendimento';
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +20,8 @@ class CanalAtendimento extends Model
      * @var array
      */
     protected $fillable = [
-        'canal_atendimento_descricao',
-        'canal_atendimento_status'
+        'descricao',
+        'status'
     ];
 
 }

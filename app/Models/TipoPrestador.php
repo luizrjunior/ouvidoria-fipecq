@@ -12,14 +12,14 @@ class TipoPrestador extends Model
      *
      * @var string
      */
-    public $table = 'tipo_prestador';
+    public $table = 'fv_ouv_tipo_prestador';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'tipo_prestador_cod';
+    // protected $primaryKey = 'tipo_prestador_cod';
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +27,8 @@ class TipoPrestador extends Model
      * @var array
      */
     protected $fillable = [
-        'tipo_prestador_descricao',
-        'tipo_prestador_status'
+        'descricao',
+        'status'
     ];
 
 }

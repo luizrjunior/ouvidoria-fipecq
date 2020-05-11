@@ -13,7 +13,7 @@
   }
 </style>
 @php
-$canal_atendimento_descricao = $errors->has('canal_atendimento_descricao') ? old('canal_atendimento_descricao') : $canal_atendimento->canal_atendimento_descricao;
+$descricao = $errors->has('descricao') ? old('descricao') : $canal_atendimento->descricao;
 @endphp
 <div class="row justify-content-center">
     <div class="col-md-12">
@@ -25,14 +25,14 @@ $canal_atendimento_descricao = $errors->has('canal_atendimento_descricao') ? old
                 </a>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('canal-atendimento.update', $canal_atendimento->canal_atendimento_cod) }}" autocomplete="off">
+                <form method="post" action="{{ route('canal-atendimento.update', $canal_atendimento->id) }}" autocomplete="off">
                     @method('PATCH')
                     @csrf
-                    <div class="form-group {{ $errors->has('canal_atendimento_descricao') ? 'text-danger' : '' }}">
-                        <label for="canal_atendimento_descricao">Descrição (*)</label>
-                        <input type="text" class="form-control {{ $errors->has('canal_atendimento_descricao') ? 'is-invalid' : '' }}" 
-                            name="canal_atendimento_descricao" value="{{ $canal_atendimento_descricao }}" />
-                        <span class="text-danger">{{ $errors->first('canal_atendimento_descricao') }}</span>
+                    <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                        <label for="descricao">Descrição (*)</label>
+                        <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                            name="descricao" value="{{ $descricao }}" />
+                        <span class="text-danger">{{ $errors->first('descricao') }}</span>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>
                     <span class="float-right text-danger">

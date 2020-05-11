@@ -49,7 +49,7 @@
                                       <i class="fas fa-search"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="solicitacao_ouvidoria_protocolo_psq" name="solicitacao_ouvidoria_protocolo_psq" placeholder="Protocolo Nº" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" id="protocolo_psq" name="protocolo_psq" placeholder="Protocolo Nº" aria-label="Username" aria-describedby="basic-addon1">
                             </div>
                         </div>
                         <div id="divInputCPF" style="display: none;">
@@ -59,7 +59,7 @@
                                       <i class="fas fa-search"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control" id="solicitante_cpf_psq" name="solicitante_cpf_psq" placeholder="CPF Nº" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" id="cpf_psq" name="cpf_psq" placeholder="CPF Nº" aria-label="Username" aria-describedby="basic-addon1">
                             </div>
                         </div>
 

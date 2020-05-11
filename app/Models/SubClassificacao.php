@@ -12,14 +12,14 @@ class SubClassificacao extends Model
      *
      * @var string
      */
-    public $table = 'sub_classificacao';
+    public $table = 'fv_ouv_sub_classificacao';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'sub_classificacao_cod';
+    // protected $primaryKey = 'sub_classificacao_cod';
 
     /**
      * The attributes that are mass assignable.
@@ -27,14 +27,14 @@ class SubClassificacao extends Model
      * @var array
      */
     protected $fillable = [
-        'classificacao_cod',
-        'sub_classificacao_descricao',
-        'sub_classificacao_status'
+        'classificacao_id',
+        'descricao',
+        'status'
     ];
 
     public function classificacao()
     {
-        return $this->belongsTo('App\Models\Classificacao', 'classificacao_cod');
+        return $this->belongsTo('App\Models\Classificacao', 'classificacao_id');
     }
 
 }

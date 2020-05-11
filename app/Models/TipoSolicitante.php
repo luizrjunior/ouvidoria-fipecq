@@ -12,14 +12,14 @@ class TipoSolicitante extends Model
      *
      * @var string
      */
-    public $table = 'tipo_solicitante';
+    public $table = 'fv_ouv_tipo_solicitante';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'tipo_solicitante_cod';
+    // protected $primaryKey = 'tipo_solicitante_cod';
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +27,8 @@ class TipoSolicitante extends Model
      * @var array
      */
     protected $fillable = [
-        'tipo_solicitante_descricao',
-        'tipo_solicitante_status'
+        'descricao',
+        'status'
     ];
 
 }

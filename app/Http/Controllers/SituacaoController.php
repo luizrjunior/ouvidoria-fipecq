@@ -9,9 +9,9 @@ class SituacaoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
-        'situacao_descricao.required' => 'A Descrição precisa ser informado. Por favor, '
+        'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'situacao_descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
     const MESSAGE_ADD_SUCCESS = "Situação adicionado com sucesso!";
@@ -32,12 +32,12 @@ class SituacaoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'situacao_descricao'=>'required|string|max:100'
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $situacao = new Situacao([
-                'situacao_descricao' => $request->get('situacao_descricao'),
-                'situacao_status'=> true
+                'descricao' => $request->get('descricao'),
+                'status'=> true
             ]);
         $situacao->save();
         return redirect('/situacao')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -52,11 +52,11 @@ class SituacaoController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'situacao_descricao'=>'required|string|max:100'
+            'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $situacao = Situacao::find($id);
-        $situacao->situacao_descricao = $request->get('situacao_descricao');
+        $situacao->descricao = $request->get('descricao');
         $situacao->save();
   
         return redirect('/situacao')->with('success', self::MESSAGE_UPDATE_SUCCESS);
@@ -71,14 +71,14 @@ class SituacaoController extends Controller
     }
 
     public function ativarDesativarSituacao(Request $request) {
-        $situacao = Situacao::find($request->situacao_cod);
+        $situacao = Situacao::find($request->situacao_id);
         $msg = "Situação ativada com sucesso!<br />&nbsp;";
         $status = true;
-        if ($situacao->situacao_status == 1) {
+        if ($situacao->status == 1) {
             $msg = "Situação desativada com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $situacao->situacao_status = $status;
+        $situacao->status = $status;
         $situacao->save();
 
         $dados = array();

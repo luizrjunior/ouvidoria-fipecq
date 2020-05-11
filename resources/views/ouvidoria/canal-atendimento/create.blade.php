@@ -25,11 +25,11 @@
                 <form method="post" action="{{ route('canal-atendimento.store') }}" autocomplete="off">
                     @csrf
 
-                    <div class="form-group {{ $errors->has('canal_atendimento_descricao') ? 'text-danger' : '' }}">
-                        <label for="canal_atendimento_descricao">Descrição (*)</label>
-                        <input type="text" class="form-control {{ $errors->has('canal_atendimento_descricao') ? 'is-invalid' : '' }}" 
-                            name="canal_atendimento_descricao" value="{{ old('canal_atendimento_descricao') }}" />
-                        <span class="text-danger">{{ $errors->first('canal_atendimento_descricao') }}</span>
+                    <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                        <label for="descricao">Descrição (*)</label>
+                        <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                            name="descricao" value="{{ old('descricao') }}" />
+                        <span class="text-danger">{{ $errors->first('descricao') }}</span>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validar()">Adicionar</button>
                     <span class="float-right text-danger">

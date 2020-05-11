@@ -3,7 +3,7 @@ function validar()
     $('#carregando').show();
 }
 
-function ativarDesativarInstitutora(institutora_cod) 
+function ativarDesativarInstitutora(institutora_id) 
 {
     $('#carregando').show();
     var formURL = '/institutora/ativar-desativar-institutora';
@@ -12,7 +12,7 @@ function ativarDesativarInstitutora(institutora_cod)
         url: formURL,
         data: {
             _token: $("input[name='_token']").val(),
-            institutora_cod: institutora_cod
+            institutora_id: institutora_id
         },
         dataType: "json",
         success: function (data) {

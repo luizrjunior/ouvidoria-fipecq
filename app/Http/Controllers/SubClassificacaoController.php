@@ -10,11 +10,11 @@ class SubClassificacaoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
-        'classificacao_cod.required' => 'A Classificação precisa ser informada. Por favor, '
+        'classificacao_id.required' => 'A Classificação precisa ser informada. Por favor, '
         . 'você pode verificar isso?',
-        'sub_classificacao_descricao.required' => 'A Descrição precisa ser informado. Por favor, '
+        'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'sub_classificacao_descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
     const MESSAGE_ADD_SUCCESS = "SubClassificação adicionada com sucesso!";
@@ -36,14 +36,14 @@ class SubClassificacaoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'classificacao_cod'=>'required',
-                'sub_classificacao_descricao'=>'required|string|max:100'
+                'classificacao_id'=>'required',
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $sub_classificacao = new SubClassificacao([
-                'classificacao_cod' => $request->get('classificacao_cod'),
-                'sub_classificacao_descricao' => $request->get('sub_classificacao_descricao'),
-                'sub_classificacao_status'=> true
+                'classificacao_id' => $request->get('classificacao_id'),
+                'descricao' => $request->get('descricao'),
+                'status'=> true
             ]);
         $sub_classificacao->save();
         return redirect('/sub-classificacao')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -59,13 +59,13 @@ class SubClassificacaoController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-                'classificacao_cod'=>'required',
-                'sub_classificacao_descricao'=>'required|string|max:100'
+                'classificacao_id'=>'required',
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $sub_classificacao = SubClassificacao::find($id);
-        $sub_classificacao->classificacao_cod = $request->get('classificacao_cod');
-        $sub_classificacao->sub_classificacao_descricao = $request->get('sub_classificacao_descricao');
+        $sub_classificacao->classificacao_id = $request->get('classificacao_id');
+        $sub_classificacao->descricao = $request->get('descricao');
         $sub_classificacao->save();
   
         return redirect('/sub-classificacao')->with('success', self::MESSAGE_UPDATE_SUCCESS);
@@ -80,14 +80,14 @@ class SubClassificacaoController extends Controller
     }
 
     public function ativarDesativarSubClassificacao(Request $request) {
-        $sub_classificacao = SubClassificacao::find($request->sub_classificacao_cod);
+        $sub_classificacao = SubClassificacao::find($request->sub_classificacao_id);
         $msg = "SubClassificação ativada com sucesso!<br />&nbsp;";
         $status = true;
-        if ($sub_classificacao->sub_classificacao_status == 1) {
+        if ($sub_classificacao->status == 1) {
             $msg = "SubClassificação desativada com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $sub_classificacao->sub_classificacao_status = $status;
+        $sub_classificacao->status = $status;
         $sub_classificacao->save();
 
         $dados = array();

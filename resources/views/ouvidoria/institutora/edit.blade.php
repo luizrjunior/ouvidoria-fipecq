@@ -13,7 +13,7 @@
   }
 </style>
 @php
-$institutora_descricao = $errors->has('institutora_descricao') ? old('institutora_descricao') : $institutora->institutora_descricao;
+$descricao = $errors->has('descricao') ? old('descricao') : $institutora->descricao;
 @endphp
 <div class="container">
     <div class="row justify-content-center">
@@ -26,14 +26,14 @@ $institutora_descricao = $errors->has('institutora_descricao') ? old('institutor
                     </a>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{{ route('institutora.update', $institutora->institutora_cod) }}" autocomplete="off">
+                    <form method="post" action="{{ route('institutora.update', $institutora->id) }}" autocomplete="off">
                         @method('PATCH')
                         @csrf
-                        <div class="form-group {{ $errors->has('institutora_descricao') ? 'text-danger' : '' }}">
-                            <label for="institutora_descricao">Descrição (*)</label>
-                            <input type="text" class="form-control {{ $errors->has('institutora_descricao') ? 'is-invalid' : '' }}" 
-                                name="institutora_descricao" value="{{ $institutora_descricao }}" autofocus />
-                            <span class="text-danger">{{ $errors->first('institutora_descricao') }}</span>
+                        <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                            <label for="descricao">Descrição (*)</label>
+                            <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                                name="descricao" value="{{ $descricao }}" autofocus />
+                            <span class="text-danger">{{ $errors->first('descricao') }}</span>
                         </div>
                         <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>
                         <span class="float-right text-danger">

@@ -66,33 +66,33 @@
 
                         <tr>
                             <td>{{ date('d/m/Y H:i:s', strtotime($canal_atendimento->created_at)) }}</td>
-                            <td>{{ $canal_atendimento->canal_atendimento_descricao }}</td>
+                            <td>{{ $canal_atendimento->descricao }}</td>
                             <td>
-                                <span class="badge badge-{{ $bgColor[$canal_atendimento->canal_atendimento_status] }}"
-                                        data-toggle="tooltip" title="{{ $arrSituacao[$canal_atendimento->canal_atendimento_status] }}">
-                                    {{ $arrSituacao[$canal_atendimento->canal_atendimento_status] }}
+                                <span class="badge badge-{{ $bgColor[$canal_atendimento->status] }}"
+                                        data-toggle="tooltip" title="{{ $arrSituacao[$canal_atendimento->status] }}">
+                                    {{ $arrSituacao[$canal_atendimento->status] }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('canal-atendimento.edit', $canal_atendimento->canal_atendimento_cod) }}" title="Editar" 
+                                <a href="{{ route('canal-atendimento.edit', $canal_atendimento->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Editar
                                 </a>
                             </td>
                             <td>
-                                @if ($canal_atendimento->canal_atendimento_status)
+                                @if ($canal_atendimento->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->canal_atendimento_cod }})">Desativar
+                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->id }})">Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->canal_atendimento_cod }})">Ativar
+                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->id }})">Ativar
                                 </button>
                                 @endif
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $canal_atendimento->canal_atendimento_cod }})" disabled>Excluir
+                                    onclick="confirmDestroy({{ $canal_atendimento->id }})" disabled>Excluir
                                 </button>
                             </td>
                         </tr>

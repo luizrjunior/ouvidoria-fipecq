@@ -3,7 +3,7 @@ function validar()
     $('#carregando').show();
 }
 
-function ativarDesativarTipoPrestador(tipo_prestador_cod) 
+function ativarDesativarTipoPrestador(tipo_prestador_id) 
 {
     $('#carregando').show();
     var formURL = '/tipo-prestador/ativar-desativar-tipo-prestador';
@@ -12,7 +12,7 @@ function ativarDesativarTipoPrestador(tipo_prestador_cod)
         url: formURL,
         data: {
             _token: $("input[name='_token']").val(),
-            tipo_prestador_cod: tipo_prestador_cod
+            tipo_prestador_id: tipo_prestador_id
         },
         dataType: "json",
         success: function (data) {

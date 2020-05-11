@@ -13,7 +13,7 @@
   }
 </style>
 @php
-$tipo_prestador_descricao = $errors->has('tipo_prestador_descricao') ? old('tipo_prestador_descricao') : $tipo_prestador->tipo_prestador_descricao;
+$descricao = $errors->has('descricao') ? old('descricao') : $tipo_prestador->descricao;
 @endphp
 <div class="row justify-content-center">
     <div class="col-md-12">
@@ -25,14 +25,14 @@ $tipo_prestador_descricao = $errors->has('tipo_prestador_descricao') ? old('tipo
                 </a>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('tipo-prestador.update', $tipo_prestador->tipo_prestador_cod) }}" autocomplete="off">
+                <form method="post" action="{{ route('tipo-prestador.update', $tipo_prestador->id) }}" autocomplete="off">
                     @method('PATCH')
                     @csrf
-                    <div class="form-group {{ $errors->has('tipo_prestador_descricao') ? 'text-danger' : '' }}">
-                        <label for="tipo_prestador_descricao">Descrição (*)</label>
-                        <input type="text" class="form-control {{ $errors->has('tipo_prestador_descricao') ? 'is-invalid' : '' }}" 
-                            name="tipo_prestador_descricao" value="{{ $tipo_prestador_descricao }}" />
-                        <span class="text-danger">{{ $errors->first('tipo_prestador_descricao') }}</span>
+                    <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                        <label for="descricao">Descrição (*)</label>
+                        <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                            name="descricao" value="{{ $descricao }}" />
+                        <span class="text-danger">{{ $errors->first('descricao') }}</span>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>
                     <span class="float-right text-danger">

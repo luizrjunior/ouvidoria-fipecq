@@ -67,33 +67,33 @@
                             @foreach($situacaos as $situacao)
                             <tr>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($situacao->created_at)) }}</td>
-                                <td>{{ $situacao->situacao_descricao }}</td>
+                                <td>{{ $situacao->descricao }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $bgColor[$situacao->situacao_status] }}"
-                                          data-toggle="tooltip" title="{{ $arrSituacao[$situacao->situacao_status] }}">
-                                        {{ $arrSituacao[$situacao->situacao_status] }}
+                                    <span class="badge badge-{{ $bgColor[$situacao->status] }}"
+                                          data-toggle="tooltip" title="{{ $arrSituacao[$situacao->status] }}">
+                                        {{ $arrSituacao[$situacao->status] }}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('situacao.edit', $situacao->situacao_cod) }}" title="Editar" 
+                                    <a href="{{ route('situacao.edit', $situacao->id) }}" title="Editar" 
                                         class="btn btn-primary btn-sm" onclick="return validar()">
                                         Editar
                                     </a>
                                 </td>
                                 <td>
-                                    @if ($situacao->situacao_status)
+                                    @if ($situacao->status)
                                     <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                        onclick="ativarDesativarSituacao({{ $situacao->situacao_cod }})">Desativar
+                                        onclick="ativarDesativarSituacao({{ $situacao->id }})">Desativar
                                     </button>
                                     @else
                                     <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                        onclick="ativarDesativarSituacao({{ $situacao->situacao_cod }})">Ativar
+                                        onclick="ativarDesativarSituacao({{ $situacao->id }})">Ativar
                                     </button>
                                     @endif
                                 </td>
                                 <td>
                                     <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                        onclick="confirmDestroy({{ $situacao->situacao_cod }})" disabled>Excluir
+                                        onclick="confirmDestroy({{ $situacao->id }})" disabled>Excluir
                                     </button>
                                 </td>
                             </tr>

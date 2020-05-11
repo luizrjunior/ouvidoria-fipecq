@@ -9,9 +9,9 @@ class InstitutoraController extends Controller
 {
 
     const MESSAGES_ERRORS = [
-        'institutora_descricao.required' => 'A Descrição precisa ser informado. Por favor, '
+        'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'institutora_descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
     const MESSAGE_ADD_SUCCESS = "Institutora adicionado com sucesso!";
@@ -32,12 +32,12 @@ class InstitutoraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'institutora_descricao'=>'required|string|max:100'
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $institutora = new Institutora([
-                'institutora_descricao' => $request->get('institutora_descricao'),
-                'institutora_status'=> true
+                'descricao' => $request->get('descricao'),
+                'status'=> true
             ]);
         $institutora->save();
         return redirect('/institutora')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -52,11 +52,11 @@ class InstitutoraController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'institutora_descricao'=>'required|string|max:100'
+            'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $institutora = Institutora::find($id);
-        $institutora->institutora_descricao = $request->get('institutora_descricao');
+        $institutora->descricao = $request->get('descricao');
         $institutora->save();
   
         return redirect('/institutora')->with('success', self::MESSAGE_UPDATE_SUCCESS);
@@ -71,14 +71,14 @@ class InstitutoraController extends Controller
     }
 
     public function ativarDesativarInstitutora(Request $request) {
-        $institutora = Institutora::find($request->institutora_cod);
+        $institutora = Institutora::find($request->institutora_id);
         $msg = "Institutora ativada com sucesso!<br />&nbsp;";
         $status = true;
-        if ($institutora->institutora_status == 1) {
+        if ($institutora->status == 1) {
             $msg = "Institutora desativada com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $institutora->institutora_status = $status;
+        $institutora->status = $status;
         $institutora->save();
 
         $dados = array();

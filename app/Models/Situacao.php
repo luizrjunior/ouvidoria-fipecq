@@ -12,14 +12,14 @@ class Situacao extends Model
      *
      * @var string
      */
-    public $table = 'situacao';
+    public $table = 'fv_ouv_situacao';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'situacao_cod';
+    // protected $primaryKey = 'situacao_cod';
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +27,8 @@ class Situacao extends Model
      * @var array
      */
     protected $fillable = [
-        'situacao_descricao',
-        'situacao_status'
+        'descricao',
+        'status'
     ];
 
 }

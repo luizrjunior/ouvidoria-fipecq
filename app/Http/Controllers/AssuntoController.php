@@ -9,9 +9,9 @@ class AssuntoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
-        'assunto_descricao.required' => 'A Descrição precisa ser informado. Por favor, '
+        'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'assunto_descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
     const MESSAGE_ADD_SUCCESS = "Assunto adicionado com sucesso!";
@@ -32,12 +32,12 @@ class AssuntoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'assunto_descricao'=>'required|string|max:100'
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $assunto = new Assunto([
-                'assunto_descricao' => $request->get('assunto_descricao'),
-                'assunto_status'=> true
+                'descricao' => $request->get('descricao'),
+                'status'=> true
             ]);
         $assunto->save();
         return redirect('/assunto')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -52,11 +52,11 @@ class AssuntoController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'assunto_descricao'=>'required|string|max:100'
+            'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $assunto = Assunto::find($id);
-        $assunto->assunto_descricao = $request->get('assunto_descricao');
+        $assunto->descricao = $request->get('descricao');
         $assunto->save();
   
         return redirect('/assunto')->with('success', self::MESSAGE_UPDATE_SUCCESS);
@@ -71,14 +71,14 @@ class AssuntoController extends Controller
     }
 
     public function ativarDesativarAssunto(Request $request) {
-        $assunto = Assunto::find($request->assunto_cod);
+        $assunto = Assunto::find($request->assunto_id);
         $msg = "Assunto ativado com sucesso!<br />&nbsp;";
         $status = true;
-        if ($assunto->assunto_status == 1) {
+        if ($assunto->status == 1) {
             $msg = "Assunto desativado com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $assunto->assunto_status = $status;
+        $assunto->status = $status;
         $assunto->save();
 
         $dados = array();

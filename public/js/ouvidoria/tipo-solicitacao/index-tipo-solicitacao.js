@@ -3,7 +3,7 @@ function validar()
     $('#carregando').show();
 }
 
-function ativarDesativarTipoSolicitacao(tipo_solicitacao_cod) 
+function ativarDesativarTipoSolicitacao(tipo_solicitacao_id) 
 {
     $('#carregando').show();
     var formURL = '/tipo-solicitacao/ativar-desativar-tipo-solicitacao';
@@ -12,7 +12,7 @@ function ativarDesativarTipoSolicitacao(tipo_solicitacao_cod)
         url: formURL,
         data: {
             _token: $("input[name='_token']").val(),
-            tipo_solicitacao_cod: tipo_solicitacao_cod
+            tipo_solicitacao_id: tipo_solicitacao_id
         },
         dataType: "json",
         success: function (data) {

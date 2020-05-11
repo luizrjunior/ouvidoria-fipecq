@@ -13,7 +13,7 @@
   }
 </style>
 @php
-$situacao_descricao = $errors->has('situacao_descricao') ? old('situacao_descricao') : $situacao->situacao_descricao;
+$descricao = $errors->has('descricao') ? old('descricao') : $situacao->descricao;
 @endphp
 <div class="container">
     <div class="row justify-content-center">
@@ -26,14 +26,14 @@ $situacao_descricao = $errors->has('situacao_descricao') ? old('situacao_descric
                     </a>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{{ route('situacao.update', $situacao->situacao_cod) }}" autocomplete="off">
+                    <form method="post" action="{{ route('situacao.update', $situacao->id) }}" autocomplete="off">
                         @method('PATCH')
                         @csrf
-                        <div class="form-group {{ $errors->has('situacao_descricao') ? 'text-danger' : '' }}">
-                            <label for="situacao_descricao">Descrição (*)</label>
-                            <input type="text" class="form-control {{ $errors->has('situacao_descricao') ? 'is-invalid' : '' }}" 
-                                name="situacao_descricao" value="{{ $situacao_descricao }}" autofocus />
-                            <span class="text-danger">{{ $errors->first('situacao_descricao') }}</span>
+                        <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                            <label for="descricao">Descrição (*)</label>
+                            <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                                name="descricao" value="{{ $descricao }}" autofocus />
+                            <span class="text-danger">{{ $errors->first('descricao') }}</span>
                         </div>
                         <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>
                         <span class="float-right text-danger">

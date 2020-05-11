@@ -13,20 +13,20 @@
 
 @section('content')
 @php
-$solicitante_cpf_psq = "";
-$solicitante_nome_psq = "";
-$tipo_solicitacao_cod_psq = "";
-$tipo_solicitante_cod_psq = "";
+$cpf_psq = "";
+$nome_psq = "";
+$tipo_solicitacao_id_psq = "";
+$tipo_solicitante_id_psq = "";
 $data_inicio = date('01/m/Y');
 $data_termino = date('d/m/Y');
 $totalPage = 2;
 @endphp
 @if (isset($data))
     @php
-    $solicitante_cpf_psq = $data['solicitante_cpf_psq'];
-    $solicitante_nome_psq = $data['solicitante_nome_psq'];
-    $tipo_solicitacao_cod_psq = $data['tipo_solicitacao_cod_psq'];
-    $tipo_solicitante_cod_psq = $data['tipo_solicitante_cod_psq'];
+    $cpf_psq = $data['cpf_psq'];
+    $nome_psq = $data['nome_psq'];
+    $tipo_solicitacao_id_psq = $data['tipo_solicitacao_id_psq'];
+    $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
 
     $data_inicio = $data['data_inicio'];
     $data_termino = $data['data_termino'];
@@ -57,45 +57,45 @@ $totalPage = 2;
 
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <label for="solicitante_cpf_psq" class="control-label">CPF N°</label>
-                        <input type="text" id="solicitante_cpf_psq" name="solicitante_cpf_psq" 
-                               class="form-control" value="{{ $solicitante_cpf_psq }}" 
+                        <label for="cpf_psq" class="control-label">CPF N°</label>
+                        <input type="text" id="cpf_psq" name="cpf_psq" 
+                               class="form-control" value="{{ $cpf_psq }}" 
                                placeholder="Informe CPF do Solicitante" autofocus>
                     </div>
                     <div class="col-md-6">
-                        <label for="solicitante_nome_psq" class="control-label">Nome</label>
-                        <input type="text" id="solicitante_nome_psq" name="solicitante_nome_psq" 
-                               class="form-control" value="{{ $solicitante_nome_psq }}" 
+                        <label for="nome_psq" class="control-label">Nome</label>
+                        <input type="text" id="nome_psq" name="nome_psq" 
+                               class="form-control" value="{{ $nome_psq }}" 
                                placeholder="Informe Nome do Solicitante">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <label for="tipo_solicitacao_cod_psq" class="control-label">Tipo de Solicitação</label>
-                        <select id="tipo_solicitacao_cod_psq" name="tipo_solicitacao_cod_psq" 
-                            class="form-control {{ $errors->has('tipo_solicitante_cod_psq') ? 'is-invalid' : '' }}">
+                        <label for="tipo_solicitacao_id_psq" class="control-label">Tipo de Solicitação</label>
+                        <select id="tipo_solicitacao_id_psq" name="tipo_solicitacao_id_psq" 
+                            class="form-control {{ $errors->has('tipo_solicitante_id_psq') ? 'is-invalid' : '' }}">
                             <option value="">- - Selecione - -</option>
                             @foreach ($tipo_solicitacaos as $tipo_solicitacao)
                                 @php $selected = ""; @endphp
-                                @if ($tipo_solicitacao->tipo_solicitacao_cod == $tipo_solicitacao_cod_psq)
+                                @if ($tipo_solicitacao->id == $tipo_solicitacao_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                                <option value="{{ $tipo_solicitacao->tipo_solicitacao_cod }}" {{$selected}}>{{ $tipo_solicitacao->tipo_solicitacao_nome }}</option>
+                                <option value="{{ $tipo_solicitacao->id }}" {{$selected}}>{{ $tipo_solicitacao->nome }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="tipo_solicitante_cod_psq" class="control-label">Tipo de Solicitante</label>
-                        <select id="tipo_solicitante_cod_psq" name="tipo_solicitante_cod_psq" 
-                            class="form-control {{ $errors->has('tipo_solicitante_cod_psq') ? 'is-invalid' : '' }}">
+                        <label for="tipo_solicitante_id_psq" class="control-label">Tipo de Solicitante</label>
+                        <select id="tipo_solicitante_id_psq" name="tipo_solicitante_id_psq" 
+                            class="form-control {{ $errors->has('tipo_solicitante_id_psq') ? 'is-invalid' : '' }}">
                             <option value="">- - Selecione - -</option>
                             @foreach ($tipo_solicitantes as $tipo_solicitante)
                                 @php $selected = ""; @endphp
-                                @if ($tipo_solicitante->tipo_solicitante_cod == $tipo_solicitante_cod_psq)
+                                @if ($tipo_solicitante->id == $tipo_solicitante_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                            <option value="{{$tipo_solicitante->tipo_solicitante_cod}}" {{$selected}}>{{$tipo_solicitante->tipo_solicitante_descricao}}</option>
+                            <option value="{{$tipo_solicitante->id}}" {{$selected}}>{{$tipo_solicitante->descricao}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -126,8 +126,8 @@ $totalPage = 2;
 
                 <div class="form-group row">
                     <div class="col-md-6" id="divFormNameEmail">
-                        <label for="situacao_cod_psq" class="control-label">Situação</label>
-                        <select id="situacao_cod_psq" name="situacao_cod_psq" 
+                        <label for="situacao_id_psq" class="control-label">Situação</label>
+                        <select id="situacao_id_psq" name="situacao_id_psq" 
                             class="form-control">
                             <option value="">- - Selecione - -</option>
                             <option value="1">Novo</option>
@@ -199,7 +199,7 @@ $totalPage = 2;
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>
-                                <a href="{{ route('solicitacao-ouvidoria.edit', $solicitacao_ouvidoria->solicitacao_ouvidoria_cod) }}" title="Editar" 
+                                <a href="{{ route('solicitacao-ouvidoria.edit', $solicitacao_ouvidoria->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Detalhar
                                 </a>

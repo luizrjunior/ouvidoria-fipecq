@@ -66,33 +66,33 @@
 
                         <tr>
                             <td>{{ date('d/m/Y H:i:s', strtotime($tipo_prestador->created_at)) }}</td>
-                            <td>{{ $tipo_prestador->tipo_prestador_descricao }}</td>
+                            <td>{{ $tipo_prestador->descricao }}</td>
                             <td>
-                                <span class="badge badge-{{ $bgColor[$tipo_prestador->tipo_prestador_status] }}"
-                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_prestador->tipo_prestador_status] }}">
-                                    {{ $arrSituacao[$tipo_prestador->tipo_prestador_status] }}
+                                <span class="badge badge-{{ $bgColor[$tipo_prestador->status] }}"
+                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_prestador->status] }}">
+                                    {{ $arrSituacao[$tipo_prestador->status] }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('tipo-prestador.edit', $tipo_prestador->tipo_prestador_cod) }}" title="Editar" 
+                                <a href="{{ route('tipo-prestador.edit', $tipo_prestador->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Editar
                                 </a>
                             </td>
                             <td>
-                                @if ($tipo_prestador->tipo_prestador_status)
+                                @if ($tipo_prestador->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->tipo_prestador_cod }})">Desativar
+                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->id }})">Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->tipo_prestador_cod }})">Ativar
+                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->id }})">Ativar
                                 </button>
                                 @endif
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $tipo_prestador->tipo_prestador_cod }})" disabled>Excluir
+                                    onclick="confirmDestroy({{ $tipo_prestador->id }})" disabled>Excluir
                                 </button>
                             </td>
                         </tr>

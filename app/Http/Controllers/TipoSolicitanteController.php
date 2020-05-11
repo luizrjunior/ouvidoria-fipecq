@@ -9,9 +9,9 @@ class TipoSolicitanteController extends Controller
 {
 
     const MESSAGES_ERRORS = [
-        'tipo_solicitante_descricao.required' => 'A Descrição precisa ser informado. Por favor, '
+        'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'tipo_solicitante_descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
     const MESSAGE_ADD_SUCCESS = "Tipo de Solicitante adicionado com sucesso!";
@@ -32,12 +32,12 @@ class TipoSolicitanteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'tipo_solicitante_descricao'=>'required|string|max:100'
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $tipo_solicitante = new TipoSolicitante([
-                'tipo_solicitante_descricao' => $request->get('tipo_solicitante_descricao'),
-                'tipo_solicitante_status'=> true
+                'descricao' => $request->get('descricao'),
+                'status'=> true
             ]);
         $tipo_solicitante->save();
         return redirect('/tipo-solicitante')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -52,11 +52,11 @@ class TipoSolicitanteController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-                'tipo_solicitante_descricao'=>'required|string|max:100'
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $tipo_solicitante = TipoSolicitante::find($id);
-        $tipo_solicitante->tipo_solicitante_descricao = $request->get('tipo_solicitante_descricao');
+        $tipo_solicitante->descricao = $request->get('descricao');
         $tipo_solicitante->save();
   
         return redirect('/tipo-solicitante')->with('success', self::MESSAGE_UPDATE_SUCCESS);
@@ -71,14 +71,14 @@ class TipoSolicitanteController extends Controller
     }
 
     public function ativarDesativarTipoSolicitante(Request $request) {
-        $tipo_solicitante = TipoSolicitante::find($request->tipo_solicitante_cod);
+        $tipo_solicitante = TipoSolicitante::find($request->tipo_solicitante_id);
         $msg = "Tipo de Solicitante ativado com sucesso!<br />&nbsp;";
         $status = true;
-        if ($tipo_solicitante->tipo_solicitante_status == 1) {
+        if ($tipo_solicitante->status == 1) {
             $msg = "Tipo de Solicitante desativado com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $tipo_solicitante->tipo_solicitante_status = $status;
+        $tipo_solicitante->status = $status;
         $tipo_solicitante->save();
 
         $dados = array();

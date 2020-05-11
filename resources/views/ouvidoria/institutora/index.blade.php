@@ -67,33 +67,33 @@
                             @foreach($institutoras as $institutora)
                             <tr>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($institutora->created_at)) }}</td>
-                                <td>{{ $institutora->institutora_descricao }}</td>
+                                <td>{{ $institutora->descricao }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $bgColor[$institutora->institutora_status] }}"
-                                          data-toggle="tooltip" title="{{ $arrSituacao[$institutora->institutora_status] }}">
-                                        {{ $arrSituacao[$institutora->institutora_status] }}
+                                    <span class="badge badge-{{ $bgColor[$institutora->status] }}"
+                                          data-toggle="tooltip" title="{{ $arrSituacao[$institutora->status] }}">
+                                        {{ $arrSituacao[$institutora->status] }}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('institutora.edit', $institutora->institutora_cod) }}" title="Editar" 
+                                    <a href="{{ route('institutora.edit', $institutora->id) }}" title="Editar" 
                                         class="btn btn-primary btn-sm" onclick="return validar()">
                                         Editar
                                     </a>
                                 </td>
                                 <td>
-                                    @if ($institutora->institutora_status)
+                                    @if ($institutora->status)
                                     <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                        onclick="ativarDesativarInstitutora({{ $institutora->institutora_cod }})">Desativar
+                                        onclick="ativarDesativarInstitutora({{ $institutora->id }})">Desativar
                                     </button>
                                     @else
                                     <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                        onclick="ativarDesativarInstitutora({{ $institutora->institutora_cod }})">Ativar
+                                        onclick="ativarDesativarInstitutora({{ $institutora->id }})">Ativar
                                     </button>
                                     @endif
                                 </td>
                                 <td>
                                     <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                        onclick="confirmDestroy({{ $institutora->institutora_cod }})" disabled>Excluir
+                                        onclick="confirmDestroy({{ $institutora->id }})" disabled>Excluir
                                     </button>
                                 </td>
                             </tr>

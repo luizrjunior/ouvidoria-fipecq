@@ -13,27 +13,28 @@ class CreateSolicitanteTable extends Migration
      */
     public function up()
     {
-        Schema::create('internet.FV_OUV_SOLICITANTE', function (Blueprint $table) {
+        // Schema::create('fv_ouv_solicitante', function (Blueprint $table) {
+        Schema::create('internet.fv_ouv_solicitante', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('ID');
-            $table->string('NOME', 120);
-            $table->string('CPF', 15);
-            $table->string('EMAIL', 120);
-            $table->string('TELEFONE', 15)->nullable();
-            $table->string('CELULAR', 15);
-            $table->string('UF', 2);
-            $table->string('CIDADE', 120);
+            $table->bigIncrements('id');
+            $table->string('nome', 120);
+            $table->string('cpf', 15);
+            $table->string('email', 120);
+            $table->string('telefone', 15)->nullable();
+            $table->string('celular', 15);
+            $table->string('uf', 2);
+            $table->string('cidade', 120);
 
-            $table->unsignedBigInteger('INSTITUTORA_ID');
-            $table->foreign('INSTITUTORA_ID')
-                ->references('ID')
-                ->on('FV_OUV_INSTITUTORA')
+            $table->unsignedBigInteger('institutora_id');
+            $table->foreign('institutora_id')
+                ->references('id')
+                ->on('fv_ouv_institutora')
                 ->onDelete('cascade');
                 
-            $table->unsignedBigInteger('TIPO_SOLICITANTE_ID');
-            $table->foreign('TIPO_SOLICITANTE_ID')
-                ->references('ID')
-                ->on('FV_OUV_TIPO_SOLICITANTE')
+            $table->unsignedBigInteger('tipo_solicitante_id');
+            $table->foreign('tipo_solicitante_id')
+                ->references('id')
+                ->on('fv_ouv_tipo_solicitante')
                 ->onDelete('cascade');
                 
             $table->timestamps();
@@ -47,6 +48,7 @@ class CreateSolicitanteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('internet.FV_OUV_SOLICITANTE');
+        // Schema::dropIfExists('fv_ouv_solicitante');
+        Schema::dropIfExists('internet.fv_ouv_solicitante');
     }
 }

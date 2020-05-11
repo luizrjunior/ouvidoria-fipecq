@@ -17,10 +17,10 @@
 </style>
 
 @php
-$tipo_solicitacao_cod = old('tipo_solicitacao_cod') ? old('tipo_solicitacao_cod') : $tipo_solicitacao_cod;
-$tipo_solicitante_cod = old('tipo_solicitante_cod');
-$institutora_cod = old('institutora_cod');
-$solicitante_uf = old('solicitante_uf');
+$tipo_solicitacao_id = old('tipo_solicitacao_id') ? old('tipo_solicitacao_id') : $tipo_solicitacao_id;
+$tipo_solicitante_id = old('tipo_solicitante_id');
+$institutora_id = old('institutora_id');
+$uf = old('uf');
 @endphp
 
 <div class="row justify-content-center">
@@ -37,156 +37,156 @@ $solicitante_uf = old('solicitante_uf');
                     action="{{ route('solicitacao-ouvidoria.store') }}" enctype="multipart/form-data" autocomplete="off">
                     @csrf
 
-                    <input type="hidden" id="solicitante_cod" name="solicitante_cod" value="">
+                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="">
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="tipo_solicitacao_cod" class="control-label">Tipo de Solicitação</label>
+                            <label for="tipo_solicitacao_id" class="control-label">Tipo de Solicitação</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="tipo_solicitacao_cod" name="tipo_solicitacao_cod" class="form-control" disabled>
+                            <select id="tipo_solicitacao_id" name="tipo_solicitacao_id" class="form-control" disabled>
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($tipo_solicitacaos as $tipo_solicitacao)
                                     @php $selected = ""; @endphp
-                                    @if ($tipo_solicitacao->tipo_solicitacao_cod == $tipo_solicitacao_cod)
+                                    @if ($tipo_solicitacao->id == $tipo_solicitacao_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                    <option value="{{ $tipo_solicitacao->tipo_solicitacao_cod }}" {{$selected}}>{{ $tipo_solicitacao->tipo_solicitacao_nome }}</option>
+                                    <option value="{{ $tipo_solicitacao->id }}" {{$selected}}>{{ $tipo_solicitacao->nome }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitante_cpf') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('cpf') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_cpf" class="control-label">CPF N° (*)</label>
+                            <label for="cpf" class="control-label">CPF N° (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('solicitante_cpf') ? 'is-invalid' : '' }}" 
-                                id="solicitante_cpf" name="solicitante_cpf" value="{{ old('solicitante_cpf') }}" autofocus />
-                            <span class="text-danger">{{ $errors->first('solicitante_cpf') }}</span>
+                            <input type="text" class="form-control {{ $errors->has('cpf') ? 'is-invalid' : '' }}" 
+                                id="cpf" name="cpf" value="{{ old('cpf') }}" autofocus />
+                            <span class="text-danger">{{ $errors->first('cpf') }}</span>
                         </div>
                     </div>
                     
-                    <div class="row form-group {{ $errors->has('solicitante_nome') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_nome" class="control-label">Nome (*)</label>
+                            <label for="nome" class="control-label">Nome (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('solicitante_nome') ? 'is-invalid' : '' }}" 
-                            id="solicitante_nome" name="solicitante_nome" value="{{ old('solicitante_nome') }}" />
-                            <span class="text-danger">{{ $errors->first('solicitante_nome') }}</span>
+                            <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
+                            id="nome" name="nome" value="{{ old('nome') }}" />
+                            <span class="text-danger">{{ $errors->first('nome') }}</span>
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('tipo_solicitante_cod') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('tipo_solicitante_id') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="tipo_solicitante_cod" class="control-label">Tipo de Solicitante - Você é (*)</label>
+                            <label for="tipo_solicitante_id" class="control-label">Tipo de Solicitante - Você é (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="tipo_solicitante_cod" name="tipo_solicitante_cod" class="form-control {{ $errors->has('tipo_solicitante_cod') ? 'is-invalid' : '' }}">
+                            <select id="tipo_solicitante_id" name="tipo_solicitante_id" class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($tipo_solicitantes as $tipo_solicitante)
                                     @php $selected = ""; @endphp
-                                    @if ($tipo_solicitante->tipo_solicitante_cod == $tipo_solicitante_cod)
+                                    @if ($tipo_solicitante->id == $tipo_solicitante_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$tipo_solicitante->tipo_solicitante_cod}}" {{$selected}}>{{$tipo_solicitante->tipo_solicitante_descricao}}</option>
+                                <option value="{{$tipo_solicitante->id}}" {{$selected}}>{{$tipo_solicitante->descricao}}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger">{{ $errors->first('tipo_solicitante_cod') }}</span>
+                            <span class="text-danger">{{ $errors->first('tipo_solicitante_id') }}</span>
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('institutora_cod') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('institutora_id') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="institutora_cod" class="control-label">Institutora/Empresa (*)</label>
+                            <label for="institutora_id" class="control-label">Institutora/Empresa (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="institutora_cod" name="institutora_cod" class="form-control {{ $errors->has('institutora_cod') ? 'is-invalid' : '' }}">
+                            <select id="institutora_id" name="institutora_id" class="form-control {{ $errors->has('institutora_id') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
-                                    @if ($institutora->institutora_cod == $institutora_cod)
+                                    @if ($institutora->id == $institutora_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$institutora->institutora_cod}}" {{$selected}}>{{$institutora->institutora_descricao}}</option>
+                                <option value="{{$institutora->id}}" {{$selected}}>{{$institutora->descricao}}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger">{{ $errors->first('institutora_cod') }}</span>
+                            <span class="text-danger">{{ $errors->first('institutora_id') }}</span>
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitante_uf') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('uf') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_uf" class="control-label">Estado (*)</label>
+                            <label for="uf" class="control-label">Estado (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="solicitante_uf" name="solicitante_uf" class="form-control {{ $errors->has('solicitante_uf') ? 'is-invalid' : '' }}">
+                            <select id="uf" name="uf" class="form-control {{ $errors->has('uf') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($ufs as $uf)
                                     @php $selected = ""; @endphp
-                                    @if ($uf->uf_sigla == $solicitante_uf)
+                                    @if ($uf["sigla"] == $uf)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$uf->uf_sigla}}" {{$selected}}>{{$uf->uf_descricao}}</option>
+                                <option value="{{ $uf["sigla"] }}" {{ $selected }}>{{ $uf["descricao"] }}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger">{{ $errors->first('solicitante_uf') }}</span>
+                            <span class="text-danger">{{ $errors->first('uf') }}</span>
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitante_cidade') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('cidade') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_cidade" class="control-label">Cidade (*)</label>
+                            <label for="cidade" class="control-label">Cidade (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('solicitante_cidade') ? 'is-invalid' : '' }}" 
-                                id="solicitante_cidade" name="solicitante_cidade" value="{{ old('solicitante_cidade') }}" />
-                            <span class="text-danger">{{ $errors->first('solicitante_cidade') }}</span>
+                            <input type="text" class="form-control {{ $errors->has('cidade') ? 'is-invalid' : '' }}" 
+                                id="cidade" name="cidade" value="{{ old('cidade') }}" />
+                            <span class="text-danger">{{ $errors->first('cidade') }}</span>
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitante_email') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('email') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_email" class="control-label">E-mail (*)</label>
+                            <label for="email" class="control-label">E-mail (*)</label>
                         </div>
                         <div class="col-md-9">
-                        <input type="text" class="form-control {{ $errors->has('solicitante_email') ? 'is-invalid' : '' }}" 
-                            id="solicitante_email" name="solicitante_email" value="{{ old('solicitante_email') }}" />
-                        <span class="text-danger">{{ $errors->first('solicitante_email') }}</span>
+                        <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" 
+                            id="email" name="email" value="{{ old('email') }}" />
+                        <span class="text-danger">{{ $errors->first('email') }}</span>
                     </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitante_telefone') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('telefone') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_telefone" class="control-label">Telefone</label>
+                            <label for="telefone" class="control-label">Telefone</label>
                         </div>
                         <div class="col-md-9">
-                        <input type="text" class="form-control {{ $errors->has('solicitante_telefone') ? 'is-invalid' : '' }}" 
-                            id="solicitante_telefone" name="solicitante_telefone" value="{{ old('solicitante_telefone') }}" />
-                        <span class="text-danger">{{ $errors->first('solicitante_telefone') }}</span>
+                        <input type="text" class="form-control {{ $errors->has('telefone') ? 'is-invalid' : '' }}" 
+                            id="telefone" name="telefone" value="{{ old('telefone') }}" />
+                        <span class="text-danger">{{ $errors->first('telefone') }}</span>
                     </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitante_celular') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('celular') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitante_celular" class="control-label">Celular (*)</label>
+                            <label for="celular" class="control-label">Celular (*)</label>
                         </div>
                         <div class="col-md-9">
-                        <input type="text" class="form-control {{ $errors->has('solicitante_celular') ? 'is-invalid' : '' }}" 
-                            id="solicitante_celular" name="solicitante_celular" value="{{ old('solicitante_celular') }}" />
-                        <span class="text-danger">{{ $errors->first('solicitante_celular') }}</span>
+                        <input type="text" class="form-control {{ $errors->has('celular') ? 'is-invalid' : '' }}" 
+                            id="celular" name="celular" value="{{ old('celular') }}" />
+                        <span class="text-danger">{{ $errors->first('celular') }}</span>
                     </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('solicitacao_ouvidoria_mensagem') ? 'text-danger' : '' }}">
+                    <div class="row form-group {{ $errors->has('mensagem') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="solicitacao_ouvidoria_mensagem" class="control-label">Digite aqui sua mensagem (*)</label>
+                            <label for="mensagem" class="control-label">Digite aqui sua mensagem (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <textarea rows="5" id="solicitacao_ouvidoria_mensagem" name="solicitacao_ouvidoria_mensagem" 
-                                class="form-control">{{ old('solicitacao_ouvidoria_mensagem') }}</textarea>
+                            <textarea rows="5" id="mensagem" name="mensagem" 
+                                class="form-control">{{ old('mensagem') }}</textarea>
                         </div>
                     </div>
 
@@ -200,10 +200,10 @@ $solicitante_uf = old('solicitante_uf');
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="solicitacao_ouvidoria_anexo" class="control-label">Anexar Arquivo</label>
+                            <label for="anexo" class="control-label">Anexar Arquivo</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="file" id="solicitacao_ouvidoria_anexo" name="solicitacao_ouvidoria_anexo" />
+                            <input type="file" id="anexo" name="anexo" />
                         </div>
                     </div>
 

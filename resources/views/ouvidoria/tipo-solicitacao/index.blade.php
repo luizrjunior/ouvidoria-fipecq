@@ -69,36 +69,36 @@
 
                         <tr>
                             <td>{{ date('d/m/Y H:i:s', strtotime($tipo_solicitacao->created_at)) }}</td>
-                            <td>{{ $tipo_solicitacao->tipo_solicitacao_nome }}</td>
-                            <td><i class="{{ $tipo_solicitacao->tipo_solicitacao_icone }}"></td>
-                            <td class="bg-{{ $tipo_solicitacao->tipo_solicitacao_cor }}">&nbsp;</td>
-                            <td align="right">{{ $tipo_solicitacao->tipo_solicitacao_sla }}</td>
+                            <td>{{ $tipo_solicitacao->nome }}</td>
+                            <td><i class="{{ $tipo_solicitacao->icone }}"></td>
+                            <td class="bg-{{ $tipo_solicitacao->cor }}">&nbsp;</td>
+                            <td align="right">{{ $tipo_solicitacao->sla }}</td>
                             <td>
-                                <span class="badge badge-{{ $bgColor[$tipo_solicitacao->tipo_solicitacao_status] }}"
-                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_solicitacao->tipo_solicitacao_status] }}">
-                                    {{ $arrSituacao[$tipo_solicitacao->tipo_solicitacao_status] }}
+                                <span class="badge badge-{{ $bgColor[$tipo_solicitacao->status] }}"
+                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_solicitacao->status] }}">
+                                    {{ $arrSituacao[$tipo_solicitacao->status] }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('tipo-solicitacao.edit', $tipo_solicitacao->tipo_solicitacao_cod) }}" title="Editar" 
+                                <a href="{{ route('tipo-solicitacao.edit', $tipo_solicitacao->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Editar
                                 </a>
                             </td>
                             <td>
-                                @if ($tipo_solicitacao->tipo_solicitacao_status)
+                                @if ($tipo_solicitacao->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarTipoSolicitacao({{ $tipo_solicitacao->tipo_solicitacao_cod }})">Desativar
+                                    onclick="ativarDesativarTipoSolicitacao({{ $tipo_solicitacao->id }})">Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarTipoSolicitacao({{ $tipo_solicitacao->tipo_solicitacao_cod }})">Ativar
+                                    onclick="ativarDesativarTipoSolicitacao({{ $tipo_solicitacao->id }})">Ativar
                                 </button>
                                 @endif
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $tipo_solicitacao->tipo_solicitacao_cod }})" disabled>Excluir
+                                    onclick="confirmDestroy({{ $tipo_solicitacao->id }})" disabled>Excluir
                                 </button>
                             </td>
                         </tr>

@@ -66,34 +66,33 @@
 
                         <tr>
                             <td>{{ date('d/m/Y H:i:s', strtotime($tipo_solicitante->created_at)) }}</td>
-                            <td>{{ $tipo_solicitante->tipo_solicitante_descricao }}</td>
-                            <td>{{ $tipo_solicitante->tipo_solicitante_sla }}</td>
+                            <td>{{ $tipo_solicitante->descricao }}</td>
                             <td>
-                                <span class="badge badge-{{ $bgColor[$tipo_solicitante->tipo_solicitante_status] }}"
-                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_solicitante->tipo_solicitante_status] }}">
-                                    {{ $arrSituacao[$tipo_solicitante->tipo_solicitante_status] }}
+                                <span class="badge badge-{{ $bgColor[$tipo_solicitante->status] }}"
+                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_solicitante->status] }}">
+                                    {{ $arrSituacao[$tipo_solicitante->status] }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('tipo-solicitante.edit', $tipo_solicitante->tipo_solicitante_cod) }}" title="Editar" 
+                                <a href="{{ route('tipo-solicitante.edit', $tipo_solicitante->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Editar
                                 </a>
                             </td>
                             <td>
-                                @if ($tipo_solicitante->tipo_solicitante_status)
+                                @if ($tipo_solicitante->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarTipoSolicitante({{ $tipo_solicitante->tipo_solicitante_cod }})">Desativar
+                                    onclick="ativarDesativarTipoSolicitante({{ $tipo_solicitante->id }})">Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarTipoSolicitante({{ $tipo_solicitante->tipo_solicitante_cod }})">Ativar
+                                    onclick="ativarDesativarTipoSolicitante({{ $tipo_solicitante->id }})">Ativar
                                 </button>
                                 @endif
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $tipo_solicitante->tipo_solicitante_cod }})" disabled>Excluir
+                                    onclick="confirmDestroy({{ $tipo_solicitante->id }})" disabled>Excluir
                                 </button>
                             </td>
                         </tr>

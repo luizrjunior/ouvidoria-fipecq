@@ -12,14 +12,7 @@ class Assunto extends Model
      *
      * @var string
      */
-    public $table = 'assunto';
-
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'assunto_cod';
+    public $table = 'fv_ouv_assunto';
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +20,8 @@ class Assunto extends Model
      * @var array
      */
     protected $fillable = [
-        'assunto_descricao',
-        'assunto_status'
+        'descricao',
+        'status'
     ];
 
 }

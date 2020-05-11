@@ -12,14 +12,7 @@ class Classificacao extends Model
      *
      * @var string
      */
-    public $table = 'classificacao';
-
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'classificacao_cod';
+    public $table = 'fv_ouv_classificacao';
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +20,8 @@ class Classificacao extends Model
      * @var array
      */
     protected $fillable = [
-        'classificacao_descricao',
-        'classificacao_status'
+        'descricao',
+        'status'
     ];
 
 }

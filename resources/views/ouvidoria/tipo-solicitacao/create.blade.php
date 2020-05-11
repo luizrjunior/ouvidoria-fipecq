@@ -24,35 +24,35 @@
             <div class="card-body">
                 <form method="post" action="{{ route('tipo-solicitacao.store') }}" autocomplete="off">
                     @csrf
-                    <div class="form-group {{ $errors->has('tipo_ouvidoria_nome') ? 'text-danger' : '' }}">
-                        <label for="tipo_ouvidoria_nome">Nome (*)</label>
-                        <input type="text" class="form-control {{ $errors->has('tipo_ouvidoria_nome') ? 'is-invalid' : '' }}" 
-                            name="tipo_ouvidoria_nome" value="{{ old('tipo_ouvidoria_nome') }}" autofocus />
-                        <span class="text-danger">{{ $errors->first('tipo_ouvidoria_nome') }}</span>
+                    <div class="form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
+                        <label for="nome">Nome (*)</label>
+                        <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
+                            name="nome" value="{{ old('nome') }}" autofocus />
+                        <span class="text-danger">{{ $errors->first('nome') }}</span>
                     </div>
-                    <div class="form-group {{ $errors->has('tipo_ouvidoria_descricao') ? 'text-danger' : '' }}">
-                        <label for="tipo_ouvidoria_descricao">Descrição (*)</label>
-                        <input type="text" class="form-control {{ $errors->has('tipo_ouvidoria_descricao') ? 'is-invalid' : '' }}" 
-                            name="tipo_ouvidoria_descricao" value="{{ old('tipo_ouvidoria_descricao') }}" />
-                        <span class="text-danger">{{ $errors->first('tipo_ouvidoria_descricao') }}</span>
+                    <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                        <label for="descricao">Descrição (*)</label>
+                        <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                            name="descricao" value="{{ old('descricao') }}" />
+                        <span class="text-danger">{{ $errors->first('descricao') }}</span>
                     </div>
-                    <div class="form-group {{ $errors->has('tipo_ouvidoria_icone') ? 'text-danger' : '' }}">
-                        <label for="tipo_ouvidoria_icone">Ícone (Font Awesome)(*)</label>
-                        <input type="text" class="form-control {{ $errors->has('tipo_ouvidoria_icone') ? 'is-invalid' : '' }}" 
-                            name="tipo_ouvidoria_icone" value="{{ old('tipo_ouvidoria_icone') }}" />
-                        <span class="text-danger">{{ $errors->first('tipo_ouvidoria_icone') }}</span>
+                    <div class="form-group {{ $errors->has('icone') ? 'text-danger' : '' }}">
+                        <label for="icone">Ícone (Font Awesome)(*)</label>
+                        <input type="text" class="form-control {{ $errors->has('icone') ? 'is-invalid' : '' }}" 
+                            name="icone" value="{{ old('icone') }}" />
+                        <span class="text-danger">{{ $errors->first('icone') }}</span>
                     </div>
-                    <div class="form-group {{ $errors->has('tipo_ouvidoria_cor') ? 'text-danger' : '' }}">
-                        <label for="tipo_ouvidoria_cor">Cor (Bootstrap)(*)</label>
-                        <input type="text" class="form-control {{ $errors->has('tipo_ouvidoria_cor') ? 'is-invalid' : '' }}" 
-                            name="tipo_ouvidoria_cor" value="{{ old('tipo_ouvidoria_cor') }}" />
-                        <span class="text-danger">{{ $errors->first('tipo_ouvidoria_cor') }}</span>
+                    <div class="form-group {{ $errors->has('cor') ? 'text-danger' : '' }}">
+                        <label for="cor">Cor (Bootstrap)(*)</label>
+                        <input type="text" class="form-control {{ $errors->has('cor') ? 'is-invalid' : '' }}" 
+                            name="cor" value="{{ old('cor') }}" />
+                        <span class="text-danger">{{ $errors->first('cor') }}</span>
                     </div>
-                    <div class="form-group {{ $errors->has('tipo_ouvidoria_sla') ? 'text-danger' : '' }}">
-                        <label for="tipo_ouvidoria_sla">SLA (*)</label>
-                        <input type="text" class="form-control {{ $errors->has('tipo_ouvidoria_sla') ? 'is-invalid' : '' }}" 
-                            name="tipo_ouvidoria_sla" value="{{ old('tipo_ouvidoria_sla') }}" />
-                        <span class="text-danger">{{ $errors->first('tipo_ouvidoria_sla') }}</span>
+                    <div class="form-group {{ $errors->has('sla') ? 'text-danger' : '' }}">
+                        <label for="sla">SLA (*)</label>
+                        <input type="text" class="form-control {{ $errors->has('sla') ? 'is-invalid' : '' }}" 
+                            name="sla" value="{{ old('sla') }}" />
+                        <span class="text-danger">{{ $errors->first('sla') }}</span>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validar()">Adicionar</button>
                     <span class="float-right text-danger">

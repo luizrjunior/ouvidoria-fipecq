@@ -67,16 +67,16 @@
 
                         <tr>
                             <td>{{ date('d/m/Y H:i:s', strtotime($sub_classificacao->created_at)) }}</td>
-                            <td>{{ $sub_classificacao->classificacao->classificacao_descricao }}</td>
-                            <td>{{ $sub_classificacao->sub_classificacao_descricao }}</td>
+                            <td>{{ $sub_classificacao->classificacao->descricao }}</td>
+                            <td>{{ $sub_classificacao->descricao }}</td>
                             <td>
-                                <span class="badge badge-{{ $bgColor[$sub_classificacao->sub_classificacao_status] }}"
-                                        data-toggle="tooltip" title="{{ $arrSituacao[$sub_classificacao->sub_classificacao_status] }}">
-                                    {{ $arrSituacao[$sub_classificacao->sub_classificacao_status] }}
+                                <span class="badge badge-{{ $bgColor[$sub_classificacao->status] }}"
+                                        data-toggle="tooltip" title="{{ $arrSituacao[$sub_classificacao->status] }}">
+                                    {{ $arrSituacao[$sub_classificacao->status] }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('sub-classificacao.edit', $sub_classificacao->sub_classificacao_cod) }}" title="Editar" 
+                                <a href="{{ route('sub-classificacao.edit', $sub_classificacao->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Editar
                                 </a>
@@ -84,17 +84,17 @@
                             <td>
                                 @if ($sub_classificacao->sub_classificacao_status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->sub_classificacao_cod }})">Desativar
+                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})">Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->sub_classificacao_cod }})">Ativar
+                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})">Ativar
                                 </button>
                                 @endif
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $sub_classificacao->sub_classificacao_cod }})" disabled>Excluir
+                                    onclick="confirmDestroy({{ $sub_classificacao->id }})" disabled>Excluir
                                 </button>
                             </td>
                         </tr>

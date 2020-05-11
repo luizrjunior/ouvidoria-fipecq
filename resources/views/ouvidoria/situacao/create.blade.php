@@ -25,11 +25,11 @@
                 <div class="card-body">
                     <form method="post" action="{{ route('situacao.store') }}" autocomplete="off">
                         @csrf
-                        <div class="form-group {{ $errors->has('situacao_descricao') ? 'text-danger' : '' }}">
-                            <label for="situacao_descricao">Descrição (*)</label>
-                            <input type="text" class="form-control {{ $errors->has('situacao_descricao') ? 'is-invalid' : '' }}" 
-                                name="situacao_descricao" value="{{ old('situacao_descricao') }}" autofocus />
-                            <span class="text-danger">{{ $errors->first('situacao_descricao') }}</span>
+                        <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                            <label for="descricao">Descrição (*)</label>
+                            <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                                name="descricao" value="{{ old('descricao') }}" autofocus />
+                            <span class="text-danger">{{ $errors->first('descricao') }}</span>
                         </div>
                         <button type="submit" class="btn btn-primary" onclick="return validar()">Adicionar</button>
                         <span class="float-right text-danger">

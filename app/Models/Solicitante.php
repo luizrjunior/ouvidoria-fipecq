@@ -12,14 +12,14 @@ class Solicitante extends Model
      *
      * @var string
      */
-    public $table = 'solicitante';
+    public $table = 'fv_ouv_solicitante';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'solicitante_cod';
+    // protected $primaryKey = 'solicitante_cod';
 
     /**
      * The attributes that are mass assignable.
@@ -27,25 +27,25 @@ class Solicitante extends Model
      * @var array
      */
     protected $fillable = [
-        'solicitante_nome',
-        'solicitante_cpf',
-        'solicitante_email',
-        'solicitante_telefone',
-        'solicitante_celular',
-        'solicitante_uf',
-        'solicitante_cidade',
-        'institutora_cod',
-        'tipo_solicitante_cod'
+        'nome',
+        'cpf',
+        'email',
+        'telefone',
+        'celular',
+        'uf',
+        'cidade',
+        'institutora_id',
+        'tipo_solicitante_id'
     ];
 
     public function tipoSolicitante()
     {
-        return $this->belongsTo('App\Models\TipoSolicitante', 'tipo_solicitante_cod');
+        return $this->belongsTo('App\Models\TipoSolicitante', 'tipo_solicitante_id');
     }
 
     public function institutora()
     {
-        return $this->belongsTo('App\Models\Institutora', 'institutora_cod');
+        return $this->belongsTo('App\Models\Institutora', 'institutora_id');
     }
 
 }

@@ -13,7 +13,7 @@
   }
 </style>
 @php
-$classificacao_descricao = $errors->has('classificacao_descricao') ? old('classificacao_descricao') : $classificacao->classificacao_descricao;
+$descricao = $errors->has('descricao') ? old('descricao') : $classificacao->descricao;
 @endphp
 <div class="container">
     <div class="row justify-content-center">
@@ -26,14 +26,14 @@ $classificacao_descricao = $errors->has('classificacao_descricao') ? old('classi
                     </a>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="{{ route('classificacao.update', $classificacao->classificacao_cod) }}" autocomplete="off">
+                    <form method="post" action="{{ route('classificacao.update', $classificacao->id) }}" autocomplete="off">
                         @method('PATCH')
                         @csrf
-                        <div class="form-group {{ $errors->has('classificacao_descricao') ? 'text-danger' : '' }}">
-                            <label for="classificacao_descricao">Descrição (*)</label>
-                            <input type="text" class="form-control {{ $errors->has('classificacao_descricao') ? 'is-invalid' : '' }}" 
-                                name="classificacao_descricao" value="{{ $classificacao_descricao }}" autofocus />
-                            <span class="text-danger">{{ $errors->first('classificacao_descricao') }}</span>
+                        <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
+                            <label for="descricao">Descrição (*)</label>
+                            <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
+                                name="descricao" value="{{ $descricao }}" autofocus />
+                            <span class="text-danger">{{ $errors->first('descricao') }}</span>
                         </div>
                         <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>
                         <span class="float-right text-danger">

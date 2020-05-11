@@ -3,7 +3,7 @@ function validar()
     $('#carregando').show();
 }
 
-function ativarDesativarCanalAtendimento(canal_atendimento_cod) 
+function ativarDesativarCanalAtendimento(canal_atendimento_id) 
 {
     $('#carregando').show();
     var formURL = '/canal-atendimento/ativar-desativar-canal-atendimento';
@@ -12,7 +12,7 @@ function ativarDesativarCanalAtendimento(canal_atendimento_cod)
         url: formURL,
         data: {
             _token: $("input[name='_token']").val(),
-            canal_atendimento_cod: canal_atendimento_cod
+            canal_atendimento_id: canal_atendimento_id
         },
         dataType: "json",
         success: function (data) {

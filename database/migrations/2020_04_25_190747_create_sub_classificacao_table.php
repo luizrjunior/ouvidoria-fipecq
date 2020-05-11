@@ -13,16 +13,17 @@ class CreateSubclassificacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('internet.FV_OUV_SUB_CLASSIFICACAO', function (Blueprint $table) {
+        // Schema::create('fv_ouv_sub_classificacao', function (Blueprint $table) {
+        Schema::create('internet.fv_ouv_sub_classificacao', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('ID');
-            $table->string('DESCRICAO', 100);
-            $table->boolean('STATUS');
+            $table->bigIncrements('id');
+            $table->string('descricao', 100);
+            $table->boolean('status');
 
-            $table->unsignedBigInteger('CLASSIFICACAO_ID');
-            $table->foreign('CLASSIFICACAO_ID')
-                ->references('ID')
-                ->on('FV_OUV_CLASSIFICACAO')
+            $table->unsignedBigInteger('classificacao_id');
+            $table->foreign('classificacao_id')
+                ->references('id')
+                ->on('fv_ouv_classificacao')
                 ->onDelete('cascade');
                 
             $table->timestamps();
@@ -36,6 +37,7 @@ class CreateSubclassificacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('internet.FV_OUV_SUB_CLASSIFICACAO');
+        Schema::dropIfExists('fv_ouv_sub_classificacao');
+        // Schema::dropIfExists('internet.fv_ouv_sub_classificacao');
     }
 }

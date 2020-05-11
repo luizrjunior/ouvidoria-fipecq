@@ -9,9 +9,9 @@ class ClassificacaoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
-        'classificacao_descricao.required' => 'A Descrição precisa ser informado. Por favor, '
+        'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'classificacao_descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
     const MESSAGE_ADD_SUCCESS = "Classificação adicionada com sucesso!";
@@ -32,12 +32,12 @@ class ClassificacaoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'classificacao_descricao'=>'required|string|max:100'
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $classificacao = new Classificacao([
-                'classificacao_descricao' => $request->get('classificacao_descricao'),
-                'classificacao_status'=> true
+                'descricao' => $request->get('descricao'),
+                'status'=> true
             ]);
         $classificacao->save();
         return redirect('/classificacao')->with('success', self::MESSAGE_ADD_SUCCESS);
@@ -52,11 +52,11 @@ class ClassificacaoController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'classificacao_descricao'=>'required|string|max:100'
+            'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $classificacao = Classificacao::find($id);
-        $classificacao->classificacao_descricao = $request->get('classificacao_descricao');
+        $classificacao->descricao = $request->get('descricao');
         $classificacao->save();
   
         return redirect('/classificacao')->with('success', self::MESSAGE_UPDATE_SUCCESS);
@@ -71,14 +71,14 @@ class ClassificacaoController extends Controller
     }
 
     public function ativarDesativarClassificacao(Request $request) {
-        $classificacao = Classificacao::find($request->classificacao_cod);
+        $classificacao = Classificacao::find($request->classificacao_id);
         $msg = "Classificação ativada com sucesso!<br />&nbsp;";
         $status = true;
-        if ($classificacao->classificacao_status == 1) {
+        if ($classificacao->status == 1) {
             $msg = "Classificação desativada com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $classificacao->classificacao_status = $status;
+        $classificacao->status = $status;
         $classificacao->save();
 
         $dados = array();

@@ -67,33 +67,33 @@
                             @foreach($classificacaos as $classificacao)
                             <tr>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($classificacao->created_at)) }}</td>
-                                <td>{{ $classificacao->classificacao_descricao }}</td>
+                                <td>{{ $classificacao->descricao }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $bgColor[$classificacao->classificacao_status] }}"
-                                          data-toggle="tooltip" title="{{ $arrSituacao[$classificacao->classificacao_status] }}">
-                                        {{ $arrSituacao[$classificacao->classificacao_status] }}
+                                    <span class="badge badge-{{ $bgColor[$classificacao->status] }}"
+                                          data-toggle="tooltip" title="{{ $arrSituacao[$classificacao->status] }}">
+                                        {{ $arrSituacao[$classificacao->status] }}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('classificacao.edit', $classificacao->classificacao_cod) }}" title="Editar" 
+                                    <a href="{{ route('classificacao.edit', $classificacao->id) }}" title="Editar" 
                                         class="btn btn-primary btn-sm" onclick="return validar()">
                                         Editar
                                     </a>
                                 </td>
                                 <td>
-                                    @if ($classificacao->classificacao_status)
+                                    @if ($classificacao->status)
                                     <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                        onclick="ativarDesativarClassificacao({{ $classificacao->classificacao_cod }})">Desativar
+                                        onclick="ativarDesativarClassificacao({{ $classificacao->id }})">Desativar
                                     </button>
                                     @else
                                     <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                        onclick="ativarDesativarClassificacao({{ $classificacao->classificacao_cod }})">Ativar
+                                        onclick="ativarDesativarClassificacao({{ $classificacao->id }})">Ativar
                                     </button>
                                     @endif
                                 </td>
                                 <td>
                                     <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                        onclick="confirmDestroy({{ $classificacao->classificacao_cod }})" disabled>Excluir
+                                        onclick="confirmDestroy({{ $classificacao->id }})" disabled>Excluir
                                     </button>
                                 </td>
                             </tr>

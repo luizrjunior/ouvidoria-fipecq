@@ -3,7 +3,7 @@ function validar()
     $('#carregando').show();
 }
 
-function ativarDesativarSituacao(situacao_cod) 
+function ativarDesativarSituacao(situacao_id) 
 {
     $('#carregando').show();
     var formURL = '/situacao/ativar-desativar-situacao';
@@ -12,7 +12,7 @@ function ativarDesativarSituacao(situacao_cod)
         url: formURL,
         data: {
             _token: $("input[name='_token']").val(),
-            situacao_cod: situacao_cod
+            situacao_id: situacao_id
         },
         dataType: "json",
         success: function (data) {

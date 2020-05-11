@@ -11,59 +11,64 @@ class TipoSolicitacaoTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
-            'NOME' => "RECLAMAÇÃO",
-            'DESCRICAO' => "Relatar insatisfação com ações e serviços prestados",
-            'ICONE' => "far fa-thumbs-down",
-            'COR' => "warning",
-            'SLA' => 1,
-            'STATUS' => true,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        $tiposSolicitacaos = [
+            [
+                'nome' => "RECLAMAÇÃO",
+                'descricao' => "Relatar insatisfação com ações e serviços prestados",
+                'icone' => "far fa-thumbs-down",
+                'cor' => "warning",
+                'sla' => 1,
+                'status' => true
+            ],
+            [
+                'nome' => "SUGESTÃO",
+                'descricao' => "Propor ações úties para melhoria da gestão",
+                'icone' => "far fa-comment-alt",
+                'cor' => "info",
+                'sla' => 1,
+                'status' => true
+            ],
+            [
+                'nome' => "ELOGIO",
+                'descricao' => "Propor ações úties para melhoria da gestão",
+                'icone' => "far fa-thumbs-up",
+                'cor' => "success",
+                'sla' => 1,
+                'status' => true
+            ],
+            [
+                'nome' => "SOLICITAÇÃO",
+                'descricao' => "Requerer informações ou esclarecimento de dúvidas",
+                'icone' => "far fa-hand-point-up",
+                'cor' => "secondary",
+                'sla' => 1,
+                'status' => true
+            ],
+            [
+                'nome' => "DENÚNCIA",
+                'descricao' => "Apontar falhas na gestão ou no atendimento recebido",
+                'icone' => "fas fa-bullhorn",
+                'cor' => "danger",
+                'sla' => 1,
+                'status' => true
+            ],
+        ];
 
-        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
-            'NOME' => "SUGESTÃO",
-            'DESCRICAO' => "Propor ações úties para melhoria da gestão",
-            'ICONE' => "far fa-comment-alt",
-            'COR' => "info",
-            'SLA' => 1,
-            'STATUS' => true,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        foreach ($tiposSolicitacaos as $tipoSolicitacao) {
+            $this->command->info('Inserindo Tipo de Solicitação: ' . $tipoSolicitacao['nome']);
+            // DB::table('fv_ouv_tipo_solicitacao')->insert([
+            DB::table('internet.fv_ouv_tipo_solicitacao')->insert([
+                'nome' => $tipoSolicitacao['nome'], 
+                'descricao' => $tipoSolicitacao['descricao'], 
+                'icone' => $tipoSolicitacao['icone'], 
+                'cor' => $tipoSolicitacao['cor'], 
+                'sla' => $tipoSolicitacao['sla'], 
+                'status' => $tipoSolicitacao['status'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
 
-        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
-            'NOME' => "ELOGIO",
-            'DESCRICAO' => "Propor ações úties para melhoria da gestão",
-            'ICONE' => "far fa-thumbs-up",
-            'COR' => "success",
-            'SLA' => 1,
-            'STATUS' => true,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-
-        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
-            'NOME' => "SOLICITAÇÃO",
-            'DESCRICAO' => "Requerer informações ou esclarecimento de dúvidas",
-            'ICONE' => "far fa-hand-point-up",
-            'COR' => "secondary",
-            'SLA' => 1,
-            'STATUS' => true,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-        
-        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
-            'NOME' => "DENÚNCIA",
-            'DESCRICAO' => "Apontar falhas na gestão ou no atendimento recebido",
-            'ICONE' => "fas fa-bullhorn",
-            'COR' => "danger",
-            'SLA' => 1,
-            'STATUS' => true,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
     }
+
 }

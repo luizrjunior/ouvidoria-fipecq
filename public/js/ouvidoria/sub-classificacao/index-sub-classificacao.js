@@ -3,7 +3,7 @@ function validar()
     $('#carregando').show();
 }
 
-function ativarDesativarSubClassificacao(sub_classificacao_cod) 
+function ativarDesativarSubClassificacao(sub_classificacao_id) 
 {
     $('#carregando').show();
     var formURL = '/sub-classificacao/ativar-desativar-sub-classificacao';
@@ -12,7 +12,7 @@ function ativarDesativarSubClassificacao(sub_classificacao_cod)
         url: formURL,
         data: {
             _token: $("input[name='_token']").val(),
-            sub_classificacao_cod: sub_classificacao_cod
+            sub_classificacao_id: sub_classificacao_id
         },
         dataType: "json",
         success: function (data) {
