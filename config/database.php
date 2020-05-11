@@ -91,6 +91,18 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'oracle' => [
+            'driver' => 'oracle',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1521'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*

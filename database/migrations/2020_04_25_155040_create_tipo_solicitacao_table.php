@@ -13,15 +13,15 @@ class CreateTipoSolicitacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_solicitacao', function (Blueprint $table) {
+        Schema::create('internet.FV_OUV_TIPO_SOLICITACAO', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('tipo_solicitacao_cod');
-            $table->string('tipo_solicitacao_nome', 50);
-            $table->string('tipo_solicitacao_descricao', 100);
-            $table->string('tipo_solicitacao_icone', 50);
-            $table->string('tipo_solicitacao_cor', 50);
-            $table->integer('tipo_solicitacao_sla');
-            $table->boolean('tipo_solicitacao_status');
+            $table->bigIncrements('ID');
+            $table->string('NOME', 50);
+            $table->string('DESCRICAO', 100);
+            $table->string('ICONE', 50);
+            $table->string('COR', 50);
+            $table->integer('SLA');
+            $table->boolean('STATUS');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateTipoSolicitacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_solicitacao');
+        Schema::dropIfExists('internet.FV_OUV_TIPO_SOLICITACAO');
     }
 }

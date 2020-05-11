@@ -11,57 +11,57 @@ class TipoSolicitacaoTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tipo_solicitacao')->insert([
-            'tipo_solicitacao_nome' => "RECLAMAÇÃO",
-            'tipo_solicitacao_descricao' => "Relatar insatisfação com ações e serviços prestados",
-            'tipo_solicitacao_icone' => "far fa-thumbs-down",
-            'tipo_solicitacao_cor' => "warning",
-            'tipo_solicitacao_sla' => 1,
-            'tipo_solicitacao_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
+            'NOME' => "RECLAMAÇÃO",
+            'DESCRICAO' => "Relatar insatisfação com ações e serviços prestados",
+            'ICONE' => "far fa-thumbs-down",
+            'COR' => "warning",
+            'SLA' => 1,
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        DB::table('tipo_solicitacao')->insert([
-            'tipo_solicitacao_nome' => "SUGESTÃO",
-            'tipo_solicitacao_descricao' => "Propor ações úties para melhoria da gestão",
-            'tipo_solicitacao_icone' => "far fa-comment-alt",
-            'tipo_solicitacao_cor' => "info",
-            'tipo_solicitacao_sla' => 1,
-            'tipo_solicitacao_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
+            'NOME' => "SUGESTÃO",
+            'DESCRICAO' => "Propor ações úties para melhoria da gestão",
+            'ICONE' => "far fa-comment-alt",
+            'COR' => "info",
+            'SLA' => 1,
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        DB::table('tipo_solicitacao')->insert([
-            'tipo_solicitacao_nome' => "ELOGIO",
-            'tipo_solicitacao_descricao' => "Propor ações úties para melhoria da gestão",
-            'tipo_solicitacao_icone' => "far fa-thumbs-up",
-            'tipo_solicitacao_cor' => "success",
-            'tipo_solicitacao_sla' => 1,
-            'tipo_solicitacao_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
+            'NOME' => "ELOGIO",
+            'DESCRICAO' => "Propor ações úties para melhoria da gestão",
+            'ICONE' => "far fa-thumbs-up",
+            'COR' => "success",
+            'SLA' => 1,
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        DB::table('tipo_solicitacao')->insert([
-            'tipo_solicitacao_nome' => "SOLICITAÇÃO",
-            'tipo_solicitacao_descricao' => "Requerer informações ou esclarecimento de dúvidas",
-            'tipo_solicitacao_icone' => "far fa-hand-point-up",
-            'tipo_solicitacao_cor' => "secondary",
-            'tipo_solicitacao_sla' => 1,
-            'tipo_solicitacao_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
+            'NOME' => "SOLICITAÇÃO",
+            'DESCRICAO' => "Requerer informações ou esclarecimento de dúvidas",
+            'ICONE' => "far fa-hand-point-up",
+            'COR' => "secondary",
+            'SLA' => 1,
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
         
-        DB::table('tipo_solicitacao')->insert([
-            'tipo_solicitacao_nome' => "DENÚNCIA",
-            'tipo_solicitacao_descricao' => "Apontar falhas na gestão ou no atendimento recebido",
-            'tipo_solicitacao_icone' => "fas fa-bullhorn",
-            'tipo_solicitacao_cor' => "danger",
-            'tipo_solicitacao_sla' => 1,
-            'tipo_solicitacao_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITACAO')->insert([
+            'NOME' => "DENÚNCIA",
+            'DESCRICAO' => "Apontar falhas na gestão ou no atendimento recebido",
+            'ICONE' => "fas fa-bullhorn",
+            'COR' => "danger",
+            'SLA' => 1,
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);

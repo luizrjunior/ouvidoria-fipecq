@@ -11,30 +11,30 @@ class TipoSolicitanteTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tipo_solicitante')->insert([
-            'tipo_solicitante_descricao' => "Associado",
-            'tipo_solicitante_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITANTE')->insert([
+            'DESCRICAO' => "Associado",
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        DB::table('tipo_solicitante')->insert([
-            'tipo_solicitante_descricao' => "Empregado FIPECq Vida",
-            'tipo_solicitante_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITANTE')->insert([
+            'DESCRICAO' => "Empregado FIPECq Vida",
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        DB::table('tipo_solicitante')->insert([
-            'tipo_solicitante_descricao' => "Parceiro",
-            'tipo_solicitante_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITANTE')->insert([
+            'DESCRICAO' => "Parceiro",
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        DB::table('tipo_solicitante')->insert([
-            'tipo_solicitante_descricao' => "Visitante",
-            'tipo_solicitante_status' => true,
+        DB::table('internet.FV_OUV_TIPO_SOLICITANTE')->insert([
+            'DESCRICAO' => "Visitante",
+            'STATUS' => true,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);

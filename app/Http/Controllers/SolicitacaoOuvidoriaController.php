@@ -49,10 +49,43 @@ class SolicitacaoOuvidoriaController extends Controller
         'solicitacao_ouvidoria_mensagem.required' => 'A Mensagem precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
     ];
+
     const MESSAGE_ADD_SUCCESS = "A sua demanda foi recebida com sucesso. Em breve você será contatado.
     <br />O número do protocolo da sua demanda é: ";
+
     const MESSAGE_UPDATE_SUCCESS = "Solicitação de Ouvidoria alterado com sucesso!";
+
     const MESSAGE_DESTROY_SUCCESS = "Solicitação de Ouvidoria removido com sucesso!";
+
+    const UFS = [
+        ["uf_sigla" => "AC", "uf_descricao" => "ACRE"],
+        ["uf_sigla" => "AL", "uf_descricao" => "ALAGOAS"],
+        ["uf_sigla" => "AP", "uf_descricao" => "AMAPÁ"],
+        ["uf_sigla" => "AM", "uf_descricao" => "AMAZONAS"],
+        ["uf_sigla" => "BA", "uf_descricao" => "BAHIA"],
+        ["uf_sigla" => "CE", "uf_descricao" => "CEARÁ"],
+        ["uf_sigla" => "DF", "uf_descricao" => "DISTRITO FEDERAL"],
+        ["uf_sigla" => "ES", "uf_descricao" => "ESPÍRITO SANTO"],
+        ["uf_sigla" => "GO", "uf_descricao" => "GOIÁS"],
+        ["uf_sigla" => "MA", "uf_descricao" => "MARANHÃO"],
+        ["uf_sigla" => "MG", "uf_descricao" => "MINAS GERAIS"],
+        ["uf_sigla" => "MT", "uf_descricao" => "MATO GROSSO"],
+        ["uf_sigla" => "MS", "uf_descricao" => "MATO GROSSO DO SUL"],
+        ["uf_sigla" => "PA", "uf_descricao" => "PARÁ"],
+        ["uf_sigla" => "PB", "uf_descricao" => "PARAÍBA"],
+        ["uf_sigla" => "PR", "uf_descricao" => "PARANÁ"],
+        ["uf_sigla" => "PE", "uf_descricao" => "PERNAMBUCO"],
+        ["uf_sigla" => "PI", "uf_descricao" => "PIAUÍ"],
+        ["uf_sigla" => "RJ", "uf_descricao" => "RIO DE JANEIRO"],
+        ["uf_sigla" => "RN", "uf_descricao" => "RIO GRANDE DO NORTE"],
+        ["uf_sigla" => "RS", "uf_descricao" => "RIO GRANDE DO SUL"],
+        ["uf_sigla" => "RO", "uf_descricao" => "RONDÔNIA"],
+        ["uf_sigla" => "RR", "uf_descricao" => "RORAIMA"],
+        ["uf_sigla" => "SC", "uf_descricao" => "SANTA CATARINA"],
+        ["uf_sigla" => "SP", "uf_descricao" => "SÃO PAULO"],
+        ["uf_sigla" => "SE", "uf_descricao" => "SERGIPE"],
+        ["uf_sigla" => "TO", "uf_descricao" => "TOCANTINS"]
+    ];
 
     public function index(Request $request)
     {
@@ -141,7 +174,8 @@ class SolicitacaoOuvidoriaController extends Controller
         $tipo_solicitacaos = TipoSolicitacao::get();
         $tipo_solicitantes = TipoSolicitante::get();
         $institutoras = Institutora::get();
-        $ufs = UF::get();
+        $ufs = self::UFS;
+
         return view('ouvidoria.solicitacao-ouvidoria.create', compact(
             'tipo_solicitacao_cod', 'tipo_solicitacaos', 'tipo_solicitantes', 'institutoras', 'ufs'));
     }
@@ -220,6 +254,7 @@ class SolicitacaoOuvidoriaController extends Controller
                 return redirect()->back()->with('error', 'Falha ao fazer upload')->withInput();
             }
         }
+
         return $nameFile;
     }
 
@@ -277,7 +312,8 @@ class SolicitacaoOuvidoriaController extends Controller
         $tipo_solicitacaos = TipoSolicitacao::get();
         $tipo_solicitantes = TipoSolicitante::get();
         $institutoras = Institutora::get();
-        $ufs = UF::get();
+        $ufs = self::UFS;
+
         return view('ouvidoria.solicitacao-ouvidoria.acompanhar', 
             compact('solicitacao_ouvidorias', 'tipo_solicitacaos', 'tipo_solicitantes', 'institutoras', 'solicitacao_ouvidoria', 'ufs'));
 
@@ -286,7 +322,8 @@ class SolicitacaoOuvidoriaController extends Controller
     public function edit(int $solicitacao_cod)
     {
         $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_cod);
-        $ufs = UF::get();
+        $ufs = self::UFS;
+
         return view('ouvidoria.solicitacao-ouvidoria.edit', compact('solicitacao_ouvidoria', 'ufs'));
     }
 

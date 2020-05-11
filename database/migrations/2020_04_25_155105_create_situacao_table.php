@@ -13,11 +13,11 @@ class CreateSituacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('situacao', function (Blueprint $table) {
+        Schema::create('internet.FV_OUV_SITUACAO', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('situacao_cod');
-            $table->string('situacao_descricao', 100);
-            $table->boolean('situacao_status');
+            $table->bigIncrements('ID');
+            $table->string('DESCRICAO', 100);
+            $table->boolean('STATUS');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateSituacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('situacao');
+        Schema::dropIfExists('internet.FV_OUV_SITUACAO');
     }
 }

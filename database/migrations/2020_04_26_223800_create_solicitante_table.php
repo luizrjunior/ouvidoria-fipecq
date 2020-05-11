@@ -13,28 +13,29 @@ class CreateSolicitanteTable extends Migration
      */
     public function up()
     {
-        Schema::create('solicitante', function (Blueprint $table) {
+        Schema::create('internet.FV_OUV_SOLICITANTE', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('solicitante_cod');
-            $table->string('solicitante_nome', 120);
-            $table->string('solicitante_cpf', 15);
-            $table->string('solicitante_email', 120);
-            $table->string('solicitante_telefone', 15)->nullable();
-            $table->string('solicitante_celular', 15);
-            $table->string('solicitante_uf', 2);
-            $table->string('solicitante_cidade', 120);
+            $table->bigIncrements('ID');
+            $table->string('NOME', 120);
+            $table->string('CPF', 15);
+            $table->string('EMAIL', 120);
+            $table->string('TELEFONE', 15)->nullable();
+            $table->string('CELULAR', 15);
+            $table->string('UF', 2);
+            $table->string('CIDADE', 120);
 
-            $table->unsignedBigInteger('institutora_cod');
-            $table->foreign('institutora_cod')
-                ->references('institutora_cod')
-                ->on('institutora')
+            $table->unsignedBigInteger('INSTITUTORA_ID');
+            $table->foreign('INSTITUTORA_ID')
+                ->references('ID')
+                ->on('FV_OUV_INSTITUTORA')
                 ->onDelete('cascade');
                 
-            $table->unsignedBigInteger('tipo_solicitante_cod');
-            $table->foreign('tipo_solicitante_cod')
-                ->references('tipo_solicitante_cod')
-                ->on('tipo_solicitante')
+            $table->unsignedBigInteger('TIPO_SOLICITANTE_ID');
+            $table->foreign('TIPO_SOLICITANTE_ID')
+                ->references('ID')
+                ->on('FV_OUV_TIPO_SOLICITANTE')
                 ->onDelete('cascade');
+                
             $table->timestamps();
         });
     }
@@ -46,6 +47,6 @@ class CreateSolicitanteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicitante');
+        Schema::dropIfExists('internet.FV_OUV_SOLICITANTE');
     }
 }

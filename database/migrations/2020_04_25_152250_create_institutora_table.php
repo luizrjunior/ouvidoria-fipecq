@@ -13,11 +13,11 @@ class CreateInstitutoraTable extends Migration
      */
     public function up()
     {
-        Schema::create('institutora', function (Blueprint $table) {
+        Schema::create('internet.FV_OUV_INSTITUTORA', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('institutora_cod');
-            $table->string('institutora_descricao', 100);
-            $table->boolean('institutora_status');
+            $table->bigIncrements('ID');
+            $table->string('DESCRICAO', 100);
+            $table->boolean('STATUS');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateInstitutoraTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('institutora');
+        Schema::dropIfExists('internet.FV_OUV_INSTITUTORA');
     }
 }

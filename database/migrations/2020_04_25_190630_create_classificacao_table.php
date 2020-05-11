@@ -13,11 +13,11 @@ class CreateClassificacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('classificacao', function (Blueprint $table) {
+        Schema::create('internet.FV_OUV_CLASSIFICACAO', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('classificacao_cod');
-            $table->string('classificacao_descricao', 100);
-            $table->boolean('classificacao_status');
+            $table->bigIncrements('ID');
+            $table->string('DESCRICAO', 100);
+            $table->boolean('STATUS');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateClassificacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classificacao');
+        Schema::dropIfExists('internet.FV_OUV_CLASSIFICACAO');
     }
 }

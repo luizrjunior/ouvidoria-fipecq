@@ -13,48 +13,49 @@ class CreateSolicitacaoOuvidoriaTable extends Migration
      */
     public function up()
     {
-        Schema::create('solicitacao_ouvidoria', function (Blueprint $table) {
+        Schema::create('internet.FV_OUV_SOLICITACAO_OUVIDORIA', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('solicitacao_ouvidoria_cod');
-            $table->integer('solicitacao_ouvidoria_protocolo');
-            $table->string('solicitacao_ouvidoria_mensagem', 255);
-            $table->string('solicitacao_ouvidoria_anexo', 255)->nullable();
+            $table->bigIncrements('ID');
+            $table->integer('PROTOCOLO');
+            $table->string('MENSAGEM', 255);
+            $table->string('ANEXO', 255)->nullable();
 
-            $table->unsignedBigInteger('tipo_solicitacao_cod');
-            $table->foreign('tipo_solicitacao_cod')
-                ->references('tipo_solicitacao_cod')
-                ->on('tipo_solicitacao')
+            $table->unsignedBigInteger('TIPO_SOLICITACAO_ID');
+            $table->foreign('TIPO_SOLICITACAO_ID')
+                ->references('ID')
+                ->on('FV_OUV_TIPO_SOLICITACAO')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('solicitante_cod');
-            $table->foreign('solicitante_cod')
-                ->references('solicitante_cod')
-                ->on('solicitante')
+            $table->unsignedBigInteger('SOLICITANTE_ID');
+            $table->foreign('SOLICITANTE_ID')
+                ->references('ID')
+                ->on('FV_OUV_SOLICITANTE')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('tipo_prestador_cod')->nullable();
-            $table->foreign('tipo_prestador_cod')
-                ->references('tipo_prestador_cod')
-                ->on('tipo_prestador')
+            $table->unsignedBigInteger('TIPO_PRESTADOR_ID')->nullable();
+            $table->foreign('TIPO_PRESTADOR_ID')
+                ->references('ID')
+                ->on('FV_OUV_TIPO_PRESTADOR')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('sub_classificacao_cod')->nullable();
-            $table->foreign('sub_classificacao_cod')
-                ->references('sub_classificacao_cod')
-                ->on('sub_classificacao')
+            $table->unsignedBigInteger('SUB_CLASSIFICACAO_ID')->nullable();
+            $table->foreign('SUB_CLASSIFICACAO_ID')
+                ->references('ID')
+                ->on('FV_OUV_SUB_CLASSIFICACAO')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('assunto_cod')->nullable();
-            $table->foreign('assunto_cod')
-                ->references('assunto_cod')
-                ->on('assunto')
+            $table->unsignedBigInteger('ASSUNTO_ID')->nullable();
+            $table->foreign('ASSUNTO_ID')
+                ->references('ID')
+                ->on('FV_OUV_ASSUNTO')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('canal_atendimento_cod')->nullable();
-            $table->foreign('canal_atendimento_cod')
-                ->references('canal_atendimento_cod')
-                ->on('canal_atendimento')
+            $table->unsignedBigInteger('CANAL_ATENDIMENTO_ID')->nullable();
+            $table->foreign('CANAL_ATENDIMENTO_ID')
+                ->references('ID')
+                ->on('FV_OUV_CANAL_ATENDIMENTO')
                 ->onDelete('cascade');
+                
             $table->timestamps();
         });
     }
@@ -66,6 +67,6 @@ class CreateSolicitacaoOuvidoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicitacao_ouvidoria');
+        Schema::dropIfExists('internet.FV_OUV_SOLICITACAO_OUVIDORIA');
     }
 }

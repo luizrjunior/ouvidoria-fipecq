@@ -66,3 +66,6 @@ Route::post('/solicitacao-ouvidoria/create', 'SolicitacaoOuvidoriaController@cre
 
 Route::post('/solicitacao-ouvidoria/carregar-solicitante-cpf', 'SolicitacaoOuvidoriaController@carregarSolicitantePorCPF');
 Route::post('/solicitacao-ouvidoria/acompanhar', 'SolicitacaoOuvidoriaController@acompanharSolicitacao')->name('solicitacao-ouvidoria.acompanhar');
+
+Route::get('/benef', 'BeneficiarioController@index');
+
