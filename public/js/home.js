@@ -19,7 +19,7 @@ function abrirLink(link) {
 
 $(document).ready(function () {
     showProtocoloCPF();
-    $("#solicitante_cpf_psq").mask("999.999.999-99");
+    $("#cpf_psq").mask("999.999.999-99");
 
     $("#btnFaleComOuvidor").click(function () {
         abrirLink('/fale-com-ouvidor');

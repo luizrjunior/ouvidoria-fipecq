@@ -29,7 +29,7 @@ class SubClassificacaoController extends Controller
 
     public function create()
     {
-        $classificacaos = Classificacao::orderBy('classificacao_descricao', 'ASC')->get();
+        $classificacaos = Classificacao::orderBy('descricao', 'ASC')->get();
         return view('ouvidoria.sub-classificacao.create', compact('classificacaos'));
     }
 

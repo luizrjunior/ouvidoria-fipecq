@@ -34,7 +34,8 @@ class SendMailOuvidoria extends Mailable
         return $this->from('faleconosco@fipecqvida.org.br', 'FIPECq Vida')
             ->view('emails.email_ouvidoria_solicitacao')
             ->with([
-                'protocolo' => $this->solicitacaoOuvidoria->solicitacao_ouvidoria_protocolo
+                'protocolo' => $this->solicitacaoOuvidoria->protocolo
             ]);
     }
+    
 }

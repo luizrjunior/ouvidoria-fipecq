@@ -27,14 +27,14 @@ class CreateSolicitanteTable extends Migration
 
             $table->unsignedBigInteger('institutora_id');
             $table->foreign('institutora_id')
-                ->references('id')
-                ->on('fv_ouv_institutora')
+                ->references('empresa')
+                ->on('plano.cad_empresa')
                 ->onDelete('cascade');
                 
             $table->unsignedBigInteger('tipo_solicitante_id');
             $table->foreign('tipo_solicitante_id')
                 ->references('id')
-                ->on('fv_ouv_tipo_solicitante')
+                ->on('internet.fv_ouv_tipo_solicitante')
                 ->onDelete('cascade');
                 
             $table->timestamps();

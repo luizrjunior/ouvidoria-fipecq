@@ -16,8 +16,8 @@ function carregarSolicitanteCPF() {
             },
             dataType: "json",
             success: function (data) {
-                if (data.solicitante_id != undefined) {
-                    $('#solicitante_id').val(data.solicitante_id);
+                if (data.id != undefined) {
+                    $('#solicitante_id').val(data.id);
                     $('#tipo_solicitante_id').val(data.tipo_solicitante_id);
                     $('#cpf').val(data.cpf);
                     $('#nome').val(data.nome);

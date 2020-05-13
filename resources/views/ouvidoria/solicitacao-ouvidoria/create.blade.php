@@ -107,10 +107,10 @@ $uf = old('uf');
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
-                                    @if ($institutora->id == $institutora_id)
+                                    @if ($institutora->empresa == $institutora_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$institutora->id}}" {{$selected}}>{{$institutora->descricao}}</option>
+                                <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('institutora_id') }}</span>

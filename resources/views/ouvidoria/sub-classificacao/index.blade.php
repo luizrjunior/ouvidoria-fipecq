@@ -82,7 +82,7 @@
                                 </a>
                             </td>
                             <td>
-                                @if ($sub_classificacao->sub_classificacao_status)
+                                @if ($sub_classificacao->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
                                     onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})">Desativar
                                 </button>

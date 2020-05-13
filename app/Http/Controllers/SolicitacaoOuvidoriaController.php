@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendMailOuvidoria;
+use App\Models\Beneficiario;
 use App\Models\Institutora;
 use App\Models\TipoSolicitacao;
 use App\Models\SolicitacaoOuvidoria;
@@ -10,6 +11,7 @@ use App\Models\TipoSolicitante;
 use App\Models\Solicitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use stdClass;
 
 class SolicitacaoOuvidoriaController extends Controller
 {
@@ -184,7 +186,7 @@ class SolicitacaoOuvidoriaController extends Controller
         $request->validate([
             'tipo_solicitacao_id'=>'required',
             'tipo_solicitante_id'=>'required',
-            'cpf'=>'required|cpf',
+            'cpf'=>'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
             'nome'=>'required|max:120',
             'institutora_id'=>'required',
             'uf'=>'required',
@@ -231,7 +233,7 @@ class SolicitacaoOuvidoriaController extends Controller
             'mensagem' => trim($request->mensagem),
             'anexo' => $anexo,
             'tipo_solicitacao_id' => $request->tipo_solicitacao_id,
-            'solicitante_id' => $solicitante->solicitante_id
+            'solicitante_id' => $solicitante->id
         ]);
         $solicitacao_ouvidoria->save();
 
@@ -294,7 +296,7 @@ class SolicitacaoOuvidoriaController extends Controller
         $solicitacao_ouvidorias = $this->getSolicitacaoOuvidorias($data);
 
         if (count($solicitacao_ouvidorias) == 0) {
-            return redirect()->back()->with('error', 'Falha ao fazer upload')->withInput();
+            return redirect()->back()->with('error', 'Nenhum registro encontrado!')->withInput();
         }
         if (count($solicitacao_ouvidorias) == 1) {
             $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->id);
@@ -303,18 +305,15 @@ class SolicitacaoOuvidoriaController extends Controller
         }
         if (count($solicitacao_ouvidorias) > 1) {
             $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->id);
-            $data['solicitacao_ouvidoria_protocolo_psq'] = "";
+            $data['protocolo_psq'] = "";
             $data['cpf_psq'] = $solicitacao_ouvidoria->solicitante->cpf;
             $solicitacao_ouvidoria = null;
         }
         $solicitacao_ouvidorias = $this->getSolicitacaoOuvidorias($data);
         $tipo_solicitacaos = TipoSolicitacao::get();
-        $tipo_solicitantes = TipoSolicitante::get();
-        $institutoras = Institutora::get();
-        $ufs = self::UFS;
 
         return view('ouvidoria.solicitacao-ouvidoria.acompanhar', 
-            compact('solicitacao_ouvidorias', 'tipo_solicitacaos', 'tipo_solicitantes', 'institutoras', 'solicitacao_ouvidoria', 'ufs'));
+            compact('solicitacao_ouvidorias', 'tipo_solicitacaos', 'solicitacao_ouvidoria'));
 
     }
 
@@ -383,9 +382,48 @@ class SolicitacaoOuvidoriaController extends Controller
     {
         $solicitante = null;
         $solicitante_request = Solicitante::where('cpf', $request->cpf)->get();
+        //Localizar na Tabela de Beneficiarios
+        if (count($solicitante_request) == 0) {
+            $benef = Beneficiario::where('cic', $this->limpaCPF_CNPJ($request->cpf))->get();
+
+            $solicitante_request = new stdClass();
+            $solicitante_request->nome = $benef->nome;
+            $solicitante_request->cpf = $this->formatCnpjCpf($benef->cic);
+            $solicitante_request->tipo_solicitante_id = "";
+            $solicitante_request->institutora_id = "";
+            $solicitante_request->uf = "";
+            $solicitante_request->cidade = "";
+            $solicitante_request->email = $benef->email;
+            $solicitante_request->telefone = "";
+            $solicitante_request->celular = "";
+
+            $solicitante = $solicitante_request;
+        }
         if (count($solicitante_request) > 0) {
             $solicitante = $solicitante_request[0];
         }
         return response()->json($solicitante, 200);
     }
+
+    private function limpaCPF_CNPJ($valor)
+    {
+        $valor = trim($valor);
+        $valor = str_replace(".", "", $valor);
+        $valor = str_replace(",", "", $valor);
+        $valor = str_replace("-", "", $valor);
+        $valor = str_replace("/", "", $valor);
+        return $valor;
+    }
+
+    private function formatCnpjCpf($value)
+    {
+        $cnpj_cpf = preg_replace("/\D/", '', $value);
+
+        if (strlen($cnpj_cpf) === 11) {
+            return preg_replace("/(\d{3})(\d{3})(\d{3})(\d{2})/", "\$1.\$2.\$3-\$4", $cnpj_cpf);
+        } 
+
+        return preg_replace("/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/", "\$1.\$2.\$3/\$4-\$5", $cnpj_cpf);
+    }    
+
 }

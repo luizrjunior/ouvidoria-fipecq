@@ -12,23 +12,6 @@ class Institutora extends Model
      *
      * @var string
      */
-    public $table = 'fv_ouv_institutora';
-
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    // protected $primaryKey = 'institutora_cod';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'descricao',
-        'status'
-    ];
+    public $table = 'plano.cad_empresa';
 
 }

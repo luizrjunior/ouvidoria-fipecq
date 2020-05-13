@@ -70,7 +70,7 @@ if ($solicitacao_ouvidoria) {
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="protocolo_psq" class="control-label">Selecione o Protocolo</label>
+                            <label for="protocolo_psq" class="control-label">Selecione outro Protocolo</label>
                         </div>
                         <div class="col-md-9">
                             <select id="protocolo_psq" name="protocolo_psq" class="form-control">

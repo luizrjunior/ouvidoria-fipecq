@@ -24,37 +24,37 @@ class CreateSolicitacaoOuvidoriaTable extends Migration
             $table->unsignedBigInteger('tipo_solicitacao_id');
             $table->foreign('tipo_solicitacao_id')
                 ->references('id')
-                ->on('fv_ouv_tipo_solicitacao')
+                ->on('internet.fv_ouv_tipo_solicitacao')
                 ->onDelete('cascade');
 
             $table->unsignedBigInteger('solicitante_id');
             $table->foreign('solicitante_id')
                 ->references('id')
-                ->on('fv_ouv_solicitante')
+                ->on('internet.fv_ouv_solicitante')
                 ->onDelete('cascade');
 
             $table->unsignedBigInteger('tipo_prestador_id')->nullable();
             $table->foreign('tipo_prestador_id')
                 ->references('id')
-                ->on('fv_ouv_tipo_prestador')
+                ->on('internet.fv_ouv_tipo_prestador')
                 ->onDelete('cascade');
 
             $table->unsignedBigInteger('sub_classificacao_id')->nullable();
             $table->foreign('sub_classificacao_id')
                 ->references('id')
-                ->on('fv_ouv_sub_classificacao')
+                ->on('internet.fv_ouv_sub_classificacao')
                 ->onDelete('cascade');
 
             $table->unsignedBigInteger('assunto_id')->nullable();
             $table->foreign('assunto_id')
                 ->references('id')
-                ->on('fv_ouv_assunto')
+                ->on('internet.fv_ouv_assunto')
                 ->onDelete('cascade');
 
             $table->unsignedBigInteger('canal_atendimento_id')->nullable();
             $table->foreign('canal_atendimento_id')
                 ->references('id')
-                ->on('fv_ouv_canal_atendimento')
+                ->on('internet.fv_ouv_canal_atendimento')
                 ->onDelete('cascade');
                 
             $table->timestamps();
