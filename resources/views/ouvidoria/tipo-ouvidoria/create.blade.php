@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Solicitação')
+@section('title', 'Tipo de Ouvidoria')
 
 @section('javascript')
-<script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-solicitacao/cad-tipo-solicitacao.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-ouvidoria/cad-tipo-ouvidoria.js') }}"></script>
 @endsection
 
 @section('content')
@@ -16,13 +16,13 @@
     <div class="col-md-12">
         <div class="card uper">
             <div class="card-header">
-                Adicionar Tipo de Solicitação
-                <a href="{{ url('/tipo-solicitacao') }}" class="float-right" onclick="return validar()">
+                Adicionar Tipo de Ouvidoria
+                <a href="{{ url('/tipo-ouvidoria') }}" class="float-right" onclick="return validar()">
                     <i class="fa fa-arrow-left"></i> Voltar
                 </a>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('tipo-solicitacao.store') }}" autocomplete="off">
+                <form method="post" action="{{ route('tipo-ouvidoria.store') }}" autocomplete="off">
                     @csrf
                     <div class="form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
                         <label for="nome">Nome (*)</label>

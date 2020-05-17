@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class TipoSolicitacaoTableSeeder extends Seeder
+class TpOuvidoriaTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class TipoSolicitacaoTableSeeder extends Seeder
      */
     public function run()
     {
-        $tiposSolicitacaos = [
+        $tiposOuvidorias = [
             [
                 'nome' => "RECLAMAÇÃO",
                 'descricao' => "Relatar insatisfação com ações e serviços prestados",
@@ -54,16 +54,15 @@ class TipoSolicitacaoTableSeeder extends Seeder
             ],
         ];
 
-        foreach ($tiposSolicitacaos as $tipoSolicitacao) {
-            $this->command->info('Inserindo Tipo de Solicitação: ' . $tipoSolicitacao['nome']);
-            // DB::table('fv_ouv_tipo_solicitacao')->insert([
-            DB::table('internet.fv_ouv_tipo_solicitacao')->insert([
-                'nome' => $tipoSolicitacao['nome'], 
-                'descricao' => $tipoSolicitacao['descricao'], 
-                'icone' => $tipoSolicitacao['icone'], 
-                'cor' => $tipoSolicitacao['cor'], 
-                'sla' => $tipoSolicitacao['sla'], 
-                'status' => $tipoSolicitacao['status'],
+        foreach ($tiposOuvidorias as $tipoOuvidoria) {
+            $this->command->info('Inserindo Tipo de Ouvidoria: ' . $tipoOuvidoria['nome']);
+            DB::table('fv_ouv_tp_ouvidoria')->insert([
+                'nome' => $tipoOuvidoria['nome'], 
+                'descricao' => $tipoOuvidoria['descricao'], 
+                'icone' => $tipoOuvidoria['icone'], 
+                'cor' => $tipoOuvidoria['cor'], 
+                'sla' => $tipoOuvidoria['sla'], 
+                'status' => $tipoOuvidoria['status'],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);

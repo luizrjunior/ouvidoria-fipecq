@@ -7,25 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class TipoSolicitante extends Model
 {
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     public $table = 'fv_ouv_tipo_solicitante';
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    // protected $primaryKey = 'tipo_solicitante_cod';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'descricao',
         'status'

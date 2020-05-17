@@ -13,8 +13,7 @@ class CreateCanalAtendimentoTable extends Migration
      */
     public function up()
     {
-        // Schema::create('fv_ouv_canal_atendimento', function (Blueprint $table) {
-        Schema::create('internet.fv_ouv_canal_atendimento', function (Blueprint $table) {
+        Schema::create('fv_ouv_canal_atendimento', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('descricao', 100);
@@ -30,7 +29,6 @@ class CreateCanalAtendimentoTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('fv_ouv_canal_atendimento');
-        Schema::dropIfExists('internet.fv_ouv_canal_atendimento');
+        Schema::dropIfExists('fv_ouv_canal_atendimento');
     }
 }

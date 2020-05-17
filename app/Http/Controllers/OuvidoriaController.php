@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendMailOuvidoria;
-use App\Models\Beneficiario;
-use App\Models\Institutora;
-use App\Models\TipoSolicitacao;
-use App\Models\SolicitacaoOuvidoria;
-use App\Models\TipoSolicitante;
-use App\Models\Solicitante;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use stdClass;
 
-class SolicitacaoOuvidoriaController extends Controller
+use App\Mail\SendMailOuvidoria;
+
+use App\Models\Beneficiario;
+use App\Models\Institutora;
+
+use App\Models\TipoOuvidoria;
+use App\Models\Ouvidoria;
+use App\Models\TipoSolicitante;
+use App\Models\Solicitante;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
+class OuvidoriaController extends Controller
 {
     const MESSAGES_ERRORS = [
-        'tipo_solicitacao_id.required' => 'O Tipo de Solicitação precisa ser informado. Por favor, '
+        'tipo_ouvidoria_id.required' => 'O Tipo de Solicitação precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
         'tipo_solicitante_id.required' => 'O Tipo de Solicitante - Você é precisa ser informado. Por favor, '
@@ -99,8 +103,8 @@ class SolicitacaoOuvidoriaController extends Controller
             $data['nome_psq'] = "";
         }
 
-        if (empty($data['tipo_solicitacao_id_psq'])) {
-            $data['tipo_solicitacao_id_psq'] = "";
+        if (empty($data['tipo_ouvidoria_id_psq'])) {
+            $data['tipo_ouvidoria_id_psq'] = "";
         }
 
         if (empty($data['tipo_solicitante_id_psq'])) {
@@ -116,16 +120,16 @@ class SolicitacaoOuvidoriaController extends Controller
 
         $data['totalPage'] = isset($data['totalPage']) ? $data['totalPage'] : 25;
 
-        $solicitacao_ouvidorias = $this->getSolicitacaoOuvidorias($data);
+        $ouvidorias = $this->getOuvidorias($data);
 
-        $tipo_solicitacaos = TipoSolicitacao::get();
-        $tipo_solicitantes = TipoSolicitante::get();
+        $tiposOuvidorias = TipoOuvidoria::get();
+        $tiposSolicitantes = TipoSolicitante::get();
 
-        return view('ouvidoria.solicitacao-ouvidoria.index', 
-            compact('tipo_solicitacaos', 'tipo_solicitantes', 'solicitacao_ouvidorias', 'data'));
+        return view('ouvidoria.ouvidoria.index', 
+            compact('tiposOuvidorias', 'tiposSolicitantes', 'ouvidorias', 'data'));
     }
 
-    private function getSolicitacaoOuvidorias(Array $data = null)
+    private function getOuvidorias(Array $data = null)
     {
         if ($data['data_inicio'] != "") {
             $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio'])->format('Y-m-d');
@@ -134,18 +138,18 @@ class SolicitacaoOuvidoriaController extends Controller
             $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
         }
 
-        return SolicitacaoOuvidoria::select('fv_ouv_solicitacao_ouvidoria.id',
-                'fv_ouv_solicitacao_ouvidoria.protocolo as protocolo',
-                'fv_ouv_tipo_solicitacao.nome as noTipoSolicitacao',
+        return Ouvidoria::select('fv_ouv_ouvidoria.id',
+                'fv_ouv_ouvidoria.protocolo as protocolo',
+                'fv_ouv_tipo_ouvidoria.nome as noTipoOuvidoria',
                 'fv_ouv_tipo_solicitante.descricao as dsTipoSolicitante',
                 'fv_ouv_solicitante.nome as noSolicitante',
-                'fv_ouv_solicitacao_ouvidoria.created_at as dtCriacao')
-            ->join('fv_ouv_tipo_solicitacao', 'fv_ouv_solicitacao_ouvidoria.tipo_solicitacao_id', '=', 'fv_ouv_tipo_solicitacao.id')
-            ->join('fv_ouv_solicitante', 'fv_ouv_solicitacao_ouvidoria.solicitante_id', '=', 'fv_ouv_solicitante.id')
+                'fv_ouv_ouvidoria.created_at as dtCriacao')
+            ->join('fv_ouv_tipo_ouvidoria', 'fv_ouv_ouvidoria.tipo_ouvidoria_id', '=', 'fv_ouv_tipo_ouvidoria.id')
+            ->join('fv_ouv_solicitante', 'fv_ouv_ouvidoria.solicitante_id', '=', 'fv_ouv_solicitante.id')
             ->join('fv_ouv_tipo_solicitante', 'fv_ouv_solicitante.tipo_solicitante_id', '=', 'fv_ouv_tipo_solicitante.id')
             ->where(function ($query) use ($data) {
                 if (isset($data['protocolo_psq']) && $data['protocolo_psq'] != "") {
-                    $query->where('fv_ouv_solicitacao_ouvidoria.protocolo', '=', $data['protocolo_psq']);
+                    $query->where('fv_ouv_ouvidoria.protocolo', '=', $data['protocolo_psq']);
                 }
                 if (isset($data['cpf_psq']) && $data['cpf_psq'] != "") {
                     $query->where('fv_ouv_solicitante.cpf', '=', $data['cpf_psq']);
@@ -153,38 +157,38 @@ class SolicitacaoOuvidoriaController extends Controller
                 if (isset($data['nome_psq']) && $data['nome_psq'] != "") {
                     $query->where('fv_ouv_solicitante.nome', 'LIKE', "%" . $data['nome_psq'] . "%");
                 }
-                if (isset($data['tipo_solicitacao_id_psq']) && $data['tipo_solicitacao_id_psq'] != "") {
-                    $query->where('fv_ouv_solicitacao_ouvidoria.tipo_solicitacao_id', $data['tipo_solicitacao_id_psq']);
+                if (isset($data['tipo_ouvidoria_id_psq']) && $data['tipo_ouvidoria_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.tipo_ouvidoria_id', $data['tipo_ouvidoria_id_psq']);
                 }
                 if (isset($data['tipo_solicitante_id_psq']) && $data['tipo_solicitante_id_psq'] != "") {
                     $query->where('fv_ouv_solicitante.tipo_solicitante_id', $data['tipo_solicitante_id_psq']);
                 }
                 if (isset($data['data_inicio']) && $data['data_inicio'] != "") {
-                    $query->where('fv_ouv_solicitacao_ouvidoria.created_at', '>=', $data['data_inicio'] . ' 00:00:00');
+                    $query->where('fv_ouv_ouvidoria.created_at', '>=', $data['data_inicio'] . ' 00:00:00');
                 }
                 if (isset($data['data_termino']) && $data['data_termino'] != "") {
-                    $query->where('fv_ouv_solicitacao_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
+                    $query->where('fv_ouv_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
                 }
-            })->orderBy('fv_ouv_solicitacao_ouvidoria.created_at')->paginate($data['totalPage']);
+            })->orderBy('fv_ouv_ouvidoria.created_at')->paginate($data['totalPage']);
             // })->toSql();
     }
 
     public function create(Request $request)
     {   
-        $tipo_solicitacao_id = $request->tipo_solicitacao_id;
-        $tipo_solicitacaos = TipoSolicitacao::get();
-        $tipo_solicitantes = TipoSolicitante::get();
+        $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
+        $tiposOuvidorias = TipoOuvidoria::get();
+        $tiposSolicitantes = TipoSolicitante::get();
         $institutoras = Institutora::get();
         $ufs = self::UFS;
 
-        return view('ouvidoria.solicitacao-ouvidoria.create', compact(
-            'tipo_solicitacao_id', 'tipo_solicitacaos', 'tipo_solicitantes', 'institutoras', 'ufs'));
+        return view('ouvidoria.ouvidoria.create', compact(
+            'tipo_ouvidoria_id', 'tiposOuvidorias', 'tiposSolicitantes', 'institutoras', 'ufs'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'tipo_solicitacao_id'=>'required',
+            'tipo_ouvidoria_id'=>'required',
             'tipo_solicitante_id'=>'required',
             'cpf'=>'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
             'nome'=>'required|max:120',
@@ -222,24 +226,24 @@ class SolicitacaoOuvidoriaController extends Controller
         }
         $solicitante->save();
 
-        $protocolo = SolicitacaoOuvidoria::get();
+        $protocolo = Ouvidoria::get();
         $numero = count($protocolo)+1;
         $protocolo = $numero . date('dmY');
 
         $anexo = $this->anexarArquivo($request);
         
-        $solicitacao_ouvidoria = new SolicitacaoOuvidoria([
+        $ouvidoria = new Ouvidoria([
             'protocolo' => $protocolo,
             'mensagem' => trim($request->mensagem),
             'anexo' => $anexo,
-            'tipo_solicitacao_id' => $request->tipo_solicitacao_id,
+            'tipo_ouvidoria_id' => $request->tipo_ouvidoria_id,
             'solicitante_id' => $solicitante->id
         ]);
-        $solicitacao_ouvidoria->save();
+        $ouvidoria->save();
 
-        $this->enviarEmailSolicitacaoOuvidoria($solicitante->email, $solicitacao_ouvidoria);
+        $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
 
-        $protocolo = $solicitacao_ouvidoria->protocolo;
+        $protocolo = $ouvidoria->protocolo;
 
         return redirect('/fale-com-ouvidor')
             ->with('success', self::MESSAGE_ADD_SUCCESS . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
@@ -259,9 +263,9 @@ class SolicitacaoOuvidoriaController extends Controller
         return $nameFile;
     }
 
-    private function enviarEmailSolicitacaoOuvidoria($para, $solicitacao_ouvidoria)
+    private function enviarEmailOuvidoria($para, $ouvidoria)
     {
-        Mail::to($para)->send(new SendMailOuvidoria($solicitacao_ouvidoria));
+        Mail::to($para)->send(new SendMailOuvidoria($ouvidoria));
     }
 
     public function acompanharSolicitacao(Request $request)
@@ -275,8 +279,8 @@ class SolicitacaoOuvidoriaController extends Controller
             $data['nome_psq'] = "";
         }
 
-        if (empty($data['tipo_solicitacao_id_psq'])) {
-            $data['tipo_solicitacao_id_psq'] = "";
+        if (empty($data['tipo_ouvidoria_id_psq'])) {
+            $data['tipo_ouvidoria_id_psq'] = "";
         }
 
         if (empty($data['tipo_solicitante_id_psq'])) {
@@ -293,44 +297,44 @@ class SolicitacaoOuvidoriaController extends Controller
 
         $data['totalPage'] = isset($data['totalPage']) ? $data['totalPage'] : 25;
 
-        $solicitacao_ouvidorias = $this->getSolicitacaoOuvidorias($data);
+        $ouvidorias = $this->getOuvidorias($data);
 
-        if (count($solicitacao_ouvidorias) == 0) {
+        if (count($ouvidorias) == 0) {
             return redirect()->back()->with('error', 'Nenhum registro encontrado!')->withInput();
         }
-        if (count($solicitacao_ouvidorias) == 1) {
-            $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->id);
+        if (count($ouvidorias) == 1) {
+            $ouvidoria = Ouvidoria::find($ouvidorias[0]->id);
             $data['protocolo_psq'] = "";
-            $data['cpf_psq'] = $solicitacao_ouvidoria->solicitante->cpf;
+            $data['cpf_psq'] = $ouvidoria->solicitante->cpf;
         }
-        if (count($solicitacao_ouvidorias) > 1) {
-            $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_ouvidorias[0]->id);
+        if (count($ouvidorias) > 1) {
+            $ouvidoria = Ouvidoria::find($ouvidorias[0]->id);
             $data['protocolo_psq'] = "";
-            $data['cpf_psq'] = $solicitacao_ouvidoria->solicitante->cpf;
-            $solicitacao_ouvidoria = null;
+            $data['cpf_psq'] = $ouvidoria->solicitante->cpf;
+            $ouvidoria = null;
         }
-        $solicitacao_ouvidorias = $this->getSolicitacaoOuvidorias($data);
-        $tipo_solicitacaos = TipoSolicitacao::get();
+        $ouvidorias = $this->getOuvidorias($data);
+        $tiposOuvidorias = TipoOuvidoria::get();
 
-        return view('ouvidoria.solicitacao-ouvidoria.acompanhar', 
-            compact('solicitacao_ouvidorias', 'tipo_solicitacaos', 'solicitacao_ouvidoria'));
+        return view('ouvidoria.ouvidoria.acompanhar', 
+            compact('ouvidorias', 'tiposOuvidorias', 'ouvidoria'));
 
     }
 
     public function edit(int $solicitacao_id)
     {
-        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_id);
+        $ouvidoria = Ouvidoria::find($solicitacao_id);
         $ufs = self::UFS;
 
-        return view('ouvidoria.solicitacao-ouvidoria.edit', compact('solicitacao_ouvidoria', 'ufs'));
+        return view('ouvidoria.ouvidoria.edit', compact('ouvidoria', 'ufs'));
     }
 
     public function update(Request $request, int $solicitacao_id)
     {
-        $solicitacao_ouvidoria_edit = SolicitacaoOuvidoria::find($solicitacao_id);
+        $ouvidoria_edit = Ouvidoria::find($solicitacao_id);
 
         $request->validate([
-            'cpf'=>'required|cpf|unique:solicitante,cpf,' . $solicitacao_ouvidoria_edit->id,
+            'cpf'=>'required|cpf|unique:solicitante,cpf,' . $ouvidoria_edit->id,
             'nome'=>'required|max:120',
             'institutora_id'=>'required',
             'uf_sigla'=>'required',
@@ -341,21 +345,21 @@ class SolicitacaoOuvidoriaController extends Controller
             'mensagem'=>'required|max:255'
         ], self::MESSAGES_ERRORS);
 
-        unset($solicitacao_ouvidoria_edit);
+        unset($ouvidoria_edit);
         
-        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($solicitacao_id);
-        $solicitacao_ouvidoria->protocolo = $request->get('protocolo');
-        $solicitacao_ouvidoria->mensagem = $request->get('mensagem');
-        $solicitacao_ouvidoria->anexo = $request->get('anexo');
-        $solicitacao_ouvidoria->tipo_solicitacao_id = $request->get('tipo_solicitacao_id');
-        $solicitacao_ouvidoria->solicitante_id = $request->get('solicitante_id');
-        $solicitacao_ouvidoria->tipo_prestador_id = $request->get('tipo_prestador_id');
-        $solicitacao_ouvidoria->sub_classificacao_id = $request->get('sub_classificacao_id');
-        $solicitacao_ouvidoria->assunto_id = $request->get('assunto_id');
-        $solicitacao_ouvidoria->canal_atendimento_id = $request->get('canal_atendimento_id');
-        $solicitacao_ouvidoria->save();
+        $ouvidoria = Ouvidoria::find($solicitacao_id);
+        $ouvidoria->protocolo = $request->get('protocolo');
+        $ouvidoria->mensagem = $request->get('mensagem');
+        $ouvidoria->anexo = $request->get('anexo');
+        $ouvidoria->tipo_ouvidoria_id = $request->get('tipo_ouvidoria_id');
+        $ouvidoria->solicitante_id = $request->get('solicitante_id');
+        $ouvidoria->tipo_prestador_id = $request->get('tipo_prestador_id');
+        $ouvidoria->sub_classificacao_id = $request->get('sub_classificacao_id');
+        $ouvidoria->assunto_id = $request->get('assunto_id');
+        $ouvidoria->canal_atendimento_id = $request->get('canal_atendimento_id');
+        $ouvidoria->save();
         
-        $solicitante = Solicitante::find($solicitacao_ouvidoria->id);
+        $solicitante = Solicitante::find($ouvidoria->id);
         $solicitante->cpf = $request->get('cpf');
         $solicitante->nome = $request->get('nome');
         $solicitante->email = $request->get('email');
@@ -367,15 +371,15 @@ class SolicitacaoOuvidoriaController extends Controller
         $solicitante->tipo_solicitante_id = $request->get('tipo_solicitante_id');
         $solicitante->save();
 
-        return redirect('/solicitacao-ouvidoria/create')->with('success', self::MESSAGE_ADD_SUCCESS);
+        return redirect('/ouvidoria/create')->with('success', self::MESSAGE_ADD_SUCCESS);
     }
 
     public function destroy(int $id)
     {
-        $solicitacao_ouvidoria = SolicitacaoOuvidoria::find($id);
-        $solicitacao_ouvidoria->delete();
+        $ouvidoria = Ouvidoria::find($id);
+        $ouvidoria->delete();
    
-        return redirect('/solicitacao-ouvidoria/create')->with('success', self::MESSAGE_DESTROY_SUCCESS);
+        return redirect('/ouvidoria/create')->with('success', self::MESSAGE_DESTROY_SUCCESS);
     }
 
     public function carregarSolicitantePorCPF(Request $request)

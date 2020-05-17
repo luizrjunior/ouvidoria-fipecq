@@ -13,8 +13,7 @@ class CreateAssuntoTable extends Migration
      */
     public function up()
     {
-        // Schema::create('fv_ouv_assunto', function (Blueprint $table) {
-        Schema::create('internet.fv_ouv_assunto', function (Blueprint $table) {
+        Schema::create('fv_ouv_assunto', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('descricao', 100);
@@ -30,7 +29,6 @@ class CreateAssuntoTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('fv_ouv_assunto');
-        Schema::dropIfExists('internet.fv_ouv_assunto');
+        Schema::dropIfExists('fv_ouv_assunto');
     }
 }

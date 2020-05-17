@@ -20,8 +20,7 @@ class TipoSolicitanteTableSeeder extends Seeder
 
         foreach ($tiposSolicitantes as $tipoSolicitante) {
             $this->command->info('Inserindo Tipo de Solicitante: ' . $tipoSolicitante['descricao']);
-            // DB::table('fv_ouv_tipo_solicitante')->insert([
-            DB::table('internet.fv_ouv_tipo_solicitante')->insert([
+            DB::table('fv_ouv_tipo_solicitante')->insert([
                 'descricao' => $tipoSolicitante['descricao'],
                 'status' => $tipoSolicitante['status'],
                 'created_at' => date('Y-m-d H:i:s'),

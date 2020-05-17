@@ -15,7 +15,7 @@
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a class="dropdown-item" href="/tipo-solicitacao">Tipo de Solicitação</a>
                 <a class="dropdown-item" href="/tipo-solicitante">Tipo de Solicitante</a>
-                <a class="dropdown-item" href="/institutora">Institutora</a>
+                {{-- <a class="dropdown-item" href="/institutora">Institutora</a> --}}
                 <a class="dropdown-item" href="/assunto">Assunto</a>
                 <a class="dropdown-item" href="/situacao">Situação</a>
                 <a class="dropdown-item" href="/classificacao">Classificação</a>

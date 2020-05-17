@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassificacaoTable extends Migration
+class CreateCadBenefTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateClassificacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('fv_ouv_classificacao', function (Blueprint $table) {
+        Schema::create('cad_benef', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('id');
-            $table->string('descricao', 100);
-            $table->boolean('status');
-            $table->timestamps();
+            $table->bigIncrements('matricula');
+            $table->string('nome', 100);
+            $table->string('cic', 14);
+            $table->string('email', 120);
         });
     }
 
@@ -29,6 +29,7 @@ class CreateClassificacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fv_ouv_classificacao');
+        Schema::dropIfExists('cad_benef');
     }
+    
 }

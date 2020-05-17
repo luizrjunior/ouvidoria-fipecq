@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Solicitação')
+@section('title', 'Tipo de Ouvidoria')
 
 @section('javascript')
-<script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-solicitacao/cad-tipo-solicitacao.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-ouvidoria/cad-tipo-ouvidoria.js') }}"></script>
 @endsection
 
 @section('content')
@@ -13,23 +13,23 @@
   }
 </style>
 @php
-$nome = $errors->has('nome') ? old('nome') : $tipo_solicitacao->nome;
-$descricao = $errors->has('descricao') ? old('descricao') : $tipo_solicitacao->descricao;
-$icone = $errors->has('icone') ? old('icone') : $tipo_solicitacao->icone;
-$cor = $errors->has('cor') ? old('cor') : $tipo_solicitacao->cor;
-$sla = $errors->has('sla') ? old('sla') : $tipo_solicitacao->sla;
+$nome = $errors->has('nome') ? old('nome') : $tipoOuvidoria->nome;
+$descricao = $errors->has('descricao') ? old('descricao') : $tipoOuvidoria->descricao;
+$icone = $errors->has('icone') ? old('icone') : $tipoOuvidoria->icone;
+$cor = $errors->has('cor') ? old('cor') : $tipoOuvidoria->cor;
+$sla = $errors->has('sla') ? old('sla') : $tipoOuvidoria->sla;
 @endphp
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card uper">
             <div class="card-header">
-                Editar Tipo de Solicitação
-                <a href="{{ url('/tipo-solicitacao') }}" class="float-right" onclick="return validar()">
+                Editar Tipo de Ouvidoria
+                <a href="{{ url('/tipo-ouvidoria') }}" class="float-right" onclick="return validar()">
                     <i class="fa fa-arrow-left"></i> Voltar
                 </a>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('tipo-solicitacao.update', $tipo_solicitacao->id) }}" autocomplete="off">
+                <form method="post" action="{{ route('tipo-ouvidoria.update', $tipoOuvidoria->id) }}" autocomplete="off">
                     @method('PATCH')
                     @csrf
                     <div class="form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">

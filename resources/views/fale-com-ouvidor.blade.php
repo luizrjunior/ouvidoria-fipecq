@@ -4,9 +4,9 @@
 
 @section('javascript')
 <script>
-	function Avancar(tipo_solicitacao_id) {
+	function Avancar(tipoOuvidoria_id) {
 		$('#carregando').show();
-		$('#tipo_solicitacao_id').val(tipo_solicitacao_id);
+		$('#tipoOuvidoria_id').val(tipoOuvidoria_id);
 		$("#formFaleComOuvidor").submit();
 	}
 </script>
@@ -90,20 +90,20 @@
 
 	<form id="formFaleComOuvidor" action="{{ route('solicitacao-ouvidoria.create') }}" method="post">
 		@csrf
-		<input type="hidden" id="tipo_solicitacao_id" name="tipo_solicitacao_id" value="">
+		<input type="hidden" id="tipoOuvidoria_id" name="tipoOuvidoria_id" value="">
 
 		<table id="saibaOuvir" cellspacing="0" cellpadding="0" width="90%" align="center">
 			<tr style="text-align:center; color:#FFFFFF">
 
-				@if (count($tipo_solicitacaos) > 0)
-					@foreach ($tipo_solicitacaos as $tipo_solicitacao)
-					<td class="bg-{{ $tipo_solicitacao->cor }}" width="20%" valign="top" 
-						style="cursor: pointer;" title="Registrar {{ $tipo_solicitacao->nome }}" 
-						onclick="Avancar({{ $tipo_solicitacao->id }})">
+				@if (count($tiposOuvidorias) > 0)
+					@foreach ($tiposOuvidorias as $tipoOuvidoria)
+					<td class="bg-{{ $tipoOuvidoria->cor }}" width="20%" valign="top" 
+						style="cursor: pointer;" title="Registrar {{ $tipoOuvidoria->nome }}" 
+						onclick="Avancar({{ $tipoOuvidoria->id }})">
 						<br />
-						<i class="{{ $tipo_solicitacao->icone }}" style="font-size: 48px;"></i>
+						<i class="{{ $tipoOuvidoria->icone }}" style="font-size: 48px;"></i>
 						<br /><br />
-						<b>{{ $tipo_solicitacao->nome }}</b>
+						<b>{{ $tipoOuvidoria->nome }}</b>
 						<br />
 					</td>
 					@endforeach
@@ -112,13 +112,13 @@
 			</tr>
 			<tr style="text-align:center; color:#FFFFFF">
 
-				@if (count($tipo_solicitacaos) > 0)
-					@foreach ($tipo_solicitacaos as $tipo_solicitacao)
-					<td class="text-{{ $tipo_solicitacao->cor }}" 
-						style="cursor: pointer;" title="Registrar {{ $tipo_solicitacao->nome }}" 
-						onclick="Avancar({{ $tipo_solicitacao->id }})">
+				@if (count($tiposOuvidorias) > 0)
+					@foreach ($tiposOuvidorias as $tipoOuvidoria)
+					<td class="text-{{ $tipoOuvidoria->cor }}" 
+						style="cursor: pointer;" title="Registrar {{ $tipoOuvidoria->nome }}" 
+						onclick="Avancar({{ $tipoOuvidoria->id }})">
 						<br />
-						<b>{{ $tipo_solicitacao->descricao }}</b>
+						<b>{{ $tipoOuvidoria->descricao }}</b>
 						<br />&nbsp;
 					</td>
 					@endforeach

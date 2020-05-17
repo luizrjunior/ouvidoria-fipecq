@@ -7,25 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Solicitante extends Model
 {
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     public $table = 'fv_ouv_solicitante';
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    // protected $primaryKey = 'solicitante_cod';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'nome',
         'cpf',

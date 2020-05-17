@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipoSolicitacao;
+use App\Models\TipoOuvidoria;
 use Illuminate\Http\Request;
 
-class TipoSolicitacaoController extends Controller
+class TipoOuvidoriaController extends Controller
 {
 
     const MESSAGES_ERRORS = [
@@ -32,19 +32,19 @@ class TipoSolicitacaoController extends Controller
         'sla.required' => 'O SLA precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
     ];
-    const MESSAGE_ADD_SUCCESS = "Tipo de Solicitação adicionado com sucesso!";
-    const MESSAGE_UPDATE_SUCCESS = "Tipo de Solicitação alterado com sucesso!";
-    const MESSAGE_DESTROY_SUCCESS = "Tipo de Solicitação removido com sucesso!";
+    const MESSAGE_ADD_SUCCESS = "Tipo de Ouvidoria adicionado com sucesso!";
+    const MESSAGE_UPDATE_SUCCESS = "Tipo de Ouvidoria alterado com sucesso!";
+    const MESSAGE_DESTROY_SUCCESS = "Tipo de Ouvidoria removido com sucesso!";
 
     public function index()
     {
-        $tipo_solicitacaos = TipoSolicitacao::paginate(25);
-        return view('ouvidoria.tipo-solicitacao.index', compact('tipo_solicitacaos'));
+        $tiposOuvidorias = TipoOuvidoria::paginate(25);
+        return view('ouvidoria.tipo-ouvidoria.index', compact('tiposOuvidorias'));
     }
 
     public function create()
     {
-        return view('ouvidoria.tipo-solicitacao.create');
+        return view('ouvidoria.tipo-ouvidoria.create');
     }
 
     public function store(Request $request)
@@ -57,7 +57,7 @@ class TipoSolicitacaoController extends Controller
                 'sla'=>'required'
             ], self::MESSAGES_ERRORS);
             
-        $tipo_solicitacao = new TipoSolicitacao([
+        $tipoOuvidoria = new TipoOuvidoria([
                 'nome' => $request->get('nome'),
                 'descricao' => $request->get('descricao'),
                 'icone' => $request->get('icone'),
@@ -65,14 +65,14 @@ class TipoSolicitacaoController extends Controller
                 'sla' => $request->get('sla'),
                 'status'=> true
             ]);
-        $tipo_solicitacao->save();
-        return redirect('/tipo-solicitacao')->with('success', self::MESSAGE_ADD_SUCCESS);
+        $tipoOuvidoria->save();
+        return redirect('/tipo-ouvidoria')->with('success', self::MESSAGE_ADD_SUCCESS);
     }
 
     public function edit(int $id)
     {
-        $tipo_solicitacao = TipoSolicitacao::find($id);
-        return view('ouvidoria.tipo-solicitacao.edit', compact('tipo_solicitacao'));
+        $tipoOuvidoria = TipoOuvidoria::find($id);
+        return view('ouvidoria.tipo-ouvidoria.edit', compact('tipoOuvidoria'));
     }
 
     public function update(Request $request, int $id)
@@ -85,35 +85,35 @@ class TipoSolicitacaoController extends Controller
                 'sla'=>'required',
             ], self::MESSAGES_ERRORS);
   
-        $tipo_solicitacao = TipoSolicitacao::find($id);
-        $tipo_solicitacao->nome = $request->get('nome');
-        $tipo_solicitacao->descricao = $request->get('descricao');
-        $tipo_solicitacao->icone = $request->get('icone');
-        $tipo_solicitacao->cor = $request->get('cor');
-        $tipo_solicitacao->sla = $request->get('sla');
-        $tipo_solicitacao->save();
+        $tipoOuvidoria = TipoOuvidoria::find($id);
+        $tipoOuvidoria->nome = $request->get('nome');
+        $tipoOuvidoria->descricao = $request->get('descricao');
+        $tipoOuvidoria->icone = $request->get('icone');
+        $tipoOuvidoria->cor = $request->get('cor');
+        $tipoOuvidoria->sla = $request->get('sla');
+        $tipoOuvidoria->save();
   
-        return redirect('/tipo-solicitacao')->with('success', self::MESSAGE_UPDATE_SUCCESS);
+        return redirect('/tipo-ouvidoria')->with('success', self::MESSAGE_UPDATE_SUCCESS);
     }
 
     public function destroy(int $id)
     {
-        $tipo_solicitacao = TipoSolicitacao::find($id);
-        $tipo_solicitacao->delete();
+        $tipoOuvidoria = TipoOuvidoria::find($id);
+        $tipoOuvidoria->delete();
    
-        return redirect('/tipo-solicitacao')->with('success', self::MESSAGE_DESTROY_SUCCESS);
+        return redirect('/tipo-ouvidoria')->with('success', self::MESSAGE_DESTROY_SUCCESS);
     }
 
-    public function ativarDesativarTipoSolicitacao(Request $request) {
-        $tipo_solicitacao = TipoSolicitacao::find($request->tipo_solicitacao_id);
-        $msg = "Tipo de Solicitação ativado com sucesso!<br />&nbsp;";
+    public function ativarDesativarTipoOuvidoria(Request $request) {
+        $tipoOuvidoria = TipoOuvidoria::find($request->tipoOuvidoria_id);
+        $msg = "Tipo de Ouvidoria ativado com sucesso!<br />&nbsp;";
         $status = true;
-        if ($tipo_solicitacao->status == 1) {
-            $msg = "Tipo de Solicitação desativado com sucesso!<br />&nbsp;";
+        if ($tipoOuvidoria->status == 1) {
+            $msg = "Tipo de Ouvidoria desativado com sucesso!<br />&nbsp;";
             $status = false;
         }
-        $tipo_solicitacao->status = $status;
-        $tipo_solicitacao->save();
+        $tipoOuvidoria->status = $status;
+        $tipoOuvidoria->save();
 
         $dados = array();
         $dados['textoMsg'] = $msg;

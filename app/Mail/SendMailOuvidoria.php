@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\SolicitacaoOuvidoria;
+use App\Models\Ouvidoria;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -12,16 +12,16 @@ class SendMailOuvidoria extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $solicitacaoOuvidoria;
+    public $ouvidoria;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(SolicitacaoOuvidoria $solicitacaoOuvidoria)
+    public function __construct(Ouvidoria $ouvidoria)
     {
-        $this->solicitacaoOuvidoria = $solicitacaoOuvidoria;
+        $this->ouvidoria = $ouvidoria;
     }
 
     /**
@@ -34,7 +34,7 @@ class SendMailOuvidoria extends Mailable
         return $this->from('faleconosco@fipecqvida.org.br', 'FIPECq Vida')
             ->view('emails.email_ouvidoria_solicitacao')
             ->with([
-                'protocolo' => $this->solicitacaoOuvidoria->protocolo
+                'protocolo' => $this->ouvidoria->protocolo
             ]);
     }
     

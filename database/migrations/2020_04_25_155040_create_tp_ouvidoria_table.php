@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoPrestadorTable extends Migration
+class CreateTpOuvidoriaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateTipoPrestadorTable extends Migration
      */
     public function up()
     {
-        // Schema::create('fv_ouv_tipo_prestador', function (Blueprint $table) {
-        Schema::create('internet.fv_ouv_tipo_prestador', function (Blueprint $table) {
+        Schema::create('fv_ouv_tp_ouvidoria', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
+            $table->string('nome', 50);
             $table->string('descricao', 100);
+            $table->string('icone', 50);
+            $table->string('cor', 50);
+            $table->integer('sla');
             $table->boolean('status');
             $table->timestamps();
         });
@@ -30,7 +33,6 @@ class CreateTipoPrestadorTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('fv_ouv_tipo_prestador');
-        Schema::dropIfExists('internet.fv_ouv_tipo_prestador');
+        Schema::dropIfExists('fv_ouv_tp_ouvidoria');
     }
 }

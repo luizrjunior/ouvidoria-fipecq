@@ -13,8 +13,7 @@ class CreateSolicitanteTable extends Migration
      */
     public function up()
     {
-        // Schema::create('fv_ouv_solicitante', function (Blueprint $table) {
-        Schema::create('internet.fv_ouv_solicitante', function (Blueprint $table) {
+        Schema::create('fv_ouv_solicitante', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('nome', 120);
@@ -26,15 +25,15 @@ class CreateSolicitanteTable extends Migration
             $table->string('cidade', 120);
 
             $table->unsignedBigInteger('institutora_id');
-            $table->foreign('institutora_id')
-                ->references('empresa')
-                ->on('plano.cad_empresa')
-                ->onDelete('cascade');
+            // $table->foreign('institutora_id')
+            //     ->references('empresa')
+            //     ->on('plano.cad_empresa')
+            //     ->onDelete('cascade');
                 
             $table->unsignedBigInteger('tipo_solicitante_id');
             $table->foreign('tipo_solicitante_id')
                 ->references('id')
-                ->on('internet.fv_ouv_tipo_solicitante')
+                ->on('fv_ouv_tipo_solicitante')
                 ->onDelete('cascade');
                 
             $table->timestamps();
@@ -48,7 +47,6 @@ class CreateSolicitanteTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('fv_ouv_solicitante');
-        Schema::dropIfExists('internet.fv_ouv_solicitante');
+        Schema::dropIfExists('fv_ouv_solicitante');
     }
 }

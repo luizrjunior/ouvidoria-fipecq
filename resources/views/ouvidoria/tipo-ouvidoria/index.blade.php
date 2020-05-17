@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Solicitação')
+@section('title', 'Tipo de Ouvidoria')
 
 @section('javascript')
 <script>
-    top.urlDestroyTipoSolicitacao = "{{ url('/tipo-solicitacao/') }}";
+    top.urlDestroyTipoOuvidoria = "{{ url('/tipo-ouvidoria/') }}";
 </script>
-<script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-solicitacao/index-tipo-solicitacao.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-ouvidoria/index-tipo-ouvidoria.js') }}"></script>
 @endsection
 
 @section('content')
@@ -20,9 +20,9 @@
 
         <div class="card uper">
             <div class="card-header">
-                Lista de Tipos de Solicitação
-                <a href="{{ url('/tipo-solicitacao/create') }}" class="float-right" onclick="return validar()">
-                    <i class="fa fa-plus"></i> Adicionar Tipo de Solicitação
+                Lista de Tipos de Ouvidoria
+                <a href="{{ url('/tipo-ouvidoria/create') }}" class="float-right" onclick="return validar()">
+                    <i class="fa fa-plus"></i> Adicionar Tipo de Ouvidoria
                 </a>
             </div>
             <div class="card-body">
@@ -45,7 +45,7 @@
                 );
                 @endphp
 
-                <form id="formSearchTipoSolicitacao" 
+                <form id="formSearchTipoOuvidoria" 
                     class="form-horizontal" role="form" method="POST" action="#">
                 <input type="hidden" id="_method" name="_method" value="">
                 @csrf
@@ -63,42 +63,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if (count($tipo_solicitacaos) > 0)
+                    @if (count($tiposOuvidorias) > 0)
 
-                        @foreach($tipo_solicitacaos as $tipo_solicitacao)
+                        @foreach($tiposOuvidorias as $tipoOuvidoria)
 
                         <tr>
-                            <td>{{ date('d/m/Y H:i:s', strtotime($tipo_solicitacao->created_at)) }}</td>
-                            <td>{{ $tipo_solicitacao->nome }}</td>
-                            <td><i class="{{ $tipo_solicitacao->icone }}"></td>
-                            <td class="bg-{{ $tipo_solicitacao->cor }}">&nbsp;</td>
-                            <td align="right">{{ $tipo_solicitacao->sla }}</td>
+                            <td>{{ date('d/m/Y H:i:s', strtotime($tipoOuvidoria->created_at)) }}</td>
+                            <td>{{ $tipoOuvidoria->nome }}</td>
+                            <td><i class="{{ $tipoOuvidoria->icone }}"></td>
+                            <td class="bg-{{ $tipoOuvidoria->cor }}">&nbsp;</td>
+                            <td align="right">{{ $tipoOuvidoria->sla }}</td>
                             <td>
-                                <span class="badge badge-{{ $bgColor[$tipo_solicitacao->status] }}"
-                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipo_solicitacao->status] }}">
-                                    {{ $arrSituacao[$tipo_solicitacao->status] }}
+                                <span class="badge badge-{{ $bgColor[$tipoOuvidoria->status] }}"
+                                        data-toggle="tooltip" title="{{ $arrSituacao[$tipoOuvidoria->status] }}">
+                                    {{ $arrSituacao[$tipoOuvidoria->status] }}
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ route('tipo-solicitacao.edit', $tipo_solicitacao->id) }}" title="Editar" 
+                                <a href="{{ route('tipo-ouvidoria.edit', $tipoOuvidoria->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Editar
                                 </a>
                             </td>
                             <td>
-                                @if ($tipo_solicitacao->status)
+                                @if ($tipoOuvidoria->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarTipoSolicitacao({{ $tipo_solicitacao->id }})">Desativar
+                                    onclick="ativarDesativarTipoOuvidoria({{ $tipoOuvidoria->id }})">Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarTipoSolicitacao({{ $tipo_solicitacao->id }})">Ativar
+                                    onclick="ativarDesativarTipoOuvidoria({{ $tipoOuvidoria->id }})">Ativar
                                 </button>
                                 @endif
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $tipo_solicitacao->id }})" disabled>Excluir
+                                    onclick="confirmDestroy({{ $tipoOuvidoria->id }})" disabled>Excluir
                                 </button>
                             </td>
                         </tr>
@@ -115,7 +115,7 @@
 
                 <div class="form-group row">
                     <div class="col-md-12">
-                        <div style="margin-top: 23px;">{{ $tipo_solicitacaos->links() }}</div>
+                        <div style="margin-top: 23px;">{{ $tiposOuvidorias->links() }}</div>
                     </div>
                 </div>
 
