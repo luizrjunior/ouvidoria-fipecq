@@ -212,23 +212,23 @@ $totalPage = 25;
                             @endphp
 
                         <tr>
-                            <td>{{ str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}</td>
+                            <td>{{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}</td>
                             <td>{{ $ouvidoria->noTipoOuvidoria }}</td>
                             <td>{{ $ouvidoria->dsTipoSolicitante }}</td>
                             <td>{{ $ouvidoria->noSolicitante }}</td>
-                            <td>{{ date('d/m/Y H:i:s', strtotime($ouvidoria->dtCriacao)) }}</td>
+                            <td>{{ date('d/m/Y', strtotime($ouvidoria->dtCriacao)) }}</td>
                             <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
                             <td>
-                                <h4>
+                                <h5>
                                     <span class="badge badge-pill badge-{{ $ouvidoria->noSituacaoCor }}" style="width: 100%;">
                                         {{ $ouvidoria->noSituacao }}
                                     </span>
-                                </h4>
+                                </h5>
                             </td>
                             <td>
-                                <a href="{{ route('ouvidoria.edit', $ouvidoria->id) }}" title="Editar" 
+                                <a href="{{ route('ouvidoria.edit', $ouvidoria->id) }}" title="Detalhar Solicitação" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
-                                    Detalhar
+                                    <i class="fa fa-btn fa-file-text-o"></i> Detalhar
                                 </a>
                             </td>
                         </tr>

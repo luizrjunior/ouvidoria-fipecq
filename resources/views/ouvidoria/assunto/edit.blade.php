@@ -35,7 +35,9 @@ $descricao = $errors->has('descricao') ? old('descricao') : $assunto->descricao;
                                 name="descricao" value="{{ $descricao }}" autofocus />
                             <span class="text-danger">{{ $errors->first('descricao') }}</span>
                         </div>
-                        <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>
+                        <button type="submit" class="btn btn-primary" onclick="return validar()">
+                            <i class="fa fa-btn fa-refresh"></i> Atualizar
+                        </button>
                         <span class="float-right text-danger">
                             * Campos obrigatórios
                         </span>

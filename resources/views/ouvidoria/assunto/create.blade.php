@@ -31,7 +31,9 @@
                                 name="descricao" value="{{ old('descricao') }}" autofocus />
                             <span class="text-danger">{{ $errors->first('descricao') }}</span>
                         </div>
-                        <button type="submit" class="btn btn-primary" onclick="return validar()">Adicionar</button>
+                        <button type="submit" class="btn btn-primary" onclick="return validar()">
+                            <i class="fa fa-btn fa-plus"></i> Adicionar
+                        </button>
                         <span class="float-right text-danger">
                             * Campos obrigatórios
                         </span>

@@ -77,7 +77,7 @@
                                 <td>
                                     <a href="{{ route('assunto.edit', $assunto->id) }}" title="Editar" 
                                         class="btn btn-primary btn-sm" onclick="return validar()">
-                                        Editar
+                                        <i class="fa fa-btn fa-edit"></i> Editar
                                     </a>
                                 </td>
                                 <td>
