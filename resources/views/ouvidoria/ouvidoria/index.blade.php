@@ -4,18 +4,18 @@
 
 @section('javascript')
 <script>
-    top.urlDestroySolicitacaoOuvidoria = "{{ url('/solicitacao-ouvidoria/') }}";
+    top.urlDestroySolicitacaoOuvidoria = "{{ url('/ouvidoria/') }}";
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/ouvidoria/solicitacao-ouvidoria/index-solicitacao-ouvidoria.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/ouvidoria/ouvidoria/index-ouvidoria.js') }}"></script>
 @endsection
 
 @section('content')
 @php
 $cpf_psq = "";
 $nome_psq = "";
-$tipo_solicitacao_id_psq = "";
+$tipo_ouvidoria_id_psq = "";
 $tipo_solicitante_id_psq = "";
 $data_inicio = date('01/m/Y');
 $data_termino = date('d/m/Y');
@@ -25,7 +25,7 @@ $totalPage = 2;
     @php
     $cpf_psq = $data['cpf_psq'];
     $nome_psq = $data['nome_psq'];
-    $tipo_solicitacao_id_psq = $data['tipo_solicitacao_id_psq'];
+    $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
     $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
 
     $data_inicio = $data['data_inicio'];
@@ -45,7 +45,7 @@ $totalPage = 2;
     <div class="col-md-12">
         
         <form id="formSearchSolicitacaoOuvidoria" 
-            class="form-horizontal" role="form" method="POST" action="{{ route('solicitacao-ouvidoria.index') }}">
+            class="form-horizontal" role="form" method="POST" action="{{ route('ouvidoria.search') }}">
             <input type="hidden" id="_method" name="_method" value="">
             @csrf
 
@@ -72,16 +72,16 @@ $totalPage = 2;
 
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <label for="tipo_solicitacao_id_psq" class="control-label">Tipo de Solicitação</label>
-                        <select id="tipo_solicitacao_id_psq" name="tipo_solicitacao_id_psq" 
-                            class="form-control {{ $errors->has('tipo_solicitante_id_psq') ? 'is-invalid' : '' }}">
+                        <label for="tipo_ouvidoria_id_psq" class="control-label">Tipo de Solicitação</label>
+                        <select id="tipo_ouvidoria_id_psq" name="tipo_ouvidoria_id_psq" 
+                            class="form-control {{ $errors->has('tipo_ouvidoria_id_psq') ? 'is-invalid' : '' }}">
                             <option value="">- - Selecione - -</option>
-                            @foreach ($tipo_solicitacaos as $tipo_solicitacao)
+                            @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                 @php $selected = ""; @endphp
-                                @if ($tipo_solicitacao->id == $tipo_solicitacao_id_psq)
+                                @if ($tipoOuvidoria->id == $tipo_ouvidoria_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                                <option value="{{ $tipo_solicitacao->id }}" {{$selected}}>{{ $tipo_solicitacao->nome }}</option>
+                                <option value="{{ $tipoOuvidoria->id }}" {{$selected}}>{{ $tipoOuvidoria->nome }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -90,12 +90,12 @@ $totalPage = 2;
                         <select id="tipo_solicitante_id_psq" name="tipo_solicitante_id_psq" 
                             class="form-control {{ $errors->has('tipo_solicitante_id_psq') ? 'is-invalid' : '' }}">
                             <option value="">- - Selecione - -</option>
-                            @foreach ($tipo_solicitantes as $tipo_solicitante)
+                            @foreach ($tiposSolicitantes as $tipoSolicitante)
                                 @php $selected = ""; @endphp
-                                @if ($tipo_solicitante->id == $tipo_solicitante_id_psq)
+                                @if ($tipoSolicitante->id == $tipo_solicitante_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                            <option value="{{$tipo_solicitante->id}}" {{$selected}}>{{$tipo_solicitante->descricao}}</option>
+                            <option value="{{$tipoSolicitante->id}}" {{$selected}}>{{$tipoSolicitante->descricao}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -183,23 +183,53 @@ $totalPage = 2;
                         </tr>
                     </thead>
                     <tbody>
-                    @if (count($solicitacao_ouvidorias) > 0)
+                    @if (count($ouvidorias) > 0)
 
-                        @foreach($solicitacao_ouvidorias as $solicitacao_ouvidoria)
+                        @foreach($ouvidorias as $ouvidoria)
+
+                            @php
+                            $ouvidoriaController = new \App\Http\Controllers\OuvidoriaController();
+                            $situacao = $ouvidoriaController->pegarSituacao($ouvidoria->id);
+                            // $partes = explode(' ', $status['hospede']);
+                            // $primeiroNome = array_shift($partes);
+                            // $ultimoNome = array_pop($partes);
+                            $parte_data1 = explode("-", date('Y-m-d', strtotime($ouvidoria->dtCriacao)));
+                            $anoinicial = $parte_data1['0'];
+                            $mesinicial = $parte_data1['1'];
+                            $diainicial = $parte_data1['2'];
+                            //Concatena em um Novo Formato de DATA
+                            $datainicial = $anoinicial."-".$mesinicial."-".$diainicial;
+
+                            $parte_data2 = explode("-", date('Y-m-d'));
+                            $anofinal = $parte_data2['0'];
+                            $mesfinal = $parte_data2['1'];
+                            $diafinal = $parte_data2['2'];
+                            //Concatena em um Novo Formato de DATA
+                            $datafinal = $anofinal."-".$mesfinal."-".$diafinal;                            
+                            $diasUteis = $ouvidoriaController->corre_anos($anoinicial, $anofinal, $mesinicial, $mesfinal, $datainicial, $datafinal);
+                            @endphp
+    
 
                         <tr>
-                            <td>{{ str_pad($solicitacao_ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}</td>
-                            <td>{{ $solicitacao_ouvidoria->noTipoSolicitacao }}</td>
+                            <td>{{ str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}</td>
+                            <td>{{ $ouvidoria->noTipoOuvidoria }}</td>
 
-                            <td>{{ $solicitacao_ouvidoria->dsTipoSolicitante }}</td>
-                            <td>{{ $solicitacao_ouvidoria->noSolicitante }}</td>
+                            <td>{{ $ouvidoria->dsTipoSolicitante }}</td>
+                            <td>{{ $ouvidoria->noSolicitante }}</td>
 
-                            <td>{{ date('d/m/Y H:i:s', strtotime($solicitacao_ouvidoria->dtCriacao)) }}</td>
+                            <td>{{ date('d/m/Y H:i:s', strtotime($ouvidoria->dtCriacao)) }}</td>
 
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
+
                             <td>
-                                <a href="{{ route('solicitacao-ouvidoria.edit', $solicitacao_ouvidoria->id) }}" title="Editar" 
+                                <h4>
+                                    <span class="badge badge-pill badge-{{ $situacao->situacao->cor }}" style="width: 100%;">
+                                        {{ $situacao->situacao->nome }}
+                                    </span>
+                                </h4>
+                            </td>
+                            <td>
+                                <a href="{{ route('ouvidoria.edit', $ouvidoria->id) }}" title="Editar" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
                                     Detalhar
                                 </a>
@@ -217,7 +247,7 @@ $totalPage = 2;
                                         Registros por página
                         </td>
                         <td colspan="6">
-                                {{  $solicitacao_ouvidorias->appends($data)->links() }}
+                                {{  $ouvidorias->appends($data)->links() }}
                         </td>
                     </tr>
                         @else
@@ -229,7 +259,7 @@ $totalPage = 2;
                                     Registros por página
                         </td>
                         <td colspan="6">
-                            {{ $solicitacao_ouvidorias->links() }}
+                            {{ $ouvidorias->links() }}
                         </td>
                     </tr>
                         @endif

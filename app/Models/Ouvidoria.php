@@ -13,9 +13,9 @@ class Ouvidoria extends Model
         'protocolo',
         'mensagem',
         'anexo',
-        'tipo_ouvidoria_id',
+        'tp_ouvidoria_id',
         'solicitante_id',
-        'tipo_prestador_id',
+        'tp_prestador_id',
         'sub_classificacao_id',
         'assunto_id',
         'canal_atendimento_id'
@@ -23,7 +23,7 @@ class Ouvidoria extends Model
 
     public function tipoOuvidoria()
     {
-        return $this->belongsTo('App\Models\TipoOuvidoria', 'tipo_ouvidoria_id');
+        return $this->belongsTo('App\Models\TipoOuvidoria', 'tp_ouvidoria_id');
     }
     
     public function solicitante()

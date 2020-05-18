@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Institutora extends Model
 {
 
-    public $table = 'plano.cad_empresa';
+    public $table = 'cad_empresa';
 
 }

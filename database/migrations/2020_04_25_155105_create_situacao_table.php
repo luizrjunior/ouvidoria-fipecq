@@ -16,7 +16,9 @@ class CreateSituacaoTable extends Migration
         Schema::create('fv_ouv_situacao', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('descricao', 100);
+            $table->string('nome', 60);
+            $table->string('descricao', 120);
+            $table->string('cor', 60);
             $table->boolean('status');
             $table->timestamps();
         });

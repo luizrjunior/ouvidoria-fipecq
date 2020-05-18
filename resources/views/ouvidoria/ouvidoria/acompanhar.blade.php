@@ -6,7 +6,7 @@
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
-    src="{{ asset('/js/ouvidoria/solicitacao-ouvidoria/cad-solicitacao-ouvidoria.js') }}"></script>
+    src="{{ asset('/js/ouvidoria/ouvidoria/cad-ouvidoria.js') }}"></script>
 @endsection
 
 @section('content')
@@ -17,10 +17,10 @@
 </style>
 
 @php
-$solicitacao_ouvidoria_id = "";
+$ouvidoria_id = "";
 $protocolo = "";
 $created_at = "";
-$tipo_solicitacao_id = "";
+$tipo_ouvidoria_id = "";
 $cpf = "";
 $nome = "";
 $tipo_solicitante_id = "";
@@ -33,58 +33,71 @@ $celular = "";
 $mensagem = "";
 $anexo = "";
 
-if ($solicitacao_ouvidoria) {
-    $solicitacao_ouvidoria_id = $errors->has('solicitacao_ouvidoria_id') ? old('solicitacao_ouvidoria_id') : $solicitacao_ouvidoria->solicitacao_ouvidoria_id;
-    $protocolo = $errors->has('protocolo') ? old('protocolo') : str_pad($solicitacao_ouvidoria->protocolo, 14, 0, STR_PAD_LEFT);
-    $created_at = $errors->has('created_at') ? old('created_at') : date('d/m/Y H:i:s', strtotime($solicitacao_ouvidoria->created_at));
-    $tipo_solicitacao_id = $errors->has('tipo_solicitacao_id') ? old('tipo_solicitacao_id') : $solicitacao_ouvidoria->tipo_solicitacao_id;
-    $cpf = $errors->has('cpf') ? old('cpf') : $solicitacao_ouvidoria->solicitante->cpf;
-    $nome = $errors->has('nome') ? old('nome') : $solicitacao_ouvidoria->solicitante->nome;
-    $tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : $solicitacao_ouvidoria->solicitante->tipo_solicitante_id;
-    $institutora_id = $errors->has('institutora_id') ? old('institutora_id') : $solicitacao_ouvidoria->solicitante->institutora_id;
-    $uf = $errors->has('uf') ? old('uf') : $solicitacao_ouvidoria->solicitante->uf;
-    $cidade = $errors->has('cidade') ? old('cidade') : $solicitacao_ouvidoria->solicitante->cidade;
-    $email = $errors->has('email') ? old('email') : $solicitacao_ouvidoria->solicitante->email;
-    $telefone = $errors->has('telefone') ? old('telefone') : $solicitacao_ouvidoria->solicitante->telefone;
-    $celular = $errors->has('celular') ? old('celular') : $solicitacao_ouvidoria->solicitante->celular;
-    $mensagem = $errors->has('mensagem') ? old('mensagem') : $solicitacao_ouvidoria->mensagem;
-    $anexo = $errors->has('anexo') ? old('anexo') : $solicitacao_ouvidoria->anexo;
+if ($ouvidoria) {
+    $ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
+    $protocolo = $errors->has('protocolo') ? old('protocolo') : str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT);
+    $created_at = $errors->has('created_at') ? old('created_at') : date('d/m/Y H:i:s', strtotime($ouvidoria->created_at));
+    $tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
+    $cpf = $errors->has('cpf') ? old('cpf') : $ouvidoria->solicitante->cpf;
+    $nome = $errors->has('nome') ? old('nome') : $ouvidoria->solicitante->nome;
+    $tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : $ouvidoria->solicitante->tipo_solicitante_id;
+    $institutora_id = $errors->has('institutora_id') ? old('institutora_id') : $ouvidoria->solicitante->institutora_id;
+    $uf = $errors->has('uf') ? old('uf') : $ouvidoria->solicitante->uf;
+    $cidade = $errors->has('cidade') ? old('cidade') : $ouvidoria->solicitante->cidade;
+    $email = $errors->has('email') ? old('email') : $ouvidoria->solicitante->email;
+    $telefone = $errors->has('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
+    $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->celular;
+    $mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
+    $anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
 }
 @endphp
+
+@if (count($ouvidorias) > 0)
+    @if ($ouvidoria == null)
+<!-- Alert -->
+<div id="_sent_ok_" class="alert alert-warning alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-check"></i> Alerta!</h4>
+    <span id="_msg_txt_">Foram encontradas algumas solicitações. Por favor selecione pelo Nº do Protoloco!</span>
+</div>
+<!-- /Alert -->
+    @endif
+@endif
 
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card uper">
             <div class="card-header">
-                Informações da Solicitação de Ouvidoria
+                Acompanhar Solicitação
                 <a href="{{ url('/home') }}" class="float-right" onclick="return validar()">
                     <i class="fa fa-arrow-left"></i> Voltar
                 </a>
             </div>
             <div class="card-body">
                 <form id="formSolicitacaoOuvidoria" method="POST" 
-                    action="{{ route('solicitacao-ouvidoria.acompanhar') }}" autocomplete="off">
+                    action="{{ route('ouvidoria.acompanhar') }}" autocomplete="off">
                     @csrf
 
                     <input type="hidden" id="solicitante_id" name="solicitante_id" value="">
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="protocolo_psq" class="control-label">Selecione outro Protocolo</label>
+                            <label for="protocolo_psq" class="control-label">Selecione o Protocolo</label>
                         </div>
                         <div class="col-md-9">
                             <select id="protocolo_psq" name="protocolo_psq" class="form-control">
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($solicitacao_ouvidorias as $solicitacao_ouvidoria)
-                                    <option value="{{ $solicitacao_ouvidoria->protocolo }}">
-                                        {{ str_pad($solicitacao_ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}
+                                @foreach ($ouvidorias as $ouvidoria)
+                                    <option value="{{ $ouvidoria->protocolo }}">
+                                        {{ str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <br />
+                    <h5>Dados Pessoais</h5>
+                    <hr>
 
                     <div class="row form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
@@ -108,11 +121,12 @@ if ($solicitacao_ouvidoria) {
                         </div>
                     </div>
                     
-                    <br />
+                    <h5>Informações da Solicitação</h5>
+                    <hr>
 
                     <div class="row form-group {{ $errors->has('protocolo') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="protocolo" class="control-label">Protocolo</label>
+                            <label for="protocolo" class="control-label">Protocolo Nº</label>
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control {{ $errors->has('protocolo') ? 'is-invalid' : '' }}" 
@@ -135,31 +149,34 @@ if ($solicitacao_ouvidoria) {
                     
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="tipo_solicitacao_id" class="control-label">Tipo de Solicitação</label>
+                            <label for="tipo_ouvidoria_id" class="control-label">Tipo da Solicitação</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="tipo_solicitacao_id" name="tipo_solicitacao_id" class="form-control" disabled>
+                            <select id="tipo_ouvidoria_id" name="tipo_ouvidoria_id" class="form-control" disabled>
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($tipo_solicitacaos as $tipo_solicitacao)
+                                @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                     @php $selected = ""; @endphp
-                                    @if ($tipo_solicitacao->id == $tipo_solicitacao_id)
+                                    @if ($tipoOuvidoria->id == $tipo_ouvidoria_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                    <option value="{{ $tipo_solicitacao->id }}" {{$selected}}>{{ $tipo_solicitacao->nome }}</option>
+                                    <option value="{{ $tipoOuvidoria->id }}" {{$selected}}>{{ $tipoOuvidoria->nome }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <br />
-
-                    <div class="row form-group {{ $errors->has('mensagem') ? 'text-danger' : '' }}">
+                    <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="mensagem" class="control-label">Mensagem</label>
+                            <label for="tipo_ouvidoria_id" class="control-label">Situação da Solicitação</label>
                         </div>
                         <div class="col-md-9">
-                            <textarea class="form-control" rows="5" id="mensagem" name="mensagem" 
-                                class="form-control" disabled>{{ $mensagem }}</textarea>
+                            @if ($situacaoOuvidoria)
+                            <h3>
+                                <span class="badge badge-pill badge-{{ $situacaoOuvidoria->situacao->cor }}" style="width: 50%;">
+                                    {{ $situacaoOuvidoria->situacao->nome }}
+                                </span>
+                            </h3>
+                            @endif
                         </div>
                     </div>
 
@@ -169,10 +186,43 @@ if ($solicitacao_ouvidoria) {
                             <label for="anexo" class="control-label">Anexo</label>
                         </div>
                         <div class="col-md-9">
-                            Abrir arquivo anexo. <a href="{{ url("storage/anexos/{$anexo}") }}" target="_blank">Clique aqui.</a>
+                            Abrir arquivo anexo <a href="{{ url("storage/anexos/{$anexo}") }}" target="_blank">clique aqui.</a>
                         </div>
                     </div>
                     @endif
+
+                    <h5>Mensagem</h5>
+                    <hr>
+
+                    <div class="row form-group {{ $errors->has('mensagem') ? 'text-danger' : '' }}">
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="5" id="mensagem" name="mensagem" 
+                                class="form-control" disabled>{{ $mensagem }}</textarea>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="card-deck">
+
+                            @if (count($situacoes) > 0)
+                                @foreach ($situacoes as $situacao)
+                                
+                                <div class="card text-white bg-{{ $situacao->cor }} mb-3">
+                                    <div class="card-body" style="text-align:center;">
+                                        <h5 class="card-title">{{ $situacao->nome }}</h5>
+                                        <p class="card-text">{{ $situacao->descricao }}</p>
+                                    </div>
+                                </div>
+
+                                @endforeach
+                            @endif
+
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row form-group">
                         <div class="col-md-12">
@@ -181,7 +231,8 @@ if ($solicitacao_ouvidoria) {
                             </span>
                         </div>
                     </div>
-            </form>
+
+                </form>
             </div>
         </div>
     </div>

@@ -56,7 +56,8 @@
                         <thead>
                             <tr>
                                 <td>Criado em</td>
-                                <td>Descrição</td>
+                                <td>Nome</td>
+                                <td>Cor</td>
                                 <td>Status</td>
                                 <td colspan="3">Ações</td>
                             </tr>
@@ -67,7 +68,8 @@
                             @foreach($situacaos as $situacao)
                             <tr>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($situacao->created_at)) }}</td>
-                                <td>{{ $situacao->descricao }}</td>
+                                <td>{{ $situacao->nome }}</td>
+                                <td class="bg-{{ $situacao->cor }}">&nbsp;</td>
                                 <td>
                                     <span class="badge badge-{{ $bgColor[$situacao->status] }}"
                                           data-toggle="tooltip" title="{{ $arrSituacao[$situacao->status] }}">

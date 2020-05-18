@@ -10,7 +10,9 @@ class Situacao extends Model
     public $table = 'fv_ouv_situacao';
 
     protected $fillable = [
+        'nome',
         'descricao',
+        'cor',
         'status'
     ];
 

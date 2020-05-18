@@ -105,7 +105,7 @@ class TipoOuvidoriaController extends Controller
     }
 
     public function ativarDesativarTipoOuvidoria(Request $request) {
-        $tipoOuvidoria = TipoOuvidoria::find($request->tipoOuvidoria_id);
+        $tipoOuvidoria = TipoOuvidoria::find($request->tipo_ouvidoria_id);
         $msg = "Tipo de Ouvidoria ativado com sucesso!<br />&nbsp;";
         $status = true;
         if ($tipoOuvidoria->status == 1) {

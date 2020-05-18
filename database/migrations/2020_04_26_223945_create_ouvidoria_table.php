@@ -19,6 +19,7 @@ class CreateOuvidoriaTable extends Migration
             $table->integer('protocolo');
             $table->string('mensagem', 255);
             $table->string('anexo', 255)->nullable();
+            $table->string('observacao', 255)->nullable();
 
             $table->unsignedBigInteger('tp_ouvidoria_id');
             $table->foreign('tp_ouvidoria_id')

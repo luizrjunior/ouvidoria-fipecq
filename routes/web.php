@@ -17,55 +17,91 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/**
+ * HOME PAGE
+ */
 Route::get('/home', function () {
     return view('home');
 });
 
+/**
+ * CARTA DE SERVICOS
+ */
 Route::get('/carta-servico', function () {
     return view('carta-servico');
 });
 
-Route::resource('institutora', 'InstitutoraController');
-Route::post('/institutora/ativar-desativar-institutora', 'InstitutoraController@ativarDesativarInstitutora');
-
-Route::resource('assunto', 'AssuntoController');
-Route::post('/assunto/ativar-desativar-assunto', 'AssuntoController@ativarDesativarAssunto');
-
-Route::resource('situacao', 'SituacaoController');
-Route::post('/situacao/ativar-desativar-situacao', 'SituacaoController@ativarDesativarSituacao');
-
-Route::resource('classificacao', 'ClassificacaoController');
-Route::post('/classificacao/ativar-desativar-classificacao', 'ClassificacaoController@ativarDesativarClassificacao');
-
-Route::resource('sub-classificacao', 'SubClassificacaoController');
-Route::post('/sub-classificacao/ativar-desativar-sub-classificacao', 'SubClassificacaoController@ativarDesativarSubClassificacao');
-
-Route::resource('canal-atendimento', 'CanalAtendimentoController');
-Route::post('/canal-atendimento/ativar-desativar-canal-atendimento', 'CanalAtendimentoController@ativarDesativarCanalAtendimento');
-
-Route::resource('tipo-solicitacao', 'TipoSolicitacaoController');
-Route::post('/tipo-solicitacao/ativar-desativar-tipo-solicitacao', 'TipoSolicitacaoController@ativarDesativarTipoSolicitacao');
-
-Route::resource('tipo-prestador', 'TipoPrestadorController');
-Route::post('/tipo-prestador/ativar-desativar-tipo-prestador', 'TipoPrestadorController@ativarDesativarTipoPrestador');
-
-Route::resource('tipo-solicitante', 'TipoSolicitanteController');
-Route::post('/tipo-solicitante/ativar-desativar-tipo-solicitante', 'TipoSolicitanteController@ativarDesativarTipoSolicitante');
-
+/**
+ * FALE COM O OUVIDOR
+ */
 Route::get('/fale-com-ouvidor', 'FaleComOuvidorController@index');
 
 /**
- * SOLICITACAO DE OUVIDORIA
+ * TIPO DE OUVIDORIA
  */
-Route::resource('solicitacao-ouvidoria', 'SolicitacaoOuvidoriaController');
+Route::resource('tipo-ouvidoria', 'TipoOuvidoriaController');
+Route::post('/tipo-ouvidoria/ativar-desativar-tipo-ouvidoria', 'TipoOuvidoriaController@ativarDesativarTipoOuvidoria');
 
-Route::post('/solicitacao-ouvidoria/index', 'SolicitacaoOuvidoriaController@index')->name('solicitacao-ouvidoria.index');
-Route::post('/solicitacao-ouvidoria/create', 'SolicitacaoOuvidoriaController@create')->name('solicitacao-ouvidoria.create');
+/**
+ * TIPO DE SOLICITANTE
+ */
+Route::resource('tipo-solicitante', 'TipoSolicitanteController');
+Route::post('/tipo-solicitante/ativar-desativar-tipo-solicitante', 'TipoSolicitanteController@ativarDesativarTipoSolicitante');
 
-// Route::post('/solicitacao-ouvidoria/store', 'SolicitacaoOuvidoriaController@store')->name('solicitacao-ouvidoria.store');
+/**
+ * SITUACAO
+ */
+Route::resource('situacao', 'SituacaoController');
+Route::post('/situacao/ativar-desativar-situacao', 'SituacaoController@ativarDesativarSituacao');
 
-Route::post('/solicitacao-ouvidoria/carregar-solicitante-cpf', 'SolicitacaoOuvidoriaController@carregarSolicitantePorCPF');
-Route::post('/solicitacao-ouvidoria/acompanhar', 'SolicitacaoOuvidoriaController@acompanharSolicitacao')->name('solicitacao-ouvidoria.acompanhar');
+/**
+ * ASSUNTO
+ */
+Route::resource('assunto', 'AssuntoController');
+Route::post('/assunto/ativar-desativar-assunto', 'AssuntoController@ativarDesativarAssunto');
 
+/**
+ * CLASSIFICACAO
+ */
+Route::resource('classificacao', 'ClassificacaoController');
+Route::post('/classificacao/ativar-desativar-classificacao', 'ClassificacaoController@ativarDesativarClassificacao');
+
+/**
+ * SUB-CLASSIFICACAO
+ */
+Route::resource('sub-classificacao', 'SubClassificacaoController');
+Route::post('/sub-classificacao/ativar-desativar-sub-classificacao', 'SubClassificacaoController@ativarDesativarSubClassificacao');
+
+/**
+ * CANAL DE ATENDIMENTO
+ */
+Route::resource('canal-atendimento', 'CanalAtendimentoController');
+Route::post('/canal-atendimento/ativar-desativar-canal-atendimento', 'CanalAtendimentoController@ativarDesativarCanalAtendimento');
+
+/**
+ * TIPO DE PRESTADOR
+ */
+Route::resource('tipo-prestador', 'TipoPrestadorController');
+Route::post('/tipo-prestador/ativar-desativar-tipo-prestador', 'TipoPrestadorController@ativarDesativarTipoPrestador');
+
+/**
+ * OUVIDORIA
+ */
+// Route::resource('ouvidoria', 'OuvidoriaController');
+Route::get('/ouvidoria', 'OuvidoriaController@index');
+
+Route::any('/ouvidoria/search', 'OuvidoriaController@search')->name('ouvidoria.search');
+
+Route::post('/ouvidoria/create', 'OuvidoriaController@create')->name('ouvidoria.create');
+Route::post('/ouvidoria/{ouvidoria_id}/edit', 'OuvidoriaController@edit')->name('ouvidoria.edit');
+
+Route::post('/ouvidoria/store', 'OuvidoriaController@store')->name('ouvidoria.store');
+
+Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF');
+Route::post('/ouvidoria/acompanhar', 'OuvidoriaController@acompanhar')->name('ouvidoria.acompanhar');
+
+/**
+ * BENEFICIARIO
+ */
 Route::get('/benef', 'BeneficiarioController@index');
 

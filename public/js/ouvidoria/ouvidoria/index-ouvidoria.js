@@ -1,5 +1,4 @@
-function validar() 
-{
+function validar() {
     $('#carregando').show();
 }
 

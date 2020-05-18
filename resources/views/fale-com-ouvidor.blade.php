@@ -4,9 +4,9 @@
 
 @section('javascript')
 <script>
-	function Avancar(tipoOuvidoria_id) {
+	function Avancar(tipo_ouvidoria_id) {
 		$('#carregando').show();
-		$('#tipoOuvidoria_id').val(tipoOuvidoria_id);
+		$('#tipo_ouvidoria_id').val(tipo_ouvidoria_id);
 		$("#formFaleComOuvidor").submit();
 	}
 </script>
@@ -77,7 +77,7 @@
 	<p>&nbsp;</p>
 
 	<h5>
-		<center style="font-weight:bold; color:#006699">
+		<center style="font-weight:bold; color:#006699;">
 			Deseja acionar a ouvidoria? Selecione uma das opções abaixo:
 		</center>
 	</h5>
@@ -88,12 +88,12 @@
 		#saibaOuvir tr td {padding:10px; border-left:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF }
 	</style>
 
-	<form id="formFaleComOuvidor" action="{{ route('solicitacao-ouvidoria.create') }}" method="post">
+	<form id="formFaleComOuvidor" action="{{ route('ouvidoria.create') }}" method="post" autocomplete="off">
 		@csrf
-		<input type="hidden" id="tipoOuvidoria_id" name="tipoOuvidoria_id" value="">
+		<input type="hidden" id="tipo_ouvidoria_id" name="tipo_ouvidoria_id" value="">
 
 		<table id="saibaOuvir" cellspacing="0" cellpadding="0" width="90%" align="center">
-			<tr style="text-align:center; color:#FFFFFF">
+			<tr style="text-align:center; color:#FFFFFF;">
 
 				@if (count($tiposOuvidorias) > 0)
 					@foreach ($tiposOuvidorias as $tipoOuvidoria)
@@ -110,7 +110,7 @@
 				@endif
 
 			</tr>
-			<tr style="text-align:center; color:#FFFFFF">
+			<tr style="text-align:center; color:#FFFFFF;">
 
 				@if (count($tiposOuvidorias) > 0)
 					@foreach ($tiposOuvidorias as $tipoOuvidoria)
@@ -131,12 +131,12 @@
 	</form>
   
 	<center>
-		<sup style="font-weight:bold; color:#006699">
+		<sup style="font-weight:bold; color:#006699;">
 			E-mail de contato com o Fale Conosco:
 		</sup>
 	</center>
 	<center>
-		<sup style="font-weight:bold; color:#C00000">
+		<sup style="font-weight:bold; color:#C00000;">
 			faleconosco@fipecqvida.org.br
 		</sup>
 	</center>

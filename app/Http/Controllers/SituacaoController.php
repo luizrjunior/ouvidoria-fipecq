@@ -9,10 +9,21 @@ class SituacaoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
+        'nome.required' => 'O Nome precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
+        'nome.max' => 'Ops, o Nome não precisa ter mais que 60 caracteres. '
+        . 'Por favor, você pode verificar isso?',
+
         'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
+        'descricao.max' => 'Ops, a Descrição não precisa ter mais que 120 caracteres. '
         . 'Por favor, você pode verificar isso?',
+
+        'cor.required' => 'A Cor precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
+        'cor.max' => 'Ops, a Descrição não precisa ter mais que 60 caracteres. '
+        . 'Por favor, você pode verificar isso?',
+
     ];
     const MESSAGE_ADD_SUCCESS = "Situação adicionado com sucesso!";
     const MESSAGE_UPDATE_SUCCESS = "Situação alterado com sucesso!";
@@ -32,11 +43,15 @@ class SituacaoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-                'descricao'=>'required|string|max:100'
+                'nome'=>'required|string|max:60',
+                'descricao'=>'required|string|max:120',
+                'cor'=>'required|string|max:60',
             ], self::MESSAGES_ERRORS);
             
         $situacao = new Situacao([
-                'descricao' => $request->get('descricao'),
+                'nome' => $request->nome,
+                'descricao' => $request->descricao,
+                'cor' => $request->cor,
                 'status'=> true
             ]);
         $situacao->save();
@@ -52,11 +67,15 @@ class SituacaoController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'descricao'=>'required|string|max:100'
+                'nome'=>'required|string|max:60',
+                'descricao'=>'required|string|max:120',
+                'cor'=>'required|string|max:60',
             ], self::MESSAGES_ERRORS);
   
         $situacao = Situacao::find($id);
-        $situacao->descricao = $request->get('descricao');
+        $situacao->nome = $request->nome;
+        $situacao->descricao = $request->descricao;
+        $situacao->cor = $request->cor;
         $situacao->save();
   
         return redirect('/situacao')->with('success', self::MESSAGE_UPDATE_SUCCESS);

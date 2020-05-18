@@ -6,7 +6,7 @@
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
-    src="{{ asset('/js/ouvidoria/solicitacao-ouvidoria/cad-solicitacao-ouvidoria.js') }}"></script>
+    src="{{ asset('/js/ouvidoria/ouvidoria/cad-ouvidoria.js') }}"></script>
 @endsection
 
 @section('content')
@@ -17,8 +17,9 @@
 </style>
 
 @php
-$tipo_solicitacao_id = old('tipo_solicitacao_id') ? old('tipo_solicitacao_id') : $tipo_solicitacao_id;
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $tipo_ouvidoria_id;
 $tipo_solicitante_id = old('tipo_solicitante_id');
+$solicitante_id = old('solicitante_id');
 $institutora_id = old('institutora_id');
 $uf = old('uf');
 @endphp
@@ -27,31 +28,31 @@ $uf = old('uf');
     <div class="col-md-12">
         <div class="card uper">
             <div class="card-header">
-                Informações da Solicitação de Ouvidoria
+                Informações da Ouvidoria
                 <a href="{{ url('/fale-com-ouvidor') }}" class="float-right" onclick="return validar()">
                     <i class="fa fa-arrow-left"></i> Voltar
                 </a>
             </div>
             <div class="card-body">
                 <form id="formSolicitacaoOuvidoria" method="POST" 
-                    action="{{ route('solicitacao-ouvidoria.store') }}" enctype="multipart/form-data" autocomplete="off">
+                    action="{{ route('ouvidoria.store') }}" enctype="multipart/form-data" autocomplete="off">
                     @csrf
 
-                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="">
+                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="{{ $solicitante_id }}">
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="tipo_solicitacao_id" class="control-label">Tipo de Solicitação</label>
+                            <label for="tipo_ouvidoria_id" class="control-label">Tipo de Solicitação</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="tipo_solicitacao_id" name="tipo_solicitacao_id" class="form-control" disabled>
+                            <select id="tipo_ouvidoria_id" name="tipo_ouvidoria_id" class="form-control" disabled>
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($tipo_solicitacaos as $tipo_solicitacao)
+                                @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                     @php $selected = ""; @endphp
-                                    @if ($tipo_solicitacao->id == $tipo_solicitacao_id)
+                                    @if ($tipoOuvidoria->id == $tipo_ouvidoria_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                    <option value="{{ $tipo_solicitacao->id }}" {{$selected}}>{{ $tipo_solicitacao->nome }}</option>
+                                    <option value="{{ $tipoOuvidoria->id }}" {{$selected}}>{{ $tipoOuvidoria->nome }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -86,12 +87,12 @@ $uf = old('uf');
                         <div class="col-md-9">
                             <select id="tipo_solicitante_id" name="tipo_solicitante_id" class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($tipo_solicitantes as $tipo_solicitante)
+                                @foreach ($tiposSolicitantes as $tipoSolicitante)
                                     @php $selected = ""; @endphp
-                                    @if ($tipo_solicitante->id == $tipo_solicitante_id)
+                                    @if ($tipoSolicitante->id == $tipo_solicitante_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$tipo_solicitante->id}}" {{$selected}}>{{$tipo_solicitante->descricao}}</option>
+                                <option value="{{$tipoSolicitante->id}}" {{$selected}}>{{$tipoSolicitante->descricao}}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('tipo_solicitante_id') }}</span>
@@ -187,6 +188,7 @@ $uf = old('uf');
                         <div class="col-md-9">
                             <textarea rows="5" id="mensagem" name="mensagem" 
                                 class="form-control">{{ old('mensagem') }}</textarea>
+                            <span class="text-danger">{{ $errors->first('mensagem') }}</span>
                         </div>
                     </div>
 

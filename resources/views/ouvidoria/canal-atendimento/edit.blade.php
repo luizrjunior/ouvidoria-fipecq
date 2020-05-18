@@ -31,7 +31,7 @@ $descricao = $errors->has('descricao') ? old('descricao') : $canal_atendimento->
                     <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
                         <label for="descricao">Descrição (*)</label>
                         <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 
-                            name="descricao" value="{{ $descricao }}" />
+                            name="descricao" value="{{ $descricao }}" autofocus />
                         <span class="text-danger">{{ $errors->first('descricao') }}</span>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validar()">Atualizar</button>

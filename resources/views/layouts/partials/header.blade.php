@@ -6,21 +6,20 @@
     <button type="button" class="btn btn-dark" onclick="location.href='http://www.fipecqvida.org.br/';">FIPECq Vida</button>&nbsp;
     <button type="button" class="btn btn-dark" onclick="location.href='/home';">Ouvidoria</button>&nbsp;
     <button type="button" class="btn btn-dark" onclick="location.href='/fale-com-ouvidor';">Fale com o Ouvidor</button>&nbsp;
-    <button type="button" class="btn btn-dark" onclick="location.href='/solicitacao-ouvidoria';">Administração</button>&nbsp;
+    <button type="button" class="btn btn-dark" onclick="location.href='/ouvidoria';">Administração</button>&nbsp;
     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Cadastros
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="/tipo-solicitacao">Tipo de Solicitação</a>
                 <a class="dropdown-item" href="/tipo-solicitante">Tipo de Solicitante</a>
-                {{-- <a class="dropdown-item" href="/institutora">Institutora</a> --}}
-                <a class="dropdown-item" href="/assunto">Assunto</a>
+                <a class="dropdown-item" href="/tipo-ouvidoria">Tipo de Ouvidoria</a>
+                <a class="dropdown-item" href="/tipo-prestador">Tipo de Prestador</a>
                 <a class="dropdown-item" href="/situacao">Situação</a>
+                <a class="dropdown-item" href="/assunto">Assunto</a>
                 <a class="dropdown-item" href="/classificacao">Classificação</a>
                 <a class="dropdown-item" href="/sub-classificacao">SubClassificação</a>
-                <a class="dropdown-item" href="/tipo-prestador">Tipo de Prestador</a>
                 <a class="dropdown-item" href="/canal-atendimento">Canal de Atendimento</a>
             </div>
         </div>

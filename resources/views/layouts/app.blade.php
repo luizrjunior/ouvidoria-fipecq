@@ -40,7 +40,7 @@
     <!-- Modal Alerta -->
     <div id="modalAlerta" style="display: none;" class="modal fade" 
             tabindex="-1" role="dialog" aria-labelledby="modalAlertaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm" style="width: 35%;">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modalAlertaLabel">

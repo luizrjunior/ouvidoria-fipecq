@@ -51,7 +51,7 @@ class SubClassificacaoController extends Controller
 
     public function edit(int $id)
     {
-        $classificacaos = Classificacao::orderBy('classificacao_descricao', 'ASC')->get();
+        $classificacaos = Classificacao::orderBy('descricao', 'ASC')->get();
         $sub_classificacao = SubClassificacao::find($id);
         return view('ouvidoria.sub-classificacao.edit', compact('classificacaos', 'sub_classificacao'));
     }

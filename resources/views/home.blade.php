@@ -11,6 +11,17 @@
 @section('content')
 
 <div class="panel-body">
+
+    @if (Session('message'))
+    <!-- Alert -->
+    <div id="_sent_ok_" class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon fa fa-check"></i> Alerta!</h4>
+        <span id="_msg_txt_">{{ Session('message') }}</span>
+    </div>
+    <!-- /Alert -->
+    @endif
+    
     <!-- Main row -->
     <div class="row">
 
@@ -29,7 +40,7 @@
             </div>
 
             <form id="formSearchSolicitacaoOuvidoria" 
-                class="form-horizontal" role="form" method="POST" action="{{ route('solicitacao-ouvidoria.acompanhar') }}">
+                class="form-horizontal" role="form" method="POST" action="{{ route('ouvidoria.acompanhar') }}">
                 @csrf
 
                 <div class="row">

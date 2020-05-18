@@ -1,12 +1,12 @@
 function validar() {
     $('#carregando').show();
-    $("#tipo_solicitacao_id").prop('disabled', false);
+    $("#tipo_ouvidoria_id").prop('disabled', false);
 }
 
 function carregarSolicitanteCPF() {
     if ($('#cpf').val() != "") {
         $('#carregando').show();
-        var formURL = '/solicitacao-ouvidoria/carregar-solicitante-cpf';
+        var formURL = '/ouvidoria/carregar-solicitante-cpf';
         $.ajax({
             type: "POST",
             url: formURL,
@@ -16,7 +16,7 @@ function carregarSolicitanteCPF() {
             },
             dataType: "json",
             success: function (data) {
-                if (data.id != undefined) {
+                if (data.nome != undefined) {
                     $('#solicitante_id').val(data.id);
                     $('#tipo_solicitante_id').val(data.tipo_solicitante_id);
                     $('#cpf').val(data.cpf);

@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Beneficiario extends Model
 {
 
-    public $table = 'plano.cad_benef';
+    public $table = 'cad_benef';
 
 }
