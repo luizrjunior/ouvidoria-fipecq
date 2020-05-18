@@ -89,14 +89,11 @@ Route::post('/tipo-prestador/ativar-desativar-tipo-prestador', 'TipoPrestadorCon
  */
 // Route::resource('ouvidoria', 'OuvidoriaController');
 Route::get('/ouvidoria', 'OuvidoriaController@index');
-
 Route::any('/ouvidoria/search', 'OuvidoriaController@search')->name('ouvidoria.search');
-
-Route::post('/ouvidoria/create', 'OuvidoriaController@create')->name('ouvidoria.create');
-Route::post('/ouvidoria/{ouvidoria_id}/edit', 'OuvidoriaController@edit')->name('ouvidoria.edit');
-
+Route::any('/ouvidoria/create', 'OuvidoriaController@create')->name('ouvidoria.create');
 Route::post('/ouvidoria/store', 'OuvidoriaController@store')->name('ouvidoria.store');
-
+Route::get('/ouvidoria/{ouvidoria_id}/edit', 'OuvidoriaController@edit')->name('ouvidoria.edit');
+Route::post('/ouvidoria/update', 'OuvidoriaController@update')->name('ouvidoria.update');
 Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF');
 Route::post('/ouvidoria/acompanhar', 'OuvidoriaController@acompanhar')->name('ouvidoria.acompanhar');
 

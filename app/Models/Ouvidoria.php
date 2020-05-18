@@ -15,6 +15,7 @@ class Ouvidoria extends Model
         'anexo',
         'tp_ouvidoria_id',
         'solicitante_id',
+        'situacao_id',
         'tp_prestador_id',
         'sub_classificacao_id',
         'assunto_id',
@@ -29,6 +30,11 @@ class Ouvidoria extends Model
     public function solicitante()
     {
         return $this->belongsTo('App\Models\Solicitante', 'solicitante_id');
+    }
+    
+    public function situacao()
+    {
+        return $this->belongsTo('App\Models\Situacao', 'situacao_id');
     }
 
 }

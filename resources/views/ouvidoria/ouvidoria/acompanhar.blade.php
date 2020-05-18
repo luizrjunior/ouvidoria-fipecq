@@ -87,9 +87,9 @@ if ($ouvidoria) {
                         <div class="col-md-9">
                             <select id="protocolo_psq" name="protocolo_psq" class="form-control">
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($ouvidorias as $ouvidoria)
-                                    <option value="{{ $ouvidoria->protocolo }}">
-                                        {{ str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}
+                                @foreach ($ouvidorias as $arrOuvidoria)
+                                    <option value="{{ $arrOuvidoria->protocolo }}">
+                                        {{ str_pad($arrOuvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -170,10 +170,10 @@ if ($ouvidoria) {
                             <label for="tipo_ouvidoria_id" class="control-label">Situação da Solicitação</label>
                         </div>
                         <div class="col-md-9">
-                            @if ($situacaoOuvidoria)
+                            @if ($ouvidoria)
                             <h3>
-                                <span class="badge badge-pill badge-{{ $situacaoOuvidoria->situacao->cor }}" style="width: 50%;">
-                                    {{ $situacaoOuvidoria->situacao->nome }}
+                                <span class="badge badge-pill badge-{{ $ouvidoria->situacao->cor }}" style="width: 50%;">
+                                    {{ $ouvidoria->situacao->nome }}
                                 </span>
                             </h3>
                             @endif

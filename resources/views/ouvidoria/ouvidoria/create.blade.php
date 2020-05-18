@@ -125,12 +125,12 @@ $uf = old('uf');
                         <div class="col-md-9">
                             <select id="uf" name="uf" class="form-control {{ $errors->has('uf') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($ufs as $uf)
+                                @foreach ($ufs as $arrUf)
                                     @php $selected = ""; @endphp
-                                    @if ($uf["sigla"] == $uf)
+                                    @if ($arrUf["sigla"] == $uf)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{ $uf["sigla"] }}" {{ $selected }}>{{ $uf["descricao"] }}</option>
+                                <option value="{{ $arrUf["sigla"] }}" {{$selected}}>{{ $arrUf["descricao"] }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('uf') }}</span>

@@ -33,6 +33,12 @@ class CreateOuvidoriaTable extends Migration
                 ->on('fv_ouv_solicitante')
                 ->onDelete('cascade');
 
+            $table->unsignedBigInteger('situacao_id');
+            $table->foreign('situacao_id')
+                ->references('id')
+                ->on('fv_ouv_situacao')
+                ->onDelete('cascade');
+        
             $table->unsignedBigInteger('tp_prestador_id')->nullable();
             $table->foreign('tp_prestador_id')
                 ->references('id')

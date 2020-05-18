@@ -19,7 +19,8 @@ $tipo_ouvidoria_id_psq = "";
 $tipo_solicitante_id_psq = "";
 $data_inicio = date('01/m/Y');
 $data_termino = date('d/m/Y');
-$totalPage = 2;
+$situacao_id_psq = "";
+$totalPage = 25;
 @endphp
 @if (isset($data))
     @php
@@ -27,10 +28,9 @@ $totalPage = 2;
     $nome_psq = $data['nome_psq'];
     $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
     $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
-
     $data_inicio = $data['data_inicio'];
     $data_termino = $data['data_termino'];
-
+    $situacao_id_psq = $data['situacao_id_psq'];
     $totalPage = $data['totalPage'];
     @endphp
 @endif
@@ -130,9 +130,13 @@ $totalPage = 2;
                         <select id="situacao_id_psq" name="situacao_id_psq" 
                             class="form-control">
                             <option value="">- - Selecione - -</option>
-                            <option value="1">Novo</option>
-                            <option value="2">Em analise</option>
-                            <option value="3">Finalizado</option>
+                            @foreach ($situacoes as $situacao)
+                                @php $selected = ""; @endphp
+                                @if ($situacao->id == $situacao_id_psq)
+                                    @php $selected = "selected"; @endphp
+                                @endif
+                            <option value="{{ $situacao->id }}" {{ $selected }}>{{ $situacao->nome }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-4">&nbsp;</div>
@@ -189,10 +193,7 @@ $totalPage = 2;
 
                             @php
                             $ouvidoriaController = new \App\Http\Controllers\OuvidoriaController();
-                            $situacao = $ouvidoriaController->pegarSituacao($ouvidoria->id);
-                            // $partes = explode(' ', $status['hospede']);
-                            // $primeiroNome = array_shift($partes);
-                            // $ultimoNome = array_pop($partes);
+
                             $parte_data1 = explode("-", date('Y-m-d', strtotime($ouvidoria->dtCriacao)));
                             $anoinicial = $parte_data1['0'];
                             $mesinicial = $parte_data1['1'];
@@ -205,26 +206,22 @@ $totalPage = 2;
                             $mesfinal = $parte_data2['1'];
                             $diafinal = $parte_data2['2'];
                             //Concatena em um Novo Formato de DATA
-                            $datafinal = $anofinal."-".$mesfinal."-".$diafinal;                            
+                            $datafinal = $anofinal."-".$mesfinal."-".$diafinal;
+
                             $diasUteis = $ouvidoriaController->corre_anos($anoinicial, $anofinal, $mesinicial, $mesfinal, $datainicial, $datafinal);
                             @endphp
-    
 
                         <tr>
                             <td>{{ str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}</td>
                             <td>{{ $ouvidoria->noTipoOuvidoria }}</td>
-
                             <td>{{ $ouvidoria->dsTipoSolicitante }}</td>
                             <td>{{ $ouvidoria->noSolicitante }}</td>
-
                             <td>{{ date('d/m/Y H:i:s', strtotime($ouvidoria->dtCriacao)) }}</td>
-
                             <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
-
                             <td>
                                 <h4>
-                                    <span class="badge badge-pill badge-{{ $situacao->situacao->cor }}" style="width: 100%;">
-                                        {{ $situacao->situacao->nome }}
+                                    <span class="badge badge-pill badge-{{ $ouvidoria->noSituacaoCor }}" style="width: 100%;">
+                                        {{ $ouvidoria->noSituacao }}
                                     </span>
                                 </h4>
                             </td>
@@ -239,29 +236,27 @@ $totalPage = 2;
                         @endforeach
 
                         @if (isset($data))
-                    <tr>
-                        <td colspan="2">
-                                <input id="totalPage" name="totalPage" type="text"
-                                        value="{{ $totalPage }}" class="form-control" size="10"
-                                        style="text-align: right;">
-                                        Registros por página
-                        </td>
-                        <td colspan="6">
-                                {{  $ouvidorias->appends($data)->links() }}
-                        </td>
-                    </tr>
-                        @else
-                    <tr>
-                        <td colspan="2">
-                            <input id="totalPage" name="totalPage" type="text"
-                                    value="{{ $totalPage }}" class="form-control" size="10"
-                                    style="text-align: right;">
+                        <tr>
+                            <td colspan="2">
+                                <input id="totalPage" name="totalPage" type="text" value="{{ $totalPage }}" 
+                                    class="form-control" size="10" style="text-align: right;">
                                     Registros por página
-                        </td>
-                        <td colspan="6">
-                            {{ $ouvidorias->links() }}
-                        </td>
-                    </tr>
+                            </td>
+                            <td colspan="6">
+                                {{  $ouvidorias->appends($data)->links() }}
+                            </td>
+                        </tr>
+                        @else
+                        <tr>
+                            <td colspan="2">
+                                <input id="totalPage" name="totalPage" type="text" value="{{ $totalPage }}" 
+                                    class="form-control" size="10" style="text-align: right;">
+                                    Registros por página
+                            </td>
+                            <td colspan="6">
+                                {{ $ouvidorias->links() }}
+                            </td>
+                        </tr>
                         @endif
 
                     @else
