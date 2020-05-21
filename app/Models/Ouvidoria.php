@@ -12,6 +12,7 @@ class Ouvidoria extends Model
     protected $fillable = [
         'protocolo',
         'mensagem',
+        'observacao',
         'anexo',
         'tp_ouvidoria_id',
         'solicitante_id',

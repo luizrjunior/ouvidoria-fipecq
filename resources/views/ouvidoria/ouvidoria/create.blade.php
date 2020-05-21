@@ -82,7 +82,7 @@ $uf = old('uf');
 
                     <div class="row form-group {{ $errors->has('tipo_solicitante_id') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="tipo_solicitante_id" class="control-label">Tipo de Solicitante - Você é (*)</label>
+                            <label for="tipo_solicitante_id" class="control-label">Você é (*)</label>
                         </div>
                         <div class="col-md-9">
                             <select id="tipo_solicitante_id" name="tipo_solicitante_id" class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
@@ -101,7 +101,7 @@ $uf = old('uf');
 
                     <div class="row form-group {{ $errors->has('institutora_id') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
-                            <label for="institutora_id" class="control-label">Institutora/Empresa (*)</label>
+                            <label for="institutora_id" class="control-label">Institutora</label>
                         </div>
                         <div class="col-md-9">
                             <select id="institutora_id" name="institutora_id" class="form-control {{ $errors->has('institutora_id') ? 'is-invalid' : '' }}">
@@ -153,10 +153,10 @@ $uf = old('uf');
                             <label for="email" class="control-label">E-mail (*)</label>
                         </div>
                         <div class="col-md-9">
-                        <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" 
-                            id="email" name="email" value="{{ old('email') }}" />
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                    </div>
+                            <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" 
+                                id="email" name="email" value="{{ old('email') }}" />
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        </div>
                     </div>
 
                     <div class="row form-group {{ $errors->has('telefone') ? 'text-danger' : '' }}">
@@ -164,10 +164,10 @@ $uf = old('uf');
                             <label for="telefone" class="control-label">Telefone</label>
                         </div>
                         <div class="col-md-9">
-                        <input type="text" class="form-control {{ $errors->has('telefone') ? 'is-invalid' : '' }}" 
-                            id="telefone" name="telefone" value="{{ old('telefone') }}" />
-                        <span class="text-danger">{{ $errors->first('telefone') }}</span>
-                    </div>
+                            <input type="text" class="form-control {{ $errors->has('telefone') ? 'is-invalid' : '' }}" 
+                                id="telefone" name="telefone" value="{{ old('telefone') }}" />
+                            <span class="text-danger">{{ $errors->first('telefone') }}</span>
+                        </div>
                     </div>
 
                     <div class="row form-group {{ $errors->has('celular') ? 'text-danger' : '' }}">
@@ -175,10 +175,10 @@ $uf = old('uf');
                             <label for="celular" class="control-label">Celular (*)</label>
                         </div>
                         <div class="col-md-9">
-                        <input type="text" class="form-control {{ $errors->has('celular') ? 'is-invalid' : '' }}" 
-                            id="celular" name="celular" value="{{ old('celular') }}" />
-                        <span class="text-danger">{{ $errors->first('celular') }}</span>
-                    </div>
+                            <input type="text" class="form-control {{ $errors->has('celular') ? 'is-invalid' : '' }}" 
+                                id="celular" name="celular" value="{{ old('celular') }}" />
+                            <span class="text-danger">{{ $errors->first('celular') }}</span>
+                        </div>
                     </div>
 
                     <div class="row form-group {{ $errors->has('mensagem') ? 'text-danger' : '' }}">
@@ -196,7 +196,7 @@ $uf = old('uf');
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-9">
-                            <small class="form-text text-muted">Sua mensagem tem <span class="caracteres">255</span> caracteres restantes</small>
+                            <small class="form-text text-muted">Sua mensagem tem <span class="caracteres">1200</span> caracteres restantes</small>
                         </div>
                     </div>
 
@@ -215,11 +215,16 @@ $uf = old('uf');
                         </div>
 
                         <div class="col-md-3">
-                            <button type="button" class="btn btn-danger" onclick="location.href='{{ url('/fale-com-ouvidor') }}';">Cancelar</button>
+                            <button type="button" class="btn btn-danger" 
+                                onclick="location.href='{{ url('/fale-com-ouvidor') }}';">
+                                Cancelar
+                            </button>
                         </div>
 
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary" onclick="return validar()">Cadastrar Solicitação</button>
+                            <button type="submit" class="btn btn-primary" onclick="return validar();">
+                                Cadastrar Solicitação
+                            </button>
                         </div>
 
                         <div class="col-md-3">

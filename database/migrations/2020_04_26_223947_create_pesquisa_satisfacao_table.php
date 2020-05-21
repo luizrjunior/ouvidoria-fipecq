@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSituacaoOuvidoriaTable extends Migration
+class CreatePesquisaSatisfacaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,18 @@ class CreateSituacaoOuvidoriaTable extends Migration
      */
     public function up()
     {
-        Schema::create('fv_ouv_situacao_ouvidoria', function (Blueprint $table) {
+        Schema::create('fv_ouv_pesquisa_satisfacao', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->text('comentario');
+            $table->integer('resposta_1');
+            $table->integer('resposta_2');
+            $table->text('resposta_3');
 
             $table->unsignedBigInteger('ouvidoria_id');
             $table->foreign('ouvidoria_id')
                 ->references('id')
                 ->on('fv_ouv_ouvidoria')
                 ->onDelete('cascade');
-
-            $table->unsignedBigInteger('situacao_id');
-            $table->foreign('situacao_id')
-                ->references('id')
-                ->on('fv_ouv_situacao')
-                ->onDelete('cascade');
-
-            $table->unsignedBigInteger('usuario_id')->nullable();
 
             $table->timestamps();
         });
@@ -43,7 +37,7 @@ class CreateSituacaoOuvidoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fv_ouv_situacao_ouvidoria');
+        Schema::dropIfExists('fv_ouv_pesquisa_satisfacao');
     }
     
 }

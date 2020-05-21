@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sistema de Ouvidoria - Detalhar Solicitação')
+@section('title', 'Sistema de Ouvidoria - Nova Solicitação')
 
 @section('javascript')
 <script type="text/javascript" 
@@ -17,101 +17,140 @@
 </style>
 
 @php
-$ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
-$tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
-$canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : $ouvidoria->canal_atendimento_id;
-$sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : $ouvidoria->sub_classificacao_id;
-$observacao = $errors->has('observacao') ? old('observacao') : $ouvidoria->observacao;
-$mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
-$anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
+$ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : "";
+$tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : "";
+$canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : "";
+$sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : "";
+$observacao_novo = $errors->has('observacao_novo') ? old('observacao_novo') : "";
+$mensagem = $errors->has('mensagem') ? old('mensagem') : "";
+$anexo = $errors->has('anexo') ? old('anexo') : "";
 
-$solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : $ouvidoria->solicitante_id;
-$email = $errors->has('email') ? old('email') : $ouvidoria->solicitante->email;
-$telefone = $errors->has('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
-$celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->celular;
+$solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : "";
+$tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : "";
+$institutora_id = $errors->has('institutora_id') ? old('institutora_id') : "";
+$uf = $errors->has('uf') ? old('uf') : "";
+$email = $errors->has('email') ? old('email') : "";
+$telefone = $errors->has('telefone') ? old('telefone') : "";
+$celular = $errors->has('celular') ? old('celular') : "";
 @endphp
 
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card uper">
             <div class="card-header">
-                Administração - Detalhes
+                Administração - Nova Solicitação
                 <a href="{{ url('/ouvidoria') }}" class="float-right" onclick="return validar()">
                     <i class="fa fa-arrow-left"></i> Voltar
                 </a>
             </div>
             <div class="card-body">
                 <form id="formSolicitacaoOuvidoria" method="POST" 
-                    action="{{ route('ouvidoria.update') }}" autocomplete="off">
+                    action="{{ route('ouvidoria.store-admin') }}" autocomplete="off">
                     @csrf
 
-                    <input type="hidden" id="ouvidoria_id" name="ouvidoria_id" value="{{ $ouvidoria_id }}">
-
-                    @php
-                    $ouvidoriaController = new \App\Http\Controllers\OuvidoriaController();
-
-                    $parte_data1 = explode("-", date('Y-m-d', strtotime($ouvidoria->created_at)));
-                    $anoinicial = $parte_data1['0'];
-                    $mesinicial = $parte_data1['1'];
-                    $diainicial = $parte_data1['2'];
-                    //Concatena em um Novo Formato de DATA
-                    $datainicial = $anoinicial."-".$mesinicial."-".$diainicial;
-
-                    $parte_data2 = explode("-", date('Y-m-d'));
-                    $anofinal = $parte_data2['0'];
-                    $mesfinal = $parte_data2['1'];
-                    $diafinal = $parte_data2['2'];
-                    //Concatena em um Novo Formato de DATA
-                    $datafinal = $anofinal."-".$mesfinal."-".$diafinal;
-
-                    $diasUteis = $ouvidoriaController->corre_anos($anoinicial, $anofinal, $mesinicial, $mesfinal, $datainicial, $datafinal);
-                    @endphp
-
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <td><b>Protocolo N°</b></td>
-                                        <td><b>Solicitação</b></td>
-                                        <td><b>Solicitante</b></td>
-                                        <td><b>Nome</b></td>
-                                        <td><b>Criado em</b></td>
-                                        <td><b>Dias Úteis</b></td>
-                                        <td><b>Situação</b></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}</td>
-                                        <td>{{ $ouvidoria->tipoOuvidoria->nome }}</td>
-                                        <td>{{ $ouvidoria->solicitante->tipoSolicitante->descricao }}</td>
-                                        <td>{{ $ouvidoria->solicitante->nome }}</td>
-                                        <td>{{ date('d/m/Y', strtotime($ouvidoria->created_at)) }}</td>
-                                        <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
-                                        <td>
-                                            <h5>
-                                                <span class="badge badge-pill badge-{{ $ouvidoria->situacao->cor }}" style="width: 100%;">
-                                                    {{ $ouvidoria->situacao->nome }}
-                                                </span>
-                                            </h5>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <input type="hidden" id="ouvidoria_id" name="ouvidoria_id" value="">
+                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="">
 
                     <h5>Dados Pessoais</h5>
                     <hr>
 
+                    <div class="row form-group {{ $errors->has('cpf') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="cpf" class="control-label">CPF N° (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control {{ $errors->has('cpf') ? 'is-invalid' : '' }}" 
+                                id="cpf" name="cpf" value="{{ old('cpf') }}" autofocus />
+                            <span class="text-danger">{{ $errors->first('cpf') }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="row form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="nome" class="control-label">Nome (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
+                            id="nome" name="nome" value="{{ old('nome') }}" />
+                            <span class="text-danger">{{ $errors->first('nome') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group {{ $errors->has('tipo_solicitante_id') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="tipo_solicitante_id" class="control-label">Você é (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select id="tipo_solicitante_id" name="tipo_solicitante_id" class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
+                                <option value="">- - Selecione - -</option>
+                                @foreach ($tiposSolicitantes as $tipoSolicitante)
+                                    @php $selected = ""; @endphp
+                                    @if ($tipoSolicitante->id == $tipo_solicitante_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{$tipoSolicitante->id}}" {{$selected}}>{{$tipoSolicitante->descricao}}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">{{ $errors->first('tipo_solicitante_id') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group {{ $errors->has('institutora_id') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="institutora_id" class="control-label">Institutora</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select id="institutora_id" name="institutora_id" class="form-control {{ $errors->has('institutora_id') ? 'is-invalid' : '' }}">
+                                <option value="">- - Selecione - -</option>
+                                @foreach ($institutoras as $institutora)
+                                    @php $selected = ""; @endphp
+                                    @if ($institutora->empresa == $institutora_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">{{ $errors->first('institutora_id') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group {{ $errors->has('uf') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="uf" class="control-label">Estado (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select id="uf" name="uf" class="form-control {{ $errors->has('uf') ? 'is-invalid' : '' }}">
+                                <option value="">- - Selecione - -</option>
+                                @foreach ($ufs as $arrUf)
+                                    @php $selected = ""; @endphp
+                                    @if ($arrUf["sigla"] == $uf)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{ $arrUf["sigla"] }}" {{$selected}}>{{ $arrUf["descricao"] }}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">{{ $errors->first('uf') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group {{ $errors->has('cidade') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="cidade" class="control-label">Cidade (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control {{ $errors->has('cidade') ? 'is-invalid' : '' }}" 
+                                id="cidade" name="cidade" value="{{ old('cidade') }}" />
+                            <span class="text-danger">{{ $errors->first('cidade') }}</span>
+                        </div>
+                    </div>
+
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="email" class="control-label">E-mail</label>
+                            <label for="email" class="control-label">E-mail (*)</label>
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="email" name="email" 
-                                value="{{ $email }}" disabled />
+                                value="{{ $email }}" />
                         </div>
                     </div>
 
@@ -121,17 +160,17 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="telefone" name="telefone" 
-                                value="{{ $telefone }}" disabled />
+                                value="{{ $telefone }}" />
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="celular" class="control-label">Celular</label>
+                            <label for="celular" class="control-label">Celular (*)</label>
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="celular" name="celular" 
-                                value="{{ $celular }}" disabled />
+                                value="{{ $celular }}" />
                         </div>
                     </div>
                     
@@ -173,9 +212,9 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
 
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <label for="observacao" class="control-label">Observação:</label>
-                            <textarea class="form-control" rows="5" id="observacao" name="observacao" 
-                                class="form-control">{{ $observacao }}</textarea>
+                            <label for="observacao_novo" class="control-label">Observação:</label>
+                            <textarea class="form-control" rows="5" id="observacao_novo" name="observacao_novo" 
+                                class="form-control">{{ $observacao_novo }}</textarea>
                         </div>
                     </div>
 
@@ -188,26 +227,24 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                     </div>
 
                     <br>
-                    <h5>Mensagem @if ($anexo != "")e Anexo @endif</h5>
+                    <h5>Mensagem e Anexo</h5>
                     <hr>
 
                     <div class="row form-group">
                         <div class="col-md-12">
                             <textarea class="form-control" rows="5" id="mensagem" name="mensagem" 
-                                class="form-control" disabled>{{ $mensagem }}</textarea>
+                                class="form-control">{{ $mensagem }}</textarea>
                         </div>
                     </div>
 
-                    @if ($anexo != "") 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="anexo" class="control-label">Anexo</label>
+                            <label for="anexo" class="control-label">Anexar Arquivo</label>
                         </div>
                         <div class="col-md-9">
-                            Abrir arquivo anexo <a href="{{ url("storage/anexos/{$anexo}") }}" target="_blank">clique aqui.</a>
+                            <input type="file" id="anexo" name="anexo" />
                         </div>
                     </div>
-                    @endif
 
                     <br>
                     <h5>Classificação: Atendimento Parceiro FIPECq Vida</h5>
@@ -227,43 +264,6 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-
-                    <br>
-                    <h5>Situação Atual e Comentário</h5>
-                    <hr>
-
-                    <div class="row form-group">
-                        <div class="col-md-3">
-                            <label class="control-label">Situação Atual</label>
-                        </div>
-                        <div class="col-md-9">
-                            @if ($ouvidoria)
-                            <h3>
-                                <span class="badge badge-pill badge-{{ $ouvidoria->situacao->cor }}" style="width: 50%;">
-                                    {{ $ouvidoria->situacao->nome }}
-                                </span>
-                            </h3>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col-md-3">
-                            <label for="created_at" class="control-label">Data Hora</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" id="created_at" name="created_at" 
-                                value="{{ date('d/m/Y H:i:s', strtotime($situacaoOuvidoria->created_at)) }}" disabled />
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <label for="comentarioDisable" class="control-label">Comentário:</label>
-                            <textarea class="form-control" rows="5" id="comentarioDisable" name="comentarioDisable" 
-                                class="form-control" disabled>{{ $situacaoOuvidoria->comentario }}</textarea>
                         </div>
                     </div>
 
@@ -303,11 +303,12 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                         <div class="col-md-12">
                             <span class="float-right text-danger">
                                 <button type="submit" class="btn btn-primary" onclick="return validar();">
-                                    <i class="fa fa-refresh"></i> Atualizar
+                                    <i class="fa fa-save"></i> Cadastrar Solicitação
                                 </button>
                             </span>
                             <span class="float-right text-danger">
-                                <button type="button" class="btn btn-danger" onclick="location.href='{{ url('/ouvidoria') }}';">
+                                <button type="button" class="btn btn-danger" 
+                                    onclick="location.href='{{ url('/ouvidoria') }}';">
                                     <i class="fa fa-arrow-left"></i> Voltar
                                 </button>&nbsp;
                             </span>

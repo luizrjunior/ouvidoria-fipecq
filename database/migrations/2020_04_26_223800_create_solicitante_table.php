@@ -24,7 +24,7 @@ class CreateSolicitanteTable extends Migration
             $table->string('uf', 2);
             $table->string('cidade', 120);
 
-            $table->unsignedBigInteger('institutora_id');
+            $table->unsignedBigInteger('institutora_id')->nullable();
             // $table->foreign('institutora_id')
             //     ->references('empresa')
             //     ->on('plano.cad_empresa')

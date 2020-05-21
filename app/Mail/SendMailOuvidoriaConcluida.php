@@ -2,26 +2,23 @@
 
 namespace App\Mail;
 
-use App\Models\Ouvidoria;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailOuvidoria extends Mailable
+class SendMailOuvidoriaConcluida extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $ouvidoria;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Ouvidoria $ouvidoria)
+    public function __construct()
     {
-        $this->ouvidoria = $ouvidoria;
+        //
     }
 
     /**
@@ -32,11 +29,7 @@ class SendMailOuvidoria extends Mailable
     public function build()
     {
         return $this->from('faleconosco@fipecqvida.org.br', 'FIPECq Vida')
-            ->subject('Solicitação de Ouvidoria - FIPECq Vida')
-            ->view('emails.email_ouvidoria_solicitacao')
-            ->with([
-                'protocolo' => $this->ouvidoria->protocolo
-            ]);
+            ->subject('Conclusão da Solicitação de Ouvidoria - FIPECq Vida')
+            ->view('emails.email_ouvidoria_concluida');
     }
-    
 }

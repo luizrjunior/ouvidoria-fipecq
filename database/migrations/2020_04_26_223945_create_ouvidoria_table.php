@@ -17,9 +17,9 @@ class CreateOuvidoriaTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->integer('protocolo');
-            $table->string('mensagem', 255);
             $table->string('anexo', 255)->nullable();
-            $table->string('observacao', 255)->nullable();
+            $table->text('mensagem');
+            $table->text('observacao')->nullable();
 
             $table->unsignedBigInteger('tp_ouvidoria_id');
             $table->foreign('tp_ouvidoria_id')

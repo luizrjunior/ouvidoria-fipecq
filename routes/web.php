@@ -90,12 +90,21 @@ Route::post('/tipo-prestador/ativar-desativar-tipo-prestador', 'TipoPrestadorCon
 // Route::resource('ouvidoria', 'OuvidoriaController');
 Route::get('/ouvidoria', 'OuvidoriaController@index');
 Route::any('/ouvidoria/search', 'OuvidoriaController@search')->name('ouvidoria.search');
+
 Route::any('/ouvidoria/create', 'OuvidoriaController@create')->name('ouvidoria.create');
 Route::post('/ouvidoria/store', 'OuvidoriaController@store')->name('ouvidoria.store');
+
 Route::get('/ouvidoria/{ouvidoria_id}/edit', 'OuvidoriaController@edit')->name('ouvidoria.edit');
 Route::post('/ouvidoria/update', 'OuvidoriaController@update')->name('ouvidoria.update');
+
+Route::get('/ouvidoria/create-admin', 'OuvidoriaController@createAdmin');
+Route::post('/ouvidoria/store-admin', 'OuvidoriaController@storeAdmin')->name('ouvidoria.store-admin');
+
 Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF');
 Route::post('/ouvidoria/acompanhar', 'OuvidoriaController@acompanhar')->name('ouvidoria.acompanhar');
+
+Route::get('/pesquisa-satisfacao/{ouvidoria_id}/create', 'PesquisaSatisfacaoController@create');
+Route::post('/pesquisa-satisfacao/store', 'PesquisaSatisfacaoController@store')->name('pesquisa-satisfacao.store');
 
 /**
  * BENEFICIARIO

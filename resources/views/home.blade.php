@@ -22,6 +22,16 @@
     <!-- /Alert -->
     @endif
     
+	@if (Session('success'))
+	<!-- Alert -->
+	<div id="_sent_ok_" class="alert alert-success alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<h4><i class="icon fa fa-check"></i> Alerta!</h4>
+		<span id="_msg_txt_">{!! Session('success') !!}</span>
+	</div>
+	<!-- /Alert -->
+	@endif
+
     <!-- Main row -->
     <div class="row">
 

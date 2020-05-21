@@ -17,36 +17,20 @@
 </style>
 
 @php
-$ouvidoria_id = "";
 $protocolo = "";
 $created_at = "";
 $tipo_ouvidoria_id = "";
 $cpf = "";
 $nome = "";
-$tipo_solicitante_id = "";
-$institutora_id = "";
-$uf = "";
-$cidade = "";
-$email = "";
-$telefone = "";
-$celular = "";
 $mensagem = "";
 $anexo = "";
 
 if ($ouvidoria) {
-    $ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
     $protocolo = $errors->has('protocolo') ? old('protocolo') : str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT);
     $created_at = $errors->has('created_at') ? old('created_at') : date('d/m/Y H:i:s', strtotime($ouvidoria->created_at));
     $tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
     $cpf = $errors->has('cpf') ? old('cpf') : $ouvidoria->solicitante->cpf;
     $nome = $errors->has('nome') ? old('nome') : $ouvidoria->solicitante->nome;
-    $tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : $ouvidoria->solicitante->tipo_solicitante_id;
-    $institutora_id = $errors->has('institutora_id') ? old('institutora_id') : $ouvidoria->solicitante->institutora_id;
-    $uf = $errors->has('uf') ? old('uf') : $ouvidoria->solicitante->uf;
-    $cidade = $errors->has('cidade') ? old('cidade') : $ouvidoria->solicitante->cidade;
-    $email = $errors->has('email') ? old('email') : $ouvidoria->solicitante->email;
-    $telefone = $errors->has('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
-    $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->celular;
     $mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
     $anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
 }
@@ -77,8 +61,6 @@ if ($ouvidoria) {
                 <form id="formSolicitacaoOuvidoria" method="POST" 
                     action="{{ route('ouvidoria.acompanhar') }}" autocomplete="off">
                     @csrf
-
-                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="">
 
                     <div class="row form-group">
                         <div class="col-md-3">
@@ -167,7 +149,7 @@ if ($ouvidoria) {
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="tipo_ouvidoria_id" class="control-label">Situação da Solicitação</label>
+                            <label class="control-label">Situação da Solicitação</label>
                         </div>
                         <div class="col-md-9">
                             @if ($ouvidoria)

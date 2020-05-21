@@ -50,9 +50,25 @@ $(document).ready(function () {
 });
 
 $(document).on("keydown", "#mensagem", function () {
-    var caracteresRestantes = 255;
+    var caracteresRestantes = 1200;
     var caracteresDigitados = parseInt($(this).val().length);
     var caracteresRestantes = caracteresRestantes - caracteresDigitados;
 
     $(".caracteres").text(caracteresRestantes);
+});
+
+$(document).on("keydown", "#observacao", function () {
+    var caracteresRestantes = 600;
+    var caracteresDigitados = parseInt($(this).val().length);
+    var caracteresRestantes = caracteresRestantes - caracteresDigitados;
+
+    $(".caracteresObservacao").text(caracteresRestantes);
+});
+
+$(document).on("keydown", "#comentario", function () {
+    var caracteresRestantes = 1200;
+    var caracteresDigitados = parseInt($(this).val().length);
+    var caracteresRestantes = caracteresRestantes - caracteresDigitados;
+
+    $(".caracteresComentario").text(caracteresRestantes);
 });

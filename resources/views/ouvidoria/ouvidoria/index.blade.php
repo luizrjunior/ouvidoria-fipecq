@@ -41,6 +41,16 @@ $totalPage = 25;
   }
 </style>
 
+@if (Session('success'))
+<!-- Alert -->
+<div id="_sent_ok_" class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-check"></i> Alerta!</h4>
+    <span id="_msg_txt_">{!! Session('success') !!}</span>
+</div>
+<!-- /Alert -->
+@endif
+
 <div class="row justify-content-center">
     <div class="col-md-12">
         
@@ -52,6 +62,9 @@ $totalPage = 25;
         <div class="card uper">
             <div class="card-header">
                 Filtros de Pesquisa
+                <a href="{{ url('/ouvidoria/create-admin') }}" class="float-right" onclick="return validar()">
+                    <i class="fa fa-plus"></i> Nova Solicitação
+                </a>
             </div>
             <div class="card-body">
 
@@ -155,13 +168,6 @@ $totalPage = 25;
         <div class="card uper">
             <div class="card-body">
 
-                @if(session()->get('success'))
-                <div class="alert alert-success">
-                    {{ session()->get('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                </div>
-                @endif
-
                 @php
                 $arrSituacao = array(
                     '0' => "Desativado",
@@ -176,14 +182,14 @@ $totalPage = 25;
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <td>Protocolo N°</td>
-                            <td>Solicitação</td>
-                            <td>Solicitante</td>
-                            <td>Nome</td>
-                            <td>Criado em</td>
-                            <td>Dias Úteis</td>
-                            <td>Situação</td>
-                            <td>Ações</td>
+                            <td><b>Protocolo N°</b></td>
+                            <td><b>Solicitação</b></td>
+                            <td><b>Solicitante</b></td>
+                            <td><b>Nome</b></td>
+                            <td><b>Criado em</b></td>
+                            <td><b>Dias Úteis</b></td>
+                            <td><b>Situação</b></td>
+                            <td><b>Ações</b></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -212,7 +218,11 @@ $totalPage = 25;
                             @endphp
 
                         <tr>
-                            <td>{{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}</td>
+                            <td>
+                                <a href="/pesquisa-satisfacao/{{ $ouvidoria->id }}/create" target="_blank">
+                                    {{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}
+                                </a>
+                            </td>
                             <td>{{ $ouvidoria->noTipoOuvidoria }}</td>
                             <td>{{ $ouvidoria->dsTipoSolicitante }}</td>
                             <td>{{ $ouvidoria->noSolicitante }}</td>

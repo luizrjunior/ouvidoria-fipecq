@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use stdClass;
 
 use App\Mail\SendMailOuvidoria;
+use App\Mail\SendMailOuvidoriaConcluida;
 
 use App\Models\Beneficiario;
 use App\Models\Institutora;
@@ -15,7 +16,9 @@ use App\Models\TipoOuvidoria;
 use App\Models\Ouvidoria;
 use App\Models\Situacao;
 use App\Models\SituacaoOuvidoria;
-
+use App\Models\CanalAtendimento;
+use App\Models\Classificacao;
+use App\Models\SubClassificacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -64,7 +67,7 @@ class OuvidoriaController extends Controller
     const MESSAGE_ADD_SUCCESS = "A sua demanda foi recebida com sucesso. Em breve você será contatado.
     <br />O número do protocolo da sua demanda é: ";
 
-    const MESSAGE_UPDATE_SUCCESS = "Solicitação de Ouvidoria alterado com sucesso!";
+    const MESSAGE_UPDATE_SUCCESS = "Solicitação de Ouvidoria alterada com sucesso!";
 
     const MESSAGE_DESTROY_SUCCESS = "Solicitação de Ouvidoria removido com sucesso!";
 
@@ -305,7 +308,7 @@ class OuvidoriaController extends Controller
         $protocolo = $ouvidoria->protocolo;
 
         $situacaoOuvidoria = new SituacaoOuvidoria([
-            'comentario' => 'Solicitação de ouvidoria registrada em ' . date('d/m/Y H:i:s', strtotime($ouvidoria->created_at)),
+            'comentario' => 'Solicitação de ouvidoria registrada em ' . date('d/m/Y H:i'),
             'ouvidoria_id' => $ouvidoria->id,
             'situacao_id' => 1
         ]);
@@ -388,58 +391,57 @@ class OuvidoriaController extends Controller
             compact('ouvidorias', 'tiposOuvidorias', 'ouvidoria', 'situacoes'));
     }
 
-    public function edit(int $solicitacao_id)
+    public function edit(int $ouvidoria_id)
     {
-        $ouvidoria = Ouvidoria::find($solicitacao_id);
-        $ufs = self::UFS;
+        $ouvidoria = Ouvidoria::find($ouvidoria_id);
+        $tiposOuvidorias = TipoOuvidoria::get();
+        $canaisAtendimentos = CanalAtendimento::get();
+        $subclassificacoes = SubClassificacao::get();
+        $situacoes = Situacao::get();
+        $situacoesOuvidoria = SituacaoOuvidoria::where('ouvidoria_id', $ouvidoria->id)->orderBy('id', 'DESC')->get();
+        $situacaoOuvidoria = $situacoesOuvidoria[0];
 
-        return view('ouvidoria.ouvidoria.edit', compact('ouvidoria', 'ufs'));
+        return view('ouvidoria.ouvidoria.edit', 
+            compact('tiposOuvidorias', 'ouvidoria', 'canaisAtendimentos', 'subclassificacoes', 'situacaoOuvidoria', 'situacoes'));
     }
 
-    public function update(Request $request, int $solicitacao_id)
+    public function update(Request $request)
     {
-        $ouvidoria_edit = Ouvidoria::find($solicitacao_id);
-
         $request->validate([
-            'cpf'=>'required|cpf|unique:solicitante,cpf,' . $ouvidoria_edit->solicitante_id,
-            'nome'=>'required|max:120',
-            'institutora_id'=>'required',
-            'uf_sigla'=>'required',
-            'cidade'=>'required|max:120',
-            'email'=>'required|max:120',
-            'telefone'=>'required|max:15',
-            'celular'=>'required|max:15',
-            'mensagem'=>'required|max:255'
+            'observacao' => 'nullable|max:600',
+            'comentario' => 'nullable|max:600',
         ], self::MESSAGES_ERRORS);
 
-        unset($ouvidoria_edit);
-        
-        $ouvidoria = Ouvidoria::find($solicitacao_id);
-        $ouvidoria->protocolo = $request->protocolo;
-        $ouvidoria->mensagem = $request->mensagem;
-        $ouvidoria->anexo = $request->anexo;
-        $ouvidoria->tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
-        $ouvidoria->solicitante_id = $request->solicitante_id;
-        $ouvidoria->tipo_prestador_id = $request->tipo_prestador_id;
-        $ouvidoria->sub_classificacao_id = $request->sub_classificacao_id;
-        $ouvidoria->assunto_id = $request->assunto_id;
-        $ouvidoria->situacao_id = $request->situacao_id;
+        $ouvidoria = Ouvidoria::find($request->ouvidoria_id);
         $ouvidoria->canal_atendimento_id = $request->canal_atendimento_id;
+        $ouvidoria->tp_ouvidoria_id = $request->tipo_ouvidoria_id;
+        $ouvidoria->observacao = $request->observacao;
+        $ouvidoria->sub_classificacao_id = $request->sub_classificacao_id;
+        if ($request->situacao_id != "") {
+            $ouvidoria->situacao_id = $request->situacao_id;
+        }
         $ouvidoria->save();
         
-        $solicitante = Solicitante::find($ouvidoria->solicitante_id);
-        $solicitante->cpf = $request->cpf;
-        $solicitante->nome = $request->nome;
-        $solicitante->email = $request->email;
-        $solicitante->telefone = $request->telefone;
-        $solicitante->celular = $request->celular;
-        $solicitante->uf = $request->uf;
-        $solicitante->cidade = $request->cidade;
-        $solicitante->institutora_id = $request->institutora_id;
-        $solicitante->tipo_solicitante_id = $request->tipo_solicitante_id;
-        $solicitante->save();
+        if ($request->situacao_id != "") {
+            $situacaoOuvidoria = new SituacaoOuvidoria([
+                'ouvidoria_id' => $request->ouvidoria_id,
+                'situacao_id' => $request->situacao_id,
+                'comentario' => $request->comentario,
+            ]);
+            $situacaoOuvidoria->save();
 
-        return redirect('/ouvidoria/create')->with('success', self::MESSAGE_ADD_SUCCESS);
+            if ($request->situacao_id == 3) {
+                $para = $ouvidoria->solicitante->email;
+                $this->enviarEmailOuvidoriaConcluida($para);
+            }
+        }
+
+        return redirect('/ouvidoria')->with('success', self::MESSAGE_UPDATE_SUCCESS);
+    }
+
+    private function enviarEmailOuvidoriaConcluida($para)
+    {
+        Mail::to($para)->send(new SendMailOuvidoriaConcluida());
     }
 
     public function destroy(int $id)
@@ -448,6 +450,103 @@ class OuvidoriaController extends Controller
         $ouvidoria->delete();
    
         return redirect('/ouvidoria/create')->with('success', self::MESSAGE_DESTROY_SUCCESS);
+    }
+
+    public function createAdmin(Request $request)
+    {   
+        $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
+        $tiposOuvidorias = TipoOuvidoria::get();
+        $tiposSolicitantes = TipoSolicitante::get();
+        $institutoras = Institutora::get();
+        $ufs = self::UFS;
+        $canaisAtendimentos = CanalAtendimento::get();
+        $subclassificacoes = SubClassificacao::get();
+        $situacoes = Situacao::get();
+
+        return view('ouvidoria.ouvidoria.create-admin', compact( 'tipo_ouvidoria_id', 'tiposOuvidorias', 
+            'tiposSolicitantes', 'institutoras', 'ufs', 'canaisAtendimentos', 'subclassificacoes', 'situacoes'));
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'tipo_ouvidoria_id'=>'required',
+            'tipo_solicitante_id'=>'required',
+            'cpf'=>'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
+            'nome'=>'required|max:120',
+            'institutora_id'=>'required',
+            'uf'=>'required',
+            'cidade'=>'required|max:120',
+            'email'=>'required|max:120',
+            'celular'=>'required|max:15',
+            'mensagem'=>'required|max:255',
+        ], self::MESSAGES_ERRORS);
+
+        if ($request->solicitante_id == "") {
+            $solicitante = new Solicitante([
+                'cpf' => $request->cpf,
+                'nome' => $request->nome,
+                'email' => $request->email,
+                'telefone' => $request->telefone,
+                'celular' => $request->celular,
+                'uf' => $request->uf,
+                'cidade' => $request->cidade,
+                'institutora_id' => $request->institutora_id,
+                'tipo_solicitante_id' => $request->tipo_solicitante_id,
+            ]);
+        } else {
+            $solicitante = Solicitante::find($request->solicitante_id);
+            $solicitante->cpf = $request->cpf;
+            $solicitante->nome = $request->nome;
+            $solicitante->email = $request->email;
+            $solicitante->telefone = $request->telefone;
+            $solicitante->celular = $request->celular;
+            $solicitante->uf = $request->uf;
+            $solicitante->cidade = $request->cidade;
+            $solicitante->institutora_id = $request->institutora_id;
+            $solicitante->tipo_solicitante_id = $request->tipo_solicitante_id;
+        }
+        $solicitante->save();
+
+        $protocolo = Ouvidoria::get();
+        $numero = count($protocolo)+1;
+        $protocolo = $numero . date('dmY');
+
+        $ouvidoria = new Ouvidoria([
+            'protocolo' => $protocolo,
+            'mensagem' => $request->mensagem,
+            'tp_ouvidoria_id' => $request->tipo_ouvidoria_id,
+            'canal_atendimento_id' => $request->canal_atendimento_id,
+            'sub_classificacao_id' => $request->sub_classificacao_id,
+            'observacao' => $request->observacao_novo,
+            'situacao_id' => $request->situacao_id,
+            'solicitante_id' => $solicitante->id
+        ]);
+        $ouvidoria->save();
+
+        $this->anexarArquivo($ouvidoria, $request);
+
+        $protocolo = $ouvidoria->protocolo;
+
+        if ($request->situacao_id != "") {
+            $situacaoOuvidoria = new SituacaoOuvidoria([
+                'ouvidoria_id' => $ouvidoria->id,
+                'situacao_id' => $request->situacao_id,
+                'comentario' => $request->comentario,
+            ]);
+            $situacaoOuvidoria->save();
+
+            if ($request->situacao_id == 1) {
+                $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
+            }
+            if ($request->situacao_id == 3) {
+                $para = $ouvidoria->solicitante->email;
+                $this->enviarEmailOuvidoriaConcluida($para);
+            }
+        }
+
+        return redirect('/ouvidoria')
+            ->with('success', self::MESSAGE_ADD_SUCCESS . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
     }
 
     public function carregarSolicitantePorCPF(Request $request)
