@@ -20,9 +20,12 @@ Route::get('/', function () {
 /**
  * HOME PAGE
  */
-Route::get('/home', function () {
-    return view('home');
-});
+Route::get('/home', 'HomeController@index');
+
+/**
+ * Envio de E-mails
+ */
+Route::get('/enviar-emails', 'EnvioEmailController@index');
 
 /**
  * CARTA DE SERVICOS

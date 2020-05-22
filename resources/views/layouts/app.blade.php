@@ -7,7 +7,7 @@
     <meta name="author" content="Luiz Roberto Teixeira Reis Junior">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 
-    <title>Ouvidoria - @yield('title')</title>
+    <title>Caixa de Assistência Social da FIPECq - FIPECq Vida - Ouvidoria</title>
 
     <!-- Bootstrap core CSS -->
     {{-- <link href="{{ asset('bootstrap/4.4.1/css/bootstrap.min.css') }}" rel="stylesheet"> --}}

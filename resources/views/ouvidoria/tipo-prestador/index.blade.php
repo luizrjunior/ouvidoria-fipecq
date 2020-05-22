@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Prestador')
-
 @section('javascript')
 <script>
     top.urlDestroyTipoPrestador = "{{ url('/tipo-prestador/') }}";

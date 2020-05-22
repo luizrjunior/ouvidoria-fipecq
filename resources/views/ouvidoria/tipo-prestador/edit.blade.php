@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Prestador')
-
 @section('javascript')
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-prestador/cad-tipo-prestador.js') }}"></script>
 @endsection

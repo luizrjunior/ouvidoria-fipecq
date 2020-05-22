@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailOuvidoriaConcluida extends Mailable
+class SendMailOuvidoria24 extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,8 +28,6 @@ class SendMailOuvidoriaConcluida extends Mailable
      */
     public function build()
     {
-        return $this->from('faleconosco@fipecqvida.org.br', 'FIPECq Vida')
-            ->subject('Ouvidoria FIPECq Vida – Solicitação Concluída')
-            ->view('emails.email_ouvidoria_concluida');
+        return $this->view('view.name');
     }
 }

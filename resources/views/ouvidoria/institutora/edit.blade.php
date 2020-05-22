@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Institutora')
-
 @section('javascript')
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/institutora/cad-institutora.js') }}"></script>
 @endsection

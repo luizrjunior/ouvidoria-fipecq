@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Pesquisa de Satisfação')
-
 @section('javascript')
 <script type="text/javascript" 
     src="{{ asset('/js/ouvidoria/pesquisa-satisfacao/cad-pesquisa-satisfacao.js') }}"></script>

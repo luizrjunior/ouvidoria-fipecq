@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Sistema de Ouvidoria - Detalhar Solicitação')
-
 @section('javascript')
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>

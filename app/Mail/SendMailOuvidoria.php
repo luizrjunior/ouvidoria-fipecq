@@ -32,7 +32,7 @@ class SendMailOuvidoria extends Mailable
     public function build()
     {
         return $this->from('faleconosco@fipecqvida.org.br', 'FIPECq Vida')
-            ->subject('Solicitação de Ouvidoria - FIPECq Vida')
+            ->subject('Ouvidoria FIPECq Vida – Solicitação Registrada')
             ->view('emails.email_ouvidoria_solicitacao')
             ->with([
                 'protocolo' => $this->ouvidoria->protocolo

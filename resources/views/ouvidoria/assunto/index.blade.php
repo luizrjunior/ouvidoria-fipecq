@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Assunto')
-
 @section('javascript')
 <script>
     top.urlDestroyAssunto = "{{ url('/assunto/') }}";

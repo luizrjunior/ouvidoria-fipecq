@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Ouvidoria')
-
 @section('javascript')
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-ouvidoria/cad-tipo-ouvidoria.js') }}"></script>
 @endsection

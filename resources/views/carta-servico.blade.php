@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Carta de Serviços')
-
 @section('content')
 <p>&nbsp;</p>
 
 
-<div style="position:relative; color:#000000; min-height:450px; width:827px; padding: 30px; background-color: #FFFFFF; font-weight: normal; text-align:justify; font-size:16px; font-weight:normal">
+<div class="panel-body">
 
 <h2>Carta de Serviços</h2>
 
@@ -154,9 +152,4 @@ O  Ouvidor – FIPECq Vida é nomeado pelo Diretor-Presidente, referendado pelo 
 
 </div>
 
-<br />&nbsp;
-<br />&nbsp;
-<br />&nbsp;
-<br />&nbsp;
-<br />&nbsp;
 @endsection

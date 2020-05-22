@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Fale com o Ouvidor')
-
 @section('javascript')
 <script>
 	function Avancar(tipo_ouvidoria_id) {

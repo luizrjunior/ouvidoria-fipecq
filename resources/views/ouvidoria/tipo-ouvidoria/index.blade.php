@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Tipo de Ouvidoria')
-
 @section('javascript')
 <script>
     top.urlDestroyTipoOuvidoria = "{{ url('/tipo-ouvidoria/') }}";

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use stdClass;
-
 use App\Mail\SendMailOuvidoria;
 use App\Mail\SendMailOuvidoriaConcluida;
 
@@ -17,8 +15,8 @@ use App\Models\Ouvidoria;
 use App\Models\Situacao;
 use App\Models\SituacaoOuvidoria;
 use App\Models\CanalAtendimento;
-use App\Models\Classificacao;
 use App\Models\SubClassificacao;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
