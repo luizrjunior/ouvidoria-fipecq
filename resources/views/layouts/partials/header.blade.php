@@ -24,8 +24,12 @@
             </div>
         </div>
     </div>&nbsp;
-    <button type="button" class="btn btn-dark">Rel. Pesq. Satisfação</button>&nbsp;
-    <button type="button" class="btn btn-dark">Relatórios</button>&nbsp;
+    <button type="button" class="btn btn-dark" onclick="location.href='/pesquisa-satisfacao/relatorio';">
+        Rel. Pesq. Satisfação
+    </button>&nbsp;
+    <button type="button" class="btn btn-dark" onclick="location.href='/relatorio/tipo-solicitacao';">
+        Relatórios
+    </button>&nbsp;
     <button type="button" class="btn btn-danger">Sair</button>
 </div>
 

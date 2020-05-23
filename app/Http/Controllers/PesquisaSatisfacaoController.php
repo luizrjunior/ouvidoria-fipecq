@@ -53,4 +53,73 @@ class PesquisaSatisfacaoController extends Controller
         return redirect('/home')->with('success', self::MESSAGE_ADD_SUCCESS);
     }
 
+    public function relatorio(Request $request)
+    {
+        $data = $request->except('_token');
+        if (empty($data['resposta_1_psq'])) {
+            $data['resposta_1_psq'] = "";
+        }
+
+        if (empty($data['resposta_2_psq'])) {
+            $data['resposta_2_psq'] = "";
+        }
+
+        if (empty($data['data_inicio'])) {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('01/m/Y'))->format('d/m/Y');
+        }
+        if (empty($data['data_termino'])) {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y'))->format('d/m/Y');
+        }
+
+        $pesquisasSatisfacao = $this->getPesquisasSatisfacao($data);
+
+        $respostas_1 = [
+            ['id' => '', 'nome' => 'Todos'], 
+            ['id' => '1', 'nome' => 'Sim'], 
+            ['id' => '2', 'nome' => 'Não'], 
+            ['id' => '3', 'nome' => 'Parcialmente Atendida']
+        ];
+        $respostas_2 = [
+            ['id' => '', 'nome' => 'Todos'], 
+            ['id' => '1', 'nome' => 'Satisfeito'], 
+            ['id' => '2', 'nome' => 'Insatisfeito'], 
+            ['id' => '3', 'nome' => 'Totalmente Insatisfeito']
+        ];
+
+        // dd($data);
+
+        if (!empty($data['print'])) {
+            return view('ouvidoria.pesquisa-satisfacao.relatorio-print', 
+                compact('respostas_1', 'respostas_2', 'pesquisasSatisfacao', 'data'));
+        }
+        return view('ouvidoria.pesquisa-satisfacao.relatorio', 
+            compact('respostas_1', 'respostas_2', 'pesquisasSatisfacao', 'data'));
+    }
+
+    private function getPesquisasSatisfacao(Array $data = null)
+    {
+        if ($data['data_inicio'] != "") {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio'])->format('Y-m-d');
+        }
+
+        if ($data['data_termino'] != "") {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
+        }
+
+        return PesquisaSatisfacao::where(function ($query) use ($data) {
+            if (isset($data['data_inicio']) && $data['data_inicio'] != "") {
+                $query->where('created_at', '>=', $data['data_inicio'] . ' 00:00:00');
+            }
+            if (isset($data['data_termino']) && $data['data_termino'] != "") {
+                $query->where('created_at', '<=', $data['data_termino'] . ' 23:59:59');
+            }
+            if (isset($data['resposta_1_psq']) && $data['resposta_1_psq'] != "") {
+                $query->where('resposta_1', $data['resposta_1_psq']);
+            }
+            if (isset($data['resposta_2_psq']) && $data['resposta_2_psq'] != "") {
+                $query->where('resposta_2', $data['resposta_2_psq']);
+            }
+        })->get();
+    }
+
 }

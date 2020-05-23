@@ -106,11 +106,25 @@ Route::post('/ouvidoria/store-admin', 'OuvidoriaController@storeAdmin')->name('o
 Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF');
 Route::post('/ouvidoria/acompanhar', 'OuvidoriaController@acompanhar')->name('ouvidoria.acompanhar');
 
+/**
+ * PESQUISA DE SATISFACAO
+ */
+Route::any('/pesquisa-satisfacao/relatorio', 'PesquisaSatisfacaoController@relatorio')
+    ->name('pesquisa-satisfacao.relatorio');
+
 Route::get('/pesquisa-satisfacao/{ouvidoria_id}/create', 'PesquisaSatisfacaoController@create');
 Route::post('/pesquisa-satisfacao/store', 'PesquisaSatisfacaoController@store')->name('pesquisa-satisfacao.store');
+
+/**
+ * RELATORIOS
+ */
+Route::any('/relatorio/tipo-solicitacao', 'RelatorioController@relatorioTipoOuvidoria')
+    ->name('relatorio.tipo-solicitacao');
+
+Route::post('/relatorio/tempo-espera', 'RelatorioController@relatorioTempoEspera')
+    ->name('relatorio.tempo-espera');
 
 /**
  * BENEFICIARIO
  */
 Route::get('/benef', 'BeneficiarioController@index');
-

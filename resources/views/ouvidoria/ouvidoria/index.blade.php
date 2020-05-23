@@ -63,6 +63,9 @@ $totalPage = 25;
                 <a href="{{ url('/ouvidoria/create-admin') }}" class="float-right" onclick="return validar()">
                     <i class="fa fa-plus"></i> Nova Solicitação
                 </a>
+                <a href="{{ url('/enviar-emails') }}" target="_blank" class="float-right">
+                    <i class="fa fa-paper-plane"></i> Enviar E-mails&nbsp;|&nbsp;
+                </a>
             </div>
             <div class="card-body">
 

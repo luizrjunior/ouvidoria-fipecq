@@ -229,7 +229,7 @@ class OuvidoriaController extends Controller
                 if (isset($data['situacao_id_psq']) && $data['situacao_id_psq'] != "") {
                     $query->where('fv_ouv_ouvidoria.situacao_id', $data['situacao_id_psq']);
                 }
-            })->orderBy('fv_ouv_ouvidoria.created_at')->paginate($data['totalPage']);
+            })->orderBy('fv_ouv_ouvidoria.created_at', 'DESC')->paginate($data['totalPage']);
             // })->toSql();
     }
 
