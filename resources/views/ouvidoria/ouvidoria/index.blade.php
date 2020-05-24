@@ -64,7 +64,7 @@ $totalPage = 25;
                     <i class="fa fa-plus"></i> Nova Solicitação
                 </a>
                 <a href="{{ url('/enviar-emails') }}" target="_blank" class="float-right">
-                    <i class="fa fa-paper-plane"></i> Enviar E-mails&nbsp;|&nbsp;
+                    <i class="fa fa-paper-plane"></i> Enviar E-mails de Alerta&nbsp;|&nbsp;
                 </a>
             </div>
             <div class="card-body">
@@ -201,7 +201,7 @@ $totalPage = 25;
                             @php
                             $ouvidoriaController = new \App\Http\Controllers\OuvidoriaController();
 
-                            $parte_data1 = explode("-", date('Y-m-d', strtotime($ouvidoria->dtCriacao)));
+                            $parte_data1 = explode("-", date('Y-m-d', strtotime($ouvidoria->dtcriacao)));
                             $anoinicial = $parte_data1['0'];
                             $mesinicial = $parte_data1['1'];
                             $diainicial = $parte_data1['2'];
@@ -219,20 +219,16 @@ $totalPage = 25;
                             @endphp
 
                         <tr>
-                            <td>
-                                <a href="/pesquisa-satisfacao/{{ $ouvidoria->id }}/create" target="_blank">
-                                    {{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}
-                                </a>
-                            </td>
-                            <td>{{ $ouvidoria->noTipoOuvidoria }}</td>
-                            <td>{{ $ouvidoria->dsTipoSolicitante }}</td>
-                            <td>{{ $ouvidoria->noSolicitante }}</td>
-                            <td>{{ date('d/m/Y', strtotime($ouvidoria->dtCriacao)) }}</td>
+                            <td>{{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}</td>
+                            <td>{{ $ouvidoria->notipoouvidoria }}</td>
+                            <td>{{ $ouvidoria->dstiposolicitante }}</td>
+                            <td>{{ $ouvidoria->nosolicitante }}</td>
+                            <td>{{ date('d/m/Y', strtotime($ouvidoria->dtcriacao)) }}</td>
                             <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
                             <td>
                                 <h5>
-                                    <span class="badge badge-pill badge-{{ $ouvidoria->noSituacaoCor }}" style="width: 100%;">
-                                        {{ $ouvidoria->noSituacao }}
+                                    <span class="badge badge-pill badge-{{ $ouvidoria->nosituacaocor }}" style="width: 100%;">
+                                        {{ $ouvidoria->nosituacao }}
                                     </span>
                                 </h5>
                             </td>

@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('javascript')
+<script type="text/javascript">
+    top.urlFaleComOuvidor = "{{ url('/fale-com-ouvidor') }}";
+    top.urlCartaServico = "{{ url('/carta-servico') }}";
+</script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/js/home.js') }}"></script>

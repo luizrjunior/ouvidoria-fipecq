@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('javascript')
+<script type="text/javascript">
+    top.urlCarregarSolicitanteCPF = "{{ url('/ouvidoria/carregar-solicitante-cpf') }}";
+</script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
@@ -15,21 +18,18 @@
 </style>
 
 @php
-$ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : "";
-$tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : "";
-$canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : "";
-$sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : "";
-$observacao_novo = $errors->has('observacao_novo') ? old('observacao_novo') : "";
-$mensagem = $errors->has('mensagem') ? old('mensagem') : "";
-$anexo = $errors->has('anexo') ? old('anexo') : "";
+$ouvidoria_id = old('ouvidoria_id');
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id');
+$canal_atendimento_id = old('canal_atendimento_id');
+$sub_classificacao_id = old('sub_classificacao_id');
+$observacao_novo = old('observacao_novo');
+$mensagem = old('mensagem');
+$anexo = old('anexo');
 
-$solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : "";
-$tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : "";
-$institutora_id = $errors->has('institutora_id') ? old('institutora_id') : "";
-$uf = $errors->has('uf') ? old('uf') : "";
-$email = $errors->has('email') ? old('email') : "";
-$telefone = $errors->has('telefone') ? old('telefone') : "";
-$celular = $errors->has('celular') ? old('celular') : "";
+$solicitante_id = old('solicitante_id');
+$tipo_solicitante_id = old('tipo_solicitante_id');
+$institutora_id = old('institutora_id');
+$uf = old('uf');
 @endphp
 
 <div class="row justify-content-center">
@@ -93,22 +93,22 @@ $celular = $errors->has('celular') ? old('celular') : "";
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('institutora_id') ? 'text-danger' : '' }}">
+                    <div class="row form-group">
                         <div class="col-md-3">
                             <label for="institutora_id" class="control-label">Institutora</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="institutora_id" name="institutora_id" class="form-control {{ $errors->has('institutora_id') ? 'is-invalid' : '' }}">
+                            <select id="institutora_id" name="institutora_id" 
+                                class="form-control">
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
                                     @if ($institutora->empresa == $institutora_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
+                                    <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger">{{ $errors->first('institutora_id') }}</span>
                         </div>
                     </div>
 
@@ -142,13 +142,14 @@ $celular = $errors->has('celular') ? old('celular') : "";
                         </div>
                     </div>
 
-                    <div class="row form-group">
+                    <div class="row form-group {{ $errors->has('email') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
                             <label for="email" class="control-label">E-mail (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="email" name="email" 
-                                value="{{ $email }}" />
+                            <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" 
+                                id="email" name="email" value="{{ old('email') }}" />
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
                         </div>
                     </div>
 
@@ -157,18 +158,19 @@ $celular = $errors->has('celular') ? old('celular') : "";
                             <label for="telefone" class="control-label">Telefone</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="telefone" name="telefone" 
-                                value="{{ $telefone }}" />
+                            <input type="text" class="form-control" 
+                                id="telefone" name="telefone" value="{{ old('telefone') }}" />
                         </div>
                     </div>
 
-                    <div class="row form-group">
+                    <div class="row form-group {{ $errors->has('celular') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
                             <label for="celular" class="control-label">Celular (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="celular" name="celular" 
-                                value="{{ $celular }}" />
+                            <input type="text" class="form-control {{ $errors->has('celular') ? 'is-invalid' : '' }}" 
+                                id="celular" name="celular" value="{{ old('celular') }}" />
+                            <span class="text-danger">{{ $errors->first('celular') }}</span>
                         </div>
                     </div>
                     
@@ -228,14 +230,28 @@ $celular = $errors->has('celular') ? old('celular') : "";
                     <h5>Mensagem e Anexo</h5>
                     <hr>
 
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <textarea class="form-control" rows="5" id="mensagem" name="mensagem" 
-                                class="form-control">{{ $mensagem }}</textarea>
+                    <div class="row form-group {{ $errors->has('mensagem') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="mensagem" class="control-label">Digite aqui sua mensagem (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea rows="5" id="mensagem" name="mensagem" 
+                                class="form-control">{{ old('mensagem') }}</textarea>
+                            <span class="text-danger">{{ $errors->first('mensagem') }}</span>
                         </div>
                     </div>
 
                     <div class="row form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-9">
+                            <small class="form-text text-muted">
+                                Sua mensagem tem <span class="caracteres">1200</span> caracteres restantes
+                            </small>
+                        </div>
+                    </div>
+
+                        <div class="row form-group">
                         <div class="col-md-3">
                             <label for="anexo" class="control-label">Anexar Arquivo</label>
                         </div>
@@ -269,23 +285,26 @@ $celular = $errors->has('celular') ? old('celular') : "";
                     <h5>Situação - Definir situação da mensagem:</h5>
                     <hr>
 
-                    <div class="row form-group">
+                    <div class="row form-group {{ $errors->has('situacao_id') ? 'text-danger' : '' }}">
                         <div class="col-md-6">
-                            <label for="situacao_id" class="control-label">Definir Situação:</label>
-                            <select id="situacao_id" name="situacao_id" class="form-control">
+                            <label for="situacao_id" class="control-label">Definir Situação (*)</label>
+                            <select id="situacao_id" name="situacao_id" 
+                                class="form-control {{ $errors->has('situacao_id') ? 'is-invalid' : '' }}">
                                 <option value=""> -- SELECIONE -- </option>
                                 @foreach ($situacoes as $situacao)
                                     <option value="{{ $situacao->id }}">{{ strtoupper($situacao->nome) }}</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger">{{ $errors->first('situacao_id') }}</span>
                         </div>
                     </div>
 
-                    <div class="row form-group">
+                    <div class="row form-group {{ $errors->has('comentario') ? 'text-danger' : '' }}">
                         <div class="col-md-12">
-                            <label for="comentario" class="control-label">Digite aqui sua mensagem:</label>
+                            <label for="comentario" class="control-label">Digite aqui sua mensagem (*)</label>
                             <textarea class="form-control" rows="5" id="comentario" name="comentario" 
                                 class="form-control"></textarea>
+                            <span class="text-danger">{{ $errors->first('comentario') }}</span>
                         </div>
                     </div>
 

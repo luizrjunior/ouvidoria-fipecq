@@ -22,10 +22,10 @@ $(document).ready(function () {
     $("#cpf_psq").mask("999.999.999-99");
 
     $("#btnFaleComOuvidor").click(function () {
-        abrirLink('/fale-com-ouvidor');
+        abrirLink(top.urlFaleComOuvidor);
     });
 
     $("#btnCartaServico").click(function () {
-        abrirLink('/carta-servico');
+        abrirLink(top.urlCartaServico);
     });
 });

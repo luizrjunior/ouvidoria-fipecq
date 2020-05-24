@@ -6,6 +6,7 @@ use App\Mail\SendMailOuvidoria;
 use App\Mail\SendMailOuvidoriaConcluida;
 
 use App\Models\Beneficiario;
+use App\Models\PlanoBeneficiario;
 use App\Models\Institutora;
 
 use App\Models\TipoSolicitante;
@@ -26,7 +27,7 @@ class OuvidoriaController extends Controller
         'tipo_ouvidoria_id.required' => 'O Tipo de Solicitação precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'tipo_solicitante_id.required' => 'O Tipo de Solicitante - Você é precisa ser informado. Por favor, '
+        'tipo_solicitante_id.required' => 'Você é precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
         'cpf.required' => 'O CPF precisa ser informado. Por favor, '
@@ -37,9 +38,6 @@ class OuvidoriaController extends Controller
             . 'Por favor, você pode verificar isso?',
 
         'nome.required' => 'O Nome precisa ser informado. Por favor, '
-        . 'você pode verificar isso?',
-
-        'institutora_id.required' => 'A Institutora/Empresa precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
         'uf.required' => 'O Estado precisa ser informado. Por favor, '
@@ -58,7 +56,15 @@ class OuvidoriaController extends Controller
 
         'mensagem.required' => 'A Mensagem precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
-        'mensagem.max' => 'Ops, a Mensagem não precisa ter mais que 255 caracteres. '
+        'mensagem.max' => 'Ops, a Mensagem não precisa ter mais que 1200 caracteres. '
+        . 'Por favor, você pode verificar isso?',
+
+        'situacao_id.required' => 'A Situação precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
+
+        'comentario.required' => 'O Comentário precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
+        'comentario.max' => 'Ops, o Comentário não precisa ter mais que 1200 caracteres. '
         . 'Por favor, você pode verificar isso?',
     ];
 
@@ -252,12 +258,11 @@ class OuvidoriaController extends Controller
             'tipo_solicitante_id'=>'required',
             'cpf'=>'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
             'nome'=>'required|max:120',
-            'institutora_id'=>'required',
             'uf'=>'required',
             'cidade'=>'required|max:120',
             'email'=>'required|max:120',
             'celular'=>'required|max:15',
-            'mensagem'=>'required|max:255',
+            'mensagem'=>'required|max:1200',
         ], self::MESSAGES_ERRORS);
 
         if ($request->solicitante_id == "") {
@@ -299,12 +304,6 @@ class OuvidoriaController extends Controller
         ]);
         $ouvidoria->save();
 
-        $this->anexarArquivo($ouvidoria, $request);
-        
-        $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
-
-        $protocolo = $ouvidoria->protocolo;
-
         $situacaoOuvidoria = new SituacaoOuvidoria([
             'comentario' => 'Solicitação de ouvidoria registrada em ' . date('d/m/Y H:i'),
             'ouvidoria_id' => $ouvidoria->id,
@@ -312,6 +311,10 @@ class OuvidoriaController extends Controller
         ]);
         $situacaoOuvidoria->save();
 
+        $this->anexarArquivo($ouvidoria, $request);
+        
+        $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
+        
         return redirect('/fale-com-ouvidor')
             ->with('success', self::MESSAGE_ADD_SUCCESS . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
     }
@@ -442,14 +445,6 @@ class OuvidoriaController extends Controller
         Mail::to($para)->send(new SendMailOuvidoriaConcluida());
     }
 
-    public function destroy(int $id)
-    {
-        $ouvidoria = Ouvidoria::find($id);
-        $ouvidoria->delete();
-   
-        return redirect('/ouvidoria/create')->with('success', self::MESSAGE_DESTROY_SUCCESS);
-    }
-
     public function createAdmin(Request $request)
     {   
         $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
@@ -472,12 +467,13 @@ class OuvidoriaController extends Controller
             'tipo_solicitante_id'=>'required',
             'cpf'=>'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
             'nome'=>'required|max:120',
-            'institutora_id'=>'required',
             'uf'=>'required',
             'cidade'=>'required|max:120',
             'email'=>'required|max:120',
             'celular'=>'required|max:15',
-            'mensagem'=>'required|max:255',
+            'mensagem'=>'required|max:1200',
+            'situacao_id'=>'required',
+            'comentario'=>'required|max:1200',
         ], self::MESSAGES_ERRORS);
 
         if ($request->solicitante_id == "") {
@@ -535,11 +531,11 @@ class OuvidoriaController extends Controller
             $situacaoOuvidoria->save();
 
             if ($request->situacao_id == 1) {
-                $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
+                // $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
             }
             if ($request->situacao_id == 3) {
-                $para = $ouvidoria->solicitante->email;
-                $this->enviarEmailOuvidoriaConcluida($para);
+                // $para = $ouvidoria->solicitante->email;
+                // $this->enviarEmailOuvidoriaConcluida($para);
             }
         }
 
@@ -554,12 +550,37 @@ class OuvidoriaController extends Controller
         //Localizar na Tabela de Beneficiarios
         if (count($solicitante_request) == 0) {
             $cpf = $this->limpaCPF_CNPJ($request->cpf);
-            $benef = Beneficiario::where('cic', $cpf)->get();
+
+            // $benef = Beneficiario::where('cic', $cpf)->get();
+            // $planoBenef = array();
+            // $planoBenef[0]->empresa = 102;
+            
+            $benef = Beneficiario::select(
+                    'cad_benef.matricula', 
+                    'cad_benef.nome', 
+                    'cad_benef.cic',
+                    'cad_benef.email',
+                    'cad_benef.fone_res',
+                    'cad_benef.fone_cel',
+                    'cad_cidade.nome as nocidade',
+                    'cad_cidade.estado'
+                )
+                ->join('plano.cad_cidade', 'cad_benef.cidade', '=', 'plano.cad_cidade.cidade')
+                ->where('cad_benef.cic', $cpf)->get();
+
             if (count($benef) > 0) {
+                $planoBenef = PlanoBeneficiario::where('matricula', $benef[0]->matricula)
+                ->orderBy('data_contrato', 'DESC')->get();
+
                 $solicitante = new Solicitante();
                 $solicitante->nome = $benef[0]->nome;
                 $solicitante->cpf = $this->formatCnpjCpf($benef[0]->cic);
                 $solicitante->email = $benef[0]->email;
+                $solicitante->telefone = $benef[0]->fone_res;
+                $solicitante->celular = $benef[0]->fone_cel;
+                $solicitante->uf = $benef[0]->estado;
+                $solicitante->cidade = $benef[0]->nocidade;
+                $solicitante->institutora_id = $planoBenef[0]->empresa;
             }
         }
         if (count($solicitante_request) > 0) {

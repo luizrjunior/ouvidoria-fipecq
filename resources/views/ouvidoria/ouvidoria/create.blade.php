@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('javascript')
+<script type="text/javascript">
+    top.urlCarregarSolicitanteCPF = "{{ url('/ouvidoria/carregar-solicitante-cpf') }}";
+</script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
@@ -39,11 +42,12 @@ $uf = old('uf');
                     <input type="hidden" id="solicitante_id" name="solicitante_id" value="{{ $solicitante_id }}">
 
                     <div class="row form-group">
-                        <div class="col-md-3">
+                        <div class="col-md-3 {{ $errors->has('tipo_ouvidoria_id') ? 'text-danger' : '' }}">
                             <label for="tipo_ouvidoria_id" class="control-label">Tipo de Solicitação</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="tipo_ouvidoria_id" name="tipo_ouvidoria_id" class="form-control" disabled>
+                            <select id="tipo_ouvidoria_id" name="tipo_ouvidoria_id" 
+                                class="form-control {{ $errors->has('tipo_ouvidoria_id') ? 'is-invalid' : '' }}" disabled>
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                     @php $selected = ""; @endphp
@@ -53,6 +57,7 @@ $uf = old('uf');
                                     <option value="{{ $tipoOuvidoria->id }}" {{$selected}}>{{ $tipoOuvidoria->nome }}</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger">{{ $errors->first('tipo_ouvidoria_id') }}</span>
                         </div>
                     </div>
 
@@ -83,7 +88,8 @@ $uf = old('uf');
                             <label for="tipo_solicitante_id" class="control-label">Você é (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="tipo_solicitante_id" name="tipo_solicitante_id" class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
+                            <select id="tipo_solicitante_id" name="tipo_solicitante_id" 
+                                class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($tiposSolicitantes as $tipoSolicitante)
                                     @php $selected = ""; @endphp
@@ -97,22 +103,22 @@ $uf = old('uf');
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('institutora_id') ? 'text-danger' : '' }}">
+                    <div class="row form-group">
                         <div class="col-md-3">
                             <label for="institutora_id" class="control-label">Institutora</label>
                         </div>
                         <div class="col-md-9">
-                            <select id="institutora_id" name="institutora_id" class="form-control {{ $errors->has('institutora_id') ? 'is-invalid' : '' }}">
+                            <select id="institutora_id" name="institutora_id" 
+                                class="form-control">
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
                                     @if ($institutora->empresa == $institutora_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
+                                    <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger">{{ $errors->first('institutora_id') }}</span>
                         </div>
                     </div>
 
@@ -157,14 +163,13 @@ $uf = old('uf');
                         </div>
                     </div>
 
-                    <div class="row form-group {{ $errors->has('telefone') ? 'text-danger' : '' }}">
+                    <div class="row form-group">
                         <div class="col-md-3">
                             <label for="telefone" class="control-label">Telefone</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('telefone') ? 'is-invalid' : '' }}" 
+                            <input type="text" class="form-control" 
                                 id="telefone" name="telefone" value="{{ old('telefone') }}" />
-                            <span class="text-danger">{{ $errors->first('telefone') }}</span>
                         </div>
                     </div>
 
@@ -194,7 +199,9 @@ $uf = old('uf');
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-9">
-                            <small class="form-text text-muted">Sua mensagem tem <span class="caracteres">1200</span> caracteres restantes</small>
+                            <small class="form-text text-muted">
+                                Sua mensagem tem <span class="caracteres">1200</span> caracteres restantes
+                            </small>
                         </div>
                     </div>
 
@@ -203,7 +210,7 @@ $uf = old('uf');
                             <label for="anexo" class="control-label">Anexar Arquivo</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="file" id="anexo" name="anexo" />
+                            <input type="file" id="anexo" name="anexo" value="{{ old('anexo') }}" />
                         </div>
                     </div>
 
@@ -215,13 +222,13 @@ $uf = old('uf');
                         <div class="col-md-3">
                             <button type="button" class="btn btn-danger" 
                                 onclick="location.href='{{ url('/fale-com-ouvidor') }}';">
-                                Cancelar
+                                <i class="fa fa-times"></i> Cancelar
                             </button>
                         </div>
 
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary" onclick="return validar();">
-                                Cadastrar Solicitação
+                                <i class="fa fa-save"></i> Cadastrar Solicitação
                             </button>
                         </div>
 

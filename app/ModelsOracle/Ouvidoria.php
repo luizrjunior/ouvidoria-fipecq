@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ouvidoria extends Model
 {
 
-    public $table = 'fv_ouv_ouvidoria';
+    public $table = 'internet.fv_ouv_ouvidoria';
 
     protected $fillable = [
         'protocolo',
