@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarAssunto(assunto_id) 
 {
     $('#carregando').show();
-    var formURL = '/assunto/ativar-desativar-assunto';
+    var formURL = top.urlAtivarDesativarAssunto;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,5 @@ function ativarDesativarAssunto(assunto_id)
 
 function atualizarListaAssunto() 
 {
-    location.href='/assunto';
-}
-
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyAssunto);
-}
-
-function destroyAssunto()
-{
-    $('#carregando').show();
-    $('#formSearchAssunto').attr('action', top.urlDestroyAssunto + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchAssunto").submit();
+    location.href=top.urlListaAssuntos;
 }

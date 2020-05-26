@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarTipoPrestador(tipo_prestador_id) 
 {
     $('#carregando').show();
-    var formURL = '/tipo-prestador/ativar-desativar-tipo-prestador';
+    var formURL = top.urlAtivarDesativarTipoPrestador;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarTipoPrestador(tipo_prestador_id)
 
 function atualizarListaTipoPrestador() 
 {
-    location.href='/tipo-prestador';
+    location.href=top.urlListaTipoPrestadors;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyTipoPrestador);
-}
-
-function destroyTipoPrestador()
-{
-    $('#carregando').show();
-    $('#formSearchTipoPrestador').attr('action', top.urlDestroyTipoPrestador + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchTipoPrestador").submit();
-}

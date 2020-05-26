@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarInstitutora(institutora_id) 
 {
     $('#carregando').show();
-    var formURL = '/institutora/ativar-desativar-institutora';
+    var formURL = top.urlAtivarDesativarInstitutora;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarInstitutora(institutora_id)
 
 function atualizarListaInstitutora() 
 {
-    location.href='/institutora';
+    location.href=top.urlListaInstitutoras;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyInstitutora);
-}
-
-function destroyInstitutora()
-{
-    $('#carregando').show();
-    $('#formSearchInstitutora').attr('action', top.urlDestroyInstitutora + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchInstitutora").submit();
-}

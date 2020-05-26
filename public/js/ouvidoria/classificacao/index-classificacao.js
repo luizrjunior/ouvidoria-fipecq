@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarClassificacao(classificacao_id) 
 {
     $('#carregando').show();
-    var formURL = '/classificacao/ativar-desativar-classificacao';
+    var formURL = top.urlAtivarDesativarClassificacao;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarClassificacao(classificacao_id)
 
 function atualizarListaClassificacao() 
 {
-    location.href='/classificacao';
+    location.href=top.urlListaClassificacaos;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyClassificacao);
-}
-
-function destroyClassificacao()
-{
-    $('#carregando').show();
-    $('#formSearchClassificacao').attr('action', top.urlDestroyClassificacao + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchClassificacao").submit();
-}

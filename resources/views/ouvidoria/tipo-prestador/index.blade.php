@@ -2,7 +2,8 @@
 
 @section('javascript')
 <script>
-    top.urlDestroyTipoPrestador = "{{ url('/tipo-prestador/') }}";
+    top.urlListaTipoPrestadors = "{{ url('/tipo-prestador/') }}";
+    top.urlAtivarDesativarTipoPrestador = "{{ url('/assunto/ativar-desativar-tipo-prestador') }}";
 </script>
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/tipo-prestador/index-tipo-prestador.js') }}"></script>
 @endsection
@@ -80,18 +81,13 @@
                             <td>
                                 @if ($tipo_prestador->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->id }})">Desativar
+                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->id }})"> Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->id }})">Ativar
+                                    onclick="ativarDesativarTipoPrestador({{ $tipo_prestador->id }})"> Ativar
                                 </button>
                                 @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $tipo_prestador->id }})" disabled>Excluir
-                                </button>
                             </td>
                         </tr>
                         @endforeach

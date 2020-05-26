@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarSubClassificacao(sub_classificacao_id) 
 {
     $('#carregando').show();
-    var formURL = '/sub-classificacao/ativar-desativar-sub-classificacao';
+    var formURL = top.urlAtivarDesativarSubClassificacao;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarSubClassificacao(sub_classificacao_id)
 
 function atualizarListaSubClassificacao() 
 {
-    location.href='/sub-classificacao';
+    location.href=top.urlListaSubClassificacaos;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroySubClassificacao);
-}
-
-function destroySubClassificacao()
-{
-    $('#carregando').show();
-    $('#formSearchSubClassificacao').attr('action', top.urlDestroySubClassificacao + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchSubClassificacao").submit();
-}

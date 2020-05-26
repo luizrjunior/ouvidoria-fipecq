@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarTipoSolicitante(tipo_solicitante_id) 
 {
     $('#carregando').show();
-    var formURL = '/tipo-solicitante/ativar-desativar-tipo-solicitante';
+    var formURL = top.urlAtivarDesativaTipoSolicitante;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarTipoSolicitante(tipo_solicitante_id)
 
 function atualizarListaTipoSolicitante() 
 {
-    location.href='/tipo-solicitante';
+    location.href=top.urlTipoSolicitantes;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyTipoSolicitante);
-}
-
-function destroyTipoSolicitante()
-{
-    $('#carregando').show();
-    $('#formSearchTipoSolicitante').attr('action', top.urlDestroyTipoSolicitante + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchTipoSolicitante").submit();
-}

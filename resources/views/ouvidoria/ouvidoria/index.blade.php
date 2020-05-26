@@ -17,6 +17,7 @@ $tipo_ouvidoria_id_psq = "";
 $tipo_solicitante_id_psq = "";
 $data_inicio = date('01/m/Y');
 $data_termino = date('d/m/Y');
+$sub_classificacao_id_psq = "";
 $situacao_id_psq = "";
 $totalPage = 25;
 @endphp
@@ -28,6 +29,7 @@ $totalPage = 25;
     $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
     $data_inicio = $data['data_inicio'];
     $data_termino = $data['data_termino'];
+    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
     $situacao_id_psq = $data['situacao_id_psq'];
     $totalPage = $data['totalPage'];
     @endphp
@@ -153,10 +155,33 @@ $totalPage = 25;
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4">&nbsp;</div>
+                    <div class="col-md-6" id="divFormNameEmail">
+                        <label for="sub_classificacao_id_psq" class="control-label">Classificação</label>
+                        <select id="sub_classificacao_id_psq" name="sub_classificacao_id_psq" class="form-control">
+                            <option value=""> -- SELECIONE -- </option>
+                            @foreach ($subClassificacoes as $subclassificacao)
+                                @php $selected = ""; @endphp
+                                @if ($subclassificacao->id == $sub_classificacao_id_psq)
+                                    @php $selected = "selected"; @endphp
+                                @endif
+                                <option value="{{ $subclassificacao->id }}" {{ $selected }}>
+                                    {{ strtoupper($subclassificacao->classificacao->descricao) }} - {{ strtoupper($subclassificacao->descricao) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-4">
+                        &nbsp;
+                    </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary"
-                                onclick="return validar();" style="margin-top: 30px; width: 100%;">
+                                onclick="return validar();" style="width: 100%;">
                             <i class="fa fa-btn fa-search"></i> Pesquisar
                         </button>
                     </div>
@@ -235,7 +260,7 @@ $totalPage = 25;
                             <td>
                                 <a href="{{ route('ouvidoria.edit', $ouvidoria->id) }}" title="Detalhar Solicitação" 
                                     class="btn btn-primary btn-sm" onclick="return validar()">
-                                    <i class="fa fa-btn fa-file-text-o"></i> Detalhar
+                                     Detalhar
                                 </a>
                             </td>
                         </tr>

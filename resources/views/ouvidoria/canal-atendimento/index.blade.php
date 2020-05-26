@@ -2,7 +2,8 @@
 
 @section('javascript')
 <script>
-    top.urlDestroyCanalAtendimento = "{{ url('/canal-atendimento/') }}";
+    top.urlListaCanalAtendimentos = "{{ url('/canal-atendimento/') }}";
+    top.urlAtivarDesativarCanalAtendimento = "{{ url('/canal-atendimento/ativar-desativar-canal-atendimento') }}";
 </script>
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/canal-atendimento/index-canal-atendimento.js') }}"></script>
 @endsection
@@ -80,18 +81,13 @@
                             <td>
                                 @if ($canal_atendimento->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->id }})">Desativar
+                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->id }})"> Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->id }})">Ativar
+                                    onclick="ativarDesativarCanalAtendimento({{ $canal_atendimento->id }})"> Ativar
                                 </button>
                                 @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $canal_atendimento->id }})" disabled>Excluir
-                                </button>
                             </td>
                         </tr>
                         @endforeach

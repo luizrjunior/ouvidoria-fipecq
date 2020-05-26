@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarSituacao(situacao_id) 
 {
     $('#carregando').show();
-    var formURL = '/situacao/ativar-desativar-situacao';
+    var formURL = top.urlAtivarDesativarSituacao;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarSituacao(situacao_id)
 
 function atualizarListaSituacao() 
 {
-    location.href='/situacao';
+    location.href=top.urlListaSituacaos;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroySituacao);
-}
-
-function destroySituacao()
-{
-    $('#carregando').show();
-    $('#formSearchSituacao').attr('action', top.urlDestroySituacao + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchSituacao").submit();
-}

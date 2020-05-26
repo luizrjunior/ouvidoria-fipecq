@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarCanalAtendimento(canal_atendimento_id) 
 {
     $('#carregando').show();
-    var formURL = '/canal-atendimento/ativar-desativar-canal-atendimento';
+    var formURL = top.urlAtivarDesativarCanalAtendimento;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,5 @@ function ativarDesativarCanalAtendimento(canal_atendimento_id)
 
 function atualizarListaCanalAtendimento() 
 {
-    location.href='/canal-atendimento';
-}
-
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyCanalAtendimento);
-}
-
-function destroyCanalAtendimento()
-{
-    $('#carregando').show();
-    $('#formSearchCanalAtendimento').attr('action', top.urlDestroyCanalAtendimento + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchCanalAtendimento").submit();
+    location.href=top.urlListaCanalAtendimentos;
 }

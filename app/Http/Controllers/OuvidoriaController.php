@@ -124,6 +124,10 @@ class OuvidoriaController extends Controller
             $data['tipo_solicitante_id_psq'] = "";
         }
 
+        if (empty($data['sub_classificacao_id_psq'])) {
+            $data['sub_classificacao_id_psq'] = "";
+        }
+
         if (empty($data['situacao_id_psq'])) {
             $data['situacao_id_psq'] = "";
         }
@@ -141,10 +145,11 @@ class OuvidoriaController extends Controller
 
         $tiposOuvidorias = TipoOuvidoria::get();
         $tiposSolicitantes = TipoSolicitante::get();
+        $subClassificacoes = SubClassificacao::get();
         $situacoes = Situacao::get();
 
         return view('ouvidoria.ouvidoria.index', 
-            compact('tiposOuvidorias', 'tiposSolicitantes', 'situacoes', 'ouvidorias', 'data'));
+            compact('tiposOuvidorias', 'tiposSolicitantes', 'subClassificacoes', 'situacoes', 'ouvidorias', 'data'));
     }
 
     public function search(Request $request)
@@ -166,6 +171,10 @@ class OuvidoriaController extends Controller
             $data['tipo_solicitante_id_psq'] = "";
         }
 
+        if (empty($data['sub_classificacao_id_psq'])) {
+            $data['sub_classificacao_id_psq'] = "";
+        }
+
         if (empty($data['situacao_id_psq'])) {
             $data['situacao_id_psq'] = "";
         }
@@ -183,10 +192,11 @@ class OuvidoriaController extends Controller
 
         $tiposOuvidorias = TipoOuvidoria::get();
         $tiposSolicitantes = TipoSolicitante::get();
+        $subClassificacoes = SubClassificacao::get();
         $situacoes = Situacao::get();
 
         return view('ouvidoria.ouvidoria.index', 
-            compact('tiposOuvidorias', 'tiposSolicitantes', 'situacoes', 'ouvidorias', 'data'));
+            compact('tiposOuvidorias', 'tiposSolicitantes', 'subClassificacoes', 'situacoes', 'ouvidorias', 'data'));
     }
 
     private function getOuvidorias(Array $data = null)
@@ -231,6 +241,9 @@ class OuvidoriaController extends Controller
                 }
                 if (isset($data['data_termino']) && $data['data_termino'] != "") {
                     $query->where('fv_ouv_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
+                }
+                if (isset($data['sub_classificacao_id_psq']) && $data['sub_classificacao_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.sub_classificacao_id', $data['sub_classificacao_id_psq']);
                 }
                 if (isset($data['situacao_id_psq']) && $data['situacao_id_psq'] != "") {
                     $query->where('fv_ouv_ouvidoria.situacao_id', $data['situacao_id_psq']);

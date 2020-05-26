@@ -6,7 +6,7 @@ function validar()
 function ativarDesativarTipoOuvidoria(tipo_ouvidoria_id) 
 {
     $('#carregando').show();
-    var formURL = '/tipo-ouvidoria/ativar-desativar-tipo-ouvidoria';
+    var formURL = top.urlAtivarDesativarTipoOuvidoria;
     $.ajax({
         type: "POST",
         url: formURL,
@@ -24,19 +24,6 @@ function ativarDesativarTipoOuvidoria(tipo_ouvidoria_id)
 
 function atualizarListaTipoOuvidoria() 
 {
-    location.href='/tipo-ouvidoria';
+    location.href=top.urlListaTipoOuvidorias;
 }
 
-function confirmDestroy(id)
-{
-    top.id = id;
-    Componentes.modalConfirmacao('Tem certeza que deseja excluir este registro?', destroyTipoOuvidoria);
-}
-
-function destroyTipoOuvidoria()
-{
-    $('#carregando').show();
-    $('#formSearchTipoOuvidoria').attr('action', top.urlDestroyTipoOuvidoria + '/' + top.id);
-    $("#_method").val('DELETE');
-    $("#formSearchTipoOuvidoria").submit();
-}

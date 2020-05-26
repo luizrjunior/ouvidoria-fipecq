@@ -2,7 +2,8 @@
 
 @section('javascript')
 <script>
-    top.urlDestroySubClassificacao = "{{ url('/sub-classificacao/') }}";
+    top.urlListaSubClassificacaos = "{{ url('/sub-classificacao') }}";
+    top.urlAtivarDesativarSubClassificacao = "{{ url('/sub-classificacao/ativar-desativar-sub-classificacao') }}";
 </script>
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/sub-classificacao/index-sub-classificacao.js') }}"></script>
 @endsection
@@ -82,18 +83,13 @@
                             <td>
                                 @if ($sub_classificacao->status)
                                 <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})">Desativar
+                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})"> Desativar
                                 </button>
                                 @else
                                 <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})">Ativar
+                                    onclick="ativarDesativarSubClassificacao({{ $sub_classificacao->id }})"> Ativar
                                 </button>
                                 @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" type="button" title="Excluir" 
-                                    onclick="confirmDestroy({{ $sub_classificacao->id }})" disabled>Excluir
-                                </button>
                             </td>
                         </tr>
                         @endforeach
