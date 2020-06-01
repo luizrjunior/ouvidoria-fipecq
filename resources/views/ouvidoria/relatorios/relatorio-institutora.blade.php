@@ -2,6 +2,7 @@
 
 @section('javascript')
 <script type="text/javascript">
+    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
     top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
     top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
@@ -22,32 +23,19 @@
 <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
 <!-- Page script -->
 @php
-$tiposSolicitacao = array();
-$dataChart = "";
-$bgColor = [
-    1 => '#6495ED',
-    2 => '#4169E1',
-    3 => '#1E90FF',
-    4 => '#00BFFF',
-    5 => '#87CEFA',
-    6 => '#87CEEB',
-    7 => '#ADD8E6',
-    8 => '#4682B4',
-    9 => '#B0C4DE',
-    10 => '#0000FF',
-];
+$institutoras = array();
 $y = 0;
 $id_old = "";
 @endphp
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
-        $id = $ouvidoria->tp_ouvidoria_id;
+        $id = $ouvidoria->idinstitutora;
         if ($id != $id_old) {
             $y = 1;
         }
-        $tiposSolicitacao[$id]['qtde'] = $y;
-        $tiposSolicitacao[$id]['nome'] = $ouvidoria->tipoOuvidoria->nome;
+        $institutoras[$id]['qtde'] = $y;
+        $institutoras[$id]['nome'] = $ouvidoria->noempresa;
         $id_old = $id;
         $y++;
         @endphp
@@ -56,69 +44,74 @@ $id_old = "";
 
 <script>
     $(function () {
-    /*
-    * DONUT CHART
-    * -----------
-    */
-    @php
-    $i = 1;
-    @endphp
-    var donutData = [
-        @php
-        $total = 0;
-        @endphp
-        @if (count($tiposSolicitacao) > 0)
-            @foreach ($tiposSolicitacao as $tipoSolicitacao)
+        /*
+        * BAR CHART
+        * ---------
+        */
+        var bar_data = {
+            data : [
                 @php
-                $nome = $tipoSolicitacao['nome'];
-                $qtde = $tipoSolicitacao['qtde'];
-                $color = $bgColor[$i];
+                $i = 0;
+                $total = 0;
                 @endphp
-                { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
-                @php
-                $i++;
-                $total += $qtde;
-                @endphp
-            @endforeach
-        @endif
-        ];
-    $.plot('#donut-chart', donutData, {
+                @if (count($institutoras) > 0)
+                    @foreach ($institutoras as $institutora)
+                        @php
+                        $qtde = $institutora['qtde'];
+                        @endphp
+                        [{{ $qtde }}, {{ $i }}],
+                        @php
+                        $i++;
+                        $total += $qtde;
+                        @endphp
+                    @endforeach
+                @endif
+                ],
+                color: '#FFD700'
+            };
+
+        // Setup labels for use on the Y-axis  
+        var tickLabels = [
+            @php
+            $i = 0;
+            $total = 0;
+            @endphp
+            @if (count($institutoras) > 0)
+                @foreach ($institutoras as $institutora)
+                    @php
+                    $nome = $institutora['nome'];
+                    $qtde = $institutora['qtde'];
+                    @endphp
+                    [{{ $i }}, '{{ $nome }}'],
+                    @php
+                    $i++;
+                    $total += $qtde;
+                    @endphp
+                @endforeach
+            @endif
+            ];
+
+        $.plot('#bar-chart', [bar_data], {
+            grid  : {
+                borderWidth: 1,
+                borderColor: '#f3f3f3',
+                tickColor  : '#f3f3f3'
+            },
             series: {
-                pie: {
-                    show       : true,
-                    radius     : 1,
-                    innerRadius: 0.5,
-                    label      : {
-                        show     : true,
-                        radius   : 2 / 3,
-                        formatter: labelFormatter,
-                        threshold: 0.1
-                    }
+                bars: {
+                    show    : true,
+                    horizontal: true,
+                    barWidth: 0.3,
+                    align   : 'center'
                 }
             },
-            grid: {
-                hoverable: true,
-                clickable: true
-            },
-            legend: {
-                show: true
+            yaxis : {
+                ticks: tickLabels
             }
         });
-        /*
-        * END DONUT CHART
-        */
-    });
+        /* END BAR CHART */
 
-    /*
-    * Custom Label formatter
-    * ----------------------
-    */
-    function labelFormatter(label, series) {
-        return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
-            + label
-            + '<br>'
-            + Math.round(series.percent) + '%</div>'
-    }
+    });
 </script>
 @endsection
 
@@ -142,7 +135,7 @@ $data_termino = date('d/m/Y');
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Tipo de Solicitação</a>
+      <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
@@ -151,7 +144,7 @@ $data_termino = date('d/m/Y');
       <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+      <a class="nav-link active" href="#">Institutora</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
@@ -165,7 +158,7 @@ $data_termino = date('d/m/Y');
     <div class="col-md-12">
         
         <form id="formRelatorios" class="form-horizontal" 
-            role="form" method="POST" action="{{ route('relatorio.tipo-solicitacao') }}">
+            role="form" method="POST" action="{{ route('relatorio.institutora') }}">
             @csrf
             <input type="hidden" id="print" name="print" value="">
 
@@ -217,7 +210,7 @@ $data_termino = date('d/m/Y');
                             &nbsp;
                         </div>
                         <div class="col-md-10">
-                            <div id="donut-chart" style="height: 400px;"></div>
+                            <div id="bar-chart" style="height: 400px;"></div>
                         </div>
                         <div class="col-md-1">
                             &nbsp;
@@ -230,16 +223,16 @@ $data_termino = date('d/m/Y');
                 <div class="card-body">
                     <table class="table table-hover table-bordered" cellspacing="0" width="100%">
                         <tr>
-                            <td align="center"><b>Tipo de Solicitação</b></td>
+                            <td align="center"><b>Institutora</b></td>
                             <td align="center" width="25%"><b>Total</b></td>
                             <td align="center" width="25%"><b>%</b></td>
                         </tr>
 
-                        @if (count($tiposSolicitacao) > 0)
-                            @foreach ($tiposSolicitacao as $tipoSolicitacao)
+                        @if (count($institutoras) > 0)
+                            @foreach ($institutoras as $institutora)
                                 @php
-                                $nome = $tipoSolicitacao['nome'];
-                                $qtde = $tipoSolicitacao['qtde'];
+                                $nome = $institutora['nome'];
+                                $qtde = $institutora['qtde'];
                                 $ouvidoriaController = new \App\Http\Controllers\RelatorioController();
                                 $perc = $ouvidoriaController->obterPercentual($qtde, $total);
                                 @endphp

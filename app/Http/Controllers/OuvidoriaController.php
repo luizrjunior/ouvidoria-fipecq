@@ -143,10 +143,10 @@ class OuvidoriaController extends Controller
 
         $ouvidorias = $this->getOuvidorias($data);
 
-        $tiposOuvidorias = TipoOuvidoria::get();
-        $tiposSolicitantes = TipoSolicitante::get();
-        $subClassificacoes = SubClassificacao::get();
-        $situacoes = Situacao::get();
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
+        $subClassificacoes = SubClassificacao::where('status', 1)->get();
+        $situacoes = Situacao::where('status', 1)->get();
 
         return view('ouvidoria.ouvidoria.index', 
             compact('tiposOuvidorias', 'tiposSolicitantes', 'subClassificacoes', 'situacoes', 'ouvidorias', 'data'));
@@ -190,10 +190,10 @@ class OuvidoriaController extends Controller
 
         $ouvidorias = $this->getOuvidorias($data);
 
-        $tiposOuvidorias = TipoOuvidoria::get();
-        $tiposSolicitantes = TipoSolicitante::get();
-        $subClassificacoes = SubClassificacao::get();
-        $situacoes = Situacao::get();
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
+        $subClassificacoes = SubClassificacao::where('status', 1)->get();
+        $situacoes = Situacao::where('status', 1)->get();
 
         return view('ouvidoria.ouvidoria.index', 
             compact('tiposOuvidorias', 'tiposSolicitantes', 'subClassificacoes', 'situacoes', 'ouvidorias', 'data'));
@@ -255,8 +255,8 @@ class OuvidoriaController extends Controller
     public function create(Request $request)
     {   
         $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
-        $tiposOuvidorias = TipoOuvidoria::get();
-        $tiposSolicitantes = TipoSolicitante::get();
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
         $institutoras = Institutora::get();
         $ufs = self::UFS;
 
@@ -409,9 +409,9 @@ class OuvidoriaController extends Controller
     {
         $ouvidoria = Ouvidoria::find($ouvidoria_id);
         $tiposOuvidorias = TipoOuvidoria::get();
-        $canaisAtendimentos = CanalAtendimento::get();
-        $subclassificacoes = SubClassificacao::get();
-        $situacoes = Situacao::get();
+        $canaisAtendimentos = CanalAtendimento::where('status', 1)->get();
+        $subclassificacoes = SubClassificacao::where('status', 1)->get();
+        $situacoes = Situacao::where('status', 1)->get();
         $situacoesOuvidoria = SituacaoOuvidoria::where('ouvidoria_id', $ouvidoria->id)->orderBy('id', 'DESC')->get();
         $situacaoOuvidoria = $situacoesOuvidoria[0];
 
@@ -461,13 +461,13 @@ class OuvidoriaController extends Controller
     public function createAdmin(Request $request)
     {   
         $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
-        $tiposOuvidorias = TipoOuvidoria::get();
-        $tiposSolicitantes = TipoSolicitante::get();
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
         $institutoras = Institutora::get();
         $ufs = self::UFS;
-        $canaisAtendimentos = CanalAtendimento::get();
-        $subclassificacoes = SubClassificacao::get();
-        $situacoes = Situacao::get();
+        $canaisAtendimentos = CanalAtendimento::where('status', 1)->get();
+        $subclassificacoes = SubClassificacao::where('status', 1)->get();
+        $situacoes = Situacao::where('status', 1)->get();
 
         return view('ouvidoria.ouvidoria.create-admin', compact( 'tipo_ouvidoria_id', 'tiposOuvidorias', 
             'tiposSolicitantes', 'institutoras', 'ufs', 'canaisAtendimentos', 'subclassificacoes', 'situacoes'));
@@ -544,11 +544,11 @@ class OuvidoriaController extends Controller
             $situacaoOuvidoria->save();
 
             if ($request->situacao_id == 1) {
-                // $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
+                $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
             }
             if ($request->situacao_id == 3) {
-                // $para = $ouvidoria->solicitante->email;
-                // $this->enviarEmailOuvidoriaConcluida($para);
+                $para = $ouvidoria->solicitante->email;
+                $this->enviarEmailOuvidoriaConcluida($para);
             }
         }
 

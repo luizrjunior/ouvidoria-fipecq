@@ -2,7 +2,7 @@
 
 @section('javascript')
 <script type="text/javascript">
-    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
+    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
     top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
     top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
@@ -22,8 +22,6 @@
 <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
 <!-- Page script -->
 @php
-$tiposSolicitacao = array();
-$dataChart = "";
 $bgColor = [
     1 => '#6495ED',
     2 => '#4169E1',
@@ -36,23 +34,7 @@ $bgColor = [
     9 => '#B0C4DE',
     10 => '#0000FF',
 ];
-$y = 0;
-$id_old = "";
 @endphp
-@if (count($ouvidorias) > 0)
-    @foreach ($ouvidorias as $ouvidoria)
-        @php
-        $id = $ouvidoria->tp_ouvidoria_id;
-        if ($id != $id_old) {
-            $y = 1;
-        }
-        $tiposSolicitacao[$id]['qtde'] = $y;
-        $tiposSolicitacao[$id]['nome'] = $ouvidoria->tipoOuvidoria->nome;
-        $id_old = $id;
-        $y++;
-        @endphp
-    @endforeach
-@endif
 
 <script>
     $(function () {
@@ -67,11 +49,11 @@ $id_old = "";
         @php
         $total = 0;
         @endphp
-        @if (count($tiposSolicitacao) > 0)
-            @foreach ($tiposSolicitacao as $tipoSolicitacao)
+        @if (count($faixasEtarias) > 0)
+            @foreach ($faixasEtarias as $faixaEtaria)
                 @php
-                $nome = $tipoSolicitacao['nome'];
-                $qtde = $tipoSolicitacao['qtde'];
+                $nome = $faixaEtaria['nome'];
+                $qtde = $faixaEtaria['qtde'];
                 $color = $bgColor[$i];
                 @endphp
                 { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
@@ -142,10 +124,10 @@ $data_termino = date('d/m/Y');
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Tipo de Solicitação</a>
+      <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
+      <a class="nav-link active" href="#">Faixa Etária</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
@@ -165,7 +147,7 @@ $data_termino = date('d/m/Y');
     <div class="col-md-12">
         
         <form id="formRelatorios" class="form-horizontal" 
-            role="form" method="POST" action="{{ route('relatorio.tipo-solicitacao') }}">
+            role="form" method="POST" action="{{ route('relatorio.faixa-etaria') }}">
             @csrf
             <input type="hidden" id="print" name="print" value="">
 
@@ -230,16 +212,16 @@ $data_termino = date('d/m/Y');
                 <div class="card-body">
                     <table class="table table-hover table-bordered" cellspacing="0" width="100%">
                         <tr>
-                            <td align="center"><b>Tipo de Solicitação</b></td>
+                            <td align="center"><b>Faixas Etárias</b></td>
                             <td align="center" width="25%"><b>Total</b></td>
                             <td align="center" width="25%"><b>%</b></td>
                         </tr>
 
-                        @if (count($tiposSolicitacao) > 0)
-                            @foreach ($tiposSolicitacao as $tipoSolicitacao)
+                        @if (count($faixasEtarias) > 0)
+                            @foreach ($faixasEtarias as $faixaEtaria)
                                 @php
-                                $nome = $tipoSolicitacao['nome'];
-                                $qtde = $tipoSolicitacao['qtde'];
+                                $nome = $faixaEtaria['nome'];
+                                $qtde = $faixaEtaria['qtde'];
                                 $ouvidoriaController = new \App\Http\Controllers\RelatorioController();
                                 $perc = $ouvidoriaController->obterPercentual($qtde, $total);
                                 @endphp

@@ -121,8 +121,14 @@ Route::post('/pesquisa-satisfacao/store', 'PesquisaSatisfacaoController@store')-
 Route::any('/relatorio/tipo-solicitacao', 'RelatorioController@relatorioTipoOuvidoria')
     ->name('relatorio.tipo-solicitacao');
 
+Route::any('/relatorio/faixa-etaria', 'RelatorioController@relatorioFaixaEtaria')
+    ->name('relatorio.faixa-etaria');
+
 Route::post('/relatorio/tempo-espera', 'RelatorioController@relatorioTempoEspera')
     ->name('relatorio.tempo-espera');
+
+Route::post('/relatorio/institutora', 'RelatorioController@relatorioInstitutora')
+    ->name('relatorio.institutora');
 
 /**
  * BENEFICIARIO
