@@ -22,6 +22,8 @@ Route::get('/', function () {
  */
 Route::get('/home', 'HomeController@index');
 
+Route::get('/home/admin', 'HomeController@admin');
+
 /**
  * Envio de E-mails
  */
@@ -129,6 +131,9 @@ Route::post('/relatorio/tempo-espera', 'RelatorioController@relatorioTempoEspera
 
 Route::post('/relatorio/institutora', 'RelatorioController@relatorioInstitutora')
     ->name('relatorio.institutora');
+
+Route::post('/relatorio/relatorio-personalizado', 'RelatorioController@relatorioPersonalizado')
+    ->name('relatorio.relatorio-personalizado');
 
 /**
  * BENEFICIARIO

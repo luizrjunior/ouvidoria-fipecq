@@ -4,11 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Ouvidoria;
 use App\Models\Beneficiario;
+use App\Models\TipoOuvidoria;
+use App\Models\TipoSolicitante;
+use App\Models\SubClassificacao;
+
 use Illuminate\Http\Request;
 
 class RelatorioController extends Controller
 {
 
+    /**
+     * RELATORIO TIPO DE OUVIDORIA
+     *
+     * @param Request $request
+     * @return void
+     */
     public function relatorioTipoOuvidoria(Request $request)
     {
         $data = $request->except('_token');
@@ -50,6 +60,12 @@ class RelatorioController extends Controller
     }
 
 
+    /**
+     * RELATORIO DE FAIXA ETARIA
+     *
+     * @param Request $request
+     * @return void
+     */
     public function relatorioFaixaEtaria(Request $request)
     {
         $data = $request->except('_token');
@@ -164,6 +180,60 @@ class RelatorioController extends Controller
     }
 
 
+    /**
+     * RELATORIO TEMPO DE ESPERA POR TIPO DE OUVIDORIA
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function relatorioTempoEspera(Request $request)
+    {
+        $data = $request->except('_token');
+        if (empty($data['data_inicio'])) {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('01/m/Y'))->format('d/m/Y');
+        }
+        if (empty($data['data_termino'])) {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y'))->format('d/m/Y');
+        }
+
+        $ouvidorias = $this->getOuvidoriasTempoEspera($data);
+
+        if (!empty($data['print'])) {
+            return view('ouvidoria.relatorios.relatorio-tempo-espera-print', 
+                compact('ouvidorias', 'data'));
+        }
+        return view('ouvidoria.relatorios.relatorio-tempo-espera', 
+            compact('ouvidorias', 'data'));
+    }
+
+    private function getOuvidoriasTempoEspera(Array $data = null)
+    {
+        if ($data['data_inicio'] != "") {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio'])->format('Y-m-d');
+        }
+
+        if ($data['data_termino'] != "") {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
+        }
+
+        return Ouvidoria::where(function ($query) use ($data) {
+                if (isset($data['data_inicio']) && $data['data_inicio'] != "") {
+                    $query->where('created_at', '>=', $data['data_inicio'] . ' 00:00:00');
+                }
+                if (isset($data['data_termino']) && $data['data_termino'] != "") {
+                    $query->where('created_at', '<=', $data['data_termino'] . ' 23:59:59');
+                }
+            })->where('situacao_id', 3)->orderBy('tp_ouvidoria_id')->get();
+    }
+
+
+
+    /**
+     * RELATORIO INSITUTORA
+     *
+     * @param Request $request
+     * @return void
+     */
     public function relatorioInstitutora(Request $request)
     {
         $data = $request->except('_token');
@@ -212,6 +282,85 @@ class RelatorioController extends Controller
     }
 
 
+
+    /**
+     * RELATORIO PERSONALIZADO
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function relatorioPersonalizado(Request $request)
+    {
+        $data = $request->except('_token');
+        if (empty($data['data_inicio'])) {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('01/m/Y'))->format('d/m/Y');
+        }
+        if (empty($data['data_termino'])) {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y'))->format('d/m/Y');
+        }
+
+        if (empty($data['tipo_ouvidoria_id_psq'])) {
+            $data['tipo_ouvidoria_id_psq'] = "";
+        }
+
+        if (empty($data['tipo_solicitante_id_psq'])) {
+            $data['tipo_solicitante_id_psq'] = "";
+        }
+
+        if (empty($data['sub_classificacao_id_psq'])) {
+            $data['sub_classificacao_id_psq'] = "";
+        }
+
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
+        $subClassificacoes = SubClassificacao::where('status', 1)->get();
+
+        $ouvidorias = $this->getOuvidoriasPersonalizado($data);
+
+        if (!empty($data['print'])) {
+            return view('ouvidoria.relatorios.relatorio-personalizado-print', 
+                compact('ouvidorias', 'data'));
+        }
+        return view('ouvidoria.relatorios.relatorio-personalizado', 
+            compact('tiposOuvidorias', 'tiposSolicitantes', 'subClassificacoes', 'ouvidorias', 'data'));
+    }
+
+    private function getOuvidoriasPersonalizado(Array $data = null)
+    {
+        if ($data['data_inicio'] != "") {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio'])->format('Y-m-d');
+        }
+
+        if ($data['data_termino'] != "") {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
+        }
+
+        return Ouvidoria::select(
+                'cad_empresa.nome as noempresa',
+                'fv_ouv_solicitante.institutora_id as idinstitutora'
+            )
+            ->join('fv_ouv_solicitante', 'fv_ouv_ouvidoria.solicitante_id', 'fv_ouv_solicitante.id')
+            ->join('plano.cad_empresa', 'fv_ouv_solicitante.institutora_id', 'cad_empresa.empresa')
+            ->whereNotNull('fv_ouv_solicitante.institutora_id')
+            ->where(function ($query) use ($data) {
+                if (isset($data['data_inicio']) && $data['data_inicio'] != "") {
+                    $query->where('fv_ouv_ouvidoria.created_at', '>=', $data['data_inicio'] . ' 00:00:00');
+                }
+                if (isset($data['data_termino']) && $data['data_termino'] != "") {
+                    $query->where('fv_ouv_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
+                }
+                if (isset($data['tipo_ouvidoria_id_psq']) && $data['tipo_ouvidoria_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.tp_ouvidoria_id', $data['tipo_ouvidoria_id_psq']);
+                }
+                if (isset($data['tipo_solicitante_id_psq']) && $data['tipo_solicitante_id_psq'] != "") {
+                    $query->where('fv_ouv_solicitante.tipo_solicitante_id', $data['tipo_solicitante_id_psq']);
+                }
+                if (isset($data['sub_classificacao_id_psq']) && $data['sub_classificacao_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.sub_classificacao_id', $data['sub_classificacao_id_psq']);
+                }
+            })->orderBy('cad_empresa.nome')->get();
+    }
+
     public function obterPercentual($percentage, $of)
     {
         $percent = $percentage / $of;
@@ -228,25 +377,6 @@ class RelatorioController extends Controller
         return $valor;
     }
 
-    private function calcularIdade($date){
-        $time = strtotime($date);
-        if($time === false){
-          return '';
-        }
-     
-        $year_diff = '';
-        $date = date('Y-m-d', $time);
-        list($year,$month,$day) = explode('-',$date);
-        $year_diff = date('Y') - $year;
-        $month_diff = date('m') - $month;
-        $day_diff = date('d') - $day;
-        if ($day_diff < 0 || $month_diff < 0) {
-            $year_diff--;
-        }
-     
-        return $year_diff;
-    }
-    
 
 }
 

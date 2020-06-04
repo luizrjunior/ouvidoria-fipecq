@@ -141,7 +141,7 @@ $totalPage = 25;
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-md-6" id="divFormNameEmail">
+                    <div class="col-md-6">
                         <label for="situacao_id_psq" class="control-label">Situação</label>
                         <select id="situacao_id_psq" name="situacao_id_psq" 
                             class="form-control">
@@ -155,7 +155,7 @@ $totalPage = 25;
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-6" id="divFormNameEmail">
+                    <div class="col-md-6">
                         <label for="sub_classificacao_id_psq" class="control-label">Classificação</label>
                         <select id="sub_classificacao_id_psq" name="sub_classificacao_id_psq" class="form-control">
                             <option value=""> -- SELECIONE -- </option>

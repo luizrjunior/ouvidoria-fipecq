@@ -4,8 +4,13 @@
     </h5>&nbsp;
     <small class="mr-md-auto text-muted">Caixa de Assistencia Social da FIPECq</small>
     <button type="button" class="btn btn-dark" onclick="location.href='http://www.fipecqvida.org.br/';">FIPECq Vida</button>&nbsp;
+    @if (Session::get('perfil') == "admin")
+    <button type="button" class="btn btn-dark" onclick="location.href='{{ url('/home/admin') }}';">Ouvidoria</button>&nbsp;
+    @else
     <button type="button" class="btn btn-dark" onclick="location.href='{{ url('/home') }}';">Ouvidoria</button>&nbsp;
+    @endif
     <button type="button" class="btn btn-dark" onclick="location.href='{{ url('/fale-com-ouvidor') }}';">Fale com o Ouvidor</button>&nbsp;
+    @if (Session::get('perfil') == "admin")
     <button type="button" class="btn btn-dark" onclick="location.href='{{ url('/ouvidoria') }}';">Administração</button>&nbsp;
     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
         <div class="btn-group" role="group">
@@ -19,8 +24,6 @@
                 <a class="dropdown-item" href="{{ url('/classificacao') }}">Classificação</a>
                 <a class="dropdown-item" href="{{ url('/sub-classificacao') }}">SubClassificação</a>
                 <a class="dropdown-item" href="{{ url('/situacao') }}">Situação</a>
-                {{-- <a class="dropdown-item" href="/tipo-prestador">Tipo de Prestador</a> --}}
-                {{-- <a class="dropdown-item" href="/assunto">Assunto</a> --}}
             </div>
         </div>
     </div>&nbsp;
@@ -30,7 +33,8 @@
     <button type="button" class="btn btn-dark" onclick="location.href='{{ url('/relatorio/tipo-solicitacao') }}';">
         Relatórios
     </button>&nbsp;
-    <button type="button" class="btn btn-danger">Sair</button>
+    @endif
+    <button type="button" class="btn btn-danger" onclick="window.close();">Sair</button>
 </div>
 
 <div class="col-md-3">

@@ -1,7 +1,7 @@
 function validar() {
+    $('#carregando').show();
     $('#print').val('');
     $("#formRelatorios").prop('target', "");
-    $('#carregando').show();
 }
 
 function imprimir(value) {
@@ -11,6 +11,7 @@ function imprimir(value) {
 }
 
 function abrirRelatorio(expr) {
+    $('#carregando').show();
     $('#print').val('');
     $("#formRelatorios").prop('target', "");
     switch (expr) {

@@ -7,7 +7,7 @@
     top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
     top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
-    top.urlRelPersonalizado = '{{ url("/relatorio/rel-personalizado") }}';
+    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
