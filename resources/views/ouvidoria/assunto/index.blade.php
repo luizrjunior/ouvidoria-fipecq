@@ -55,6 +55,7 @@
                         <thead>
                             <tr>
                                 <td>Criado em</td>
+                                <td>Setor / Área</td>
                                 <td>Descrição</td>
                                 <td>Status</td>
                                 <td colspan="3">Ações</td>
@@ -66,6 +67,7 @@
                             @foreach($assuntos as $assunto)
                             <tr>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($assunto->created_at)) }}</td>
+                                <td>{{ $assunto->setor->descricao }}</td>
                                 <td>{{ $assunto->descricao }}</td>
                                 <td>
                                     <span class="badge badge-{{ $bgColor[$assunto->status] }}"

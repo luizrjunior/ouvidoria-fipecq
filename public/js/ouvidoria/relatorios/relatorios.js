@@ -49,4 +49,21 @@ $(document).ready(function () {
         format: "dd/mm/yyyy",	
         language: "pt-BR"
     });
+
+    $("#categoria_id_psq").change(function () {
+        $("#formRelatorios").submit();
+    });
+
+    $("#setor_id_psq").change(function () {
+        $("#formRelatorios").submit();
+    });
+
+    $("#assunto_id_psq").change(function () {
+        $("#formRelatorios").submit();
+    });
+
+    $("#classificacao_id_psq").change(function () {
+        $("#formRelatorios").submit();
+    });
+
 });

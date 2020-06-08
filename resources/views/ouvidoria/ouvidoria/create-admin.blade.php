@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
+@php
+$route = route('ouvidoria.store-admin');
+$routeEditCombo = route('ouvidoria.create-combo');
+@endphp
+
 @section('javascript')
+<script type="text/javascript">
+    top.routeUpdate = '{{ $route }}';
+    top.routeEditCombo = '{{ $routeEditCombo }}';
+</script>
 <script type="text/javascript">
     top.urlCarregarSolicitanteCPF = "{{ url('/ouvidoria/carregar-solicitante-cpf') }}";
 </script>
@@ -19,17 +28,30 @@
 
 @php
 $ouvidoria_id = old('ouvidoria_id');
-$tipo_ouvidoria_id = old('tipo_ouvidoria_id');
-$canal_atendimento_id = old('canal_atendimento_id');
-$sub_classificacao_id = old('sub_classificacao_id');
-$observacao_novo = old('observacao_novo');
-$mensagem = old('mensagem');
-$anexo = old('anexo');
 
-$solicitante_id = old('solicitante_id');
-$tipo_solicitante_id = old('tipo_solicitante_id');
-$institutora_id = old('institutora_id');
-$uf = old('uf');
+$tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : $request->tipo_solicitante_id;
+$solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : $request->solicitante_id;
+$cpf = $errors->has('cpf') ? old('cpf') : $request->cpf;
+$nome = $errors->has('nome') ? old('nome') : $request->nome;
+$institutora_id = $errors->has('institutora_id') ? old('institutora_id') : $request->institutora_id;
+$uf = $errors->has('uf') ? old('uf') : $request->uf;
+$cidade = $errors->has('cidade') ? old('cidade') : $request->cidade;
+$email = $errors->has('email') ? old('email') : $request->email;
+$telefone = $errors->has('telefone') ? old('telefone') : $request->telefone;
+$celular = $errors->has('celular') ? old('celular') : $request->celular;
+
+$tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $request->tp_ouvidoria_id;
+$canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : $request->canal_atendimento_id;
+$observacao = $errors->has('observacao') ? old('observacao') : $request->observacao;
+
+$categoria_id = $errors->has('categoria_id') ? old('categoria_id') : $request->categoria_id;
+$setor_id = $errors->has('setor_id') ? old('setor_id') : $request->setor_id;
+$assunto_id = $errors->has('assunto_id') ? old('assunto_id') : $request->assunto_id;
+$classificacao_id = $errors->has('classificacao_id') ? old('classificacao_id') : $request->classificacao_id;
+$sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : $request->sub_classificacao_id;
+
+$mensagem = $errors->has('mensagem') ? old('mensagem') : $request->mensagem;
+$anexo = $errors->has('anexo') ? old('anexo') : $request->anexo;
 @endphp
 
 <div class="row justify-content-center">
@@ -42,8 +64,7 @@ $uf = old('uf');
                 </a>
             </div>
             <div class="card-body">
-                <form id="formSolicitacaoOuvidoria" method="POST" 
-                    action="{{ route('ouvidoria.store-admin') }}" autocomplete="off">
+                <form id="formSolicitacaoOuvidoria" method="POST" action="{{ $route }}" autocomplete="off">
                     @csrf
 
                     <input type="hidden" id="ouvidoria_id" name="ouvidoria_id" value="">
@@ -52,34 +73,13 @@ $uf = old('uf');
                     <h5>Dados Pessoais</h5>
                     <hr>
 
-                    <div class="row form-group {{ $errors->has('cpf') ? 'text-danger' : '' }}">
-                        <div class="col-md-3">
-                            <label for="cpf" class="control-label">CPF N° (*)</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('cpf') ? 'is-invalid' : '' }}" 
-                                id="cpf" name="cpf" value="{{ old('cpf') }}" autofocus />
-                            <span class="text-danger">{{ $errors->first('cpf') }}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="row form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
-                        <div class="col-md-3">
-                            <label for="nome" class="control-label">Nome (*)</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
-                            id="nome" name="nome" value="{{ old('nome') }}" />
-                            <span class="text-danger">{{ $errors->first('nome') }}</span>
-                        </div>
-                    </div>
-
                     <div class="row form-group {{ $errors->has('tipo_solicitante_id') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
                             <label for="tipo_solicitante_id" class="control-label">Você é (*)</label>
                         </div>
-                        <div class="col-md-9">
-                            <select id="tipo_solicitante_id" name="tipo_solicitante_id" class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}">
+                        <div class="col-md-6">
+                            <select id="tipo_solicitante_id" name="tipo_solicitante_id" 
+                                class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}" autofocus>
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($tiposSolicitantes as $tipoSolicitante)
                                     @php $selected = ""; @endphp
@@ -90,6 +90,37 @@ $uf = old('uf');
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('tipo_solicitante_id') }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="A" id="anonima" name="anonima">
+                                <label class="form-check-label" for="anonima">
+                                  Ouvidoria anônima
+                                </label>
+                              </div>
+                        </div>
+                    </div>
+
+                    <div id="divNaoAnonimo">
+                    <div class="row form-group {{ $errors->has('cpf') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="cpf" class="control-label">CPF N° (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control {{ $errors->has('cpf') ? 'is-invalid' : '' }}" 
+                                id="cpf" name="cpf" value="{{ $cpf }}" />
+                            <span class="text-danger">{{ $errors->first('cpf') }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="row form-group {{ $errors->has('nome') ? 'text-danger' : '' }}">
+                        <div class="col-md-3">
+                            <label for="nome" class="control-label">Nome (*)</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
+                            id="nome" name="nome" value="{{ $nome }}" />
+                            <span class="text-danger">{{ $errors->first('nome') }}</span>
                         </div>
                     </div>
 
@@ -106,7 +137,7 @@ $uf = old('uf');
                                     @if ($institutora->empresa == $institutora_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                    <option value="{{$institutora->empresa}}" {{$selected}}>{{$institutora->nome}}</option>
+                                    <option value="{{ $institutora->empresa }}" {{ $selected }}>{{ $institutora->nome }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -124,7 +155,7 @@ $uf = old('uf');
                                     @if ($arrUf["sigla"] == $uf)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{ $arrUf["sigla"] }}" {{$selected}}>{{ $arrUf["descricao"] }}</option>
+                                <option value="{{ $arrUf["sigla"] }}" {{ $selected }}>{{ $arrUf["descricao"] }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('uf') }}</span>
@@ -137,7 +168,7 @@ $uf = old('uf');
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control {{ $errors->has('cidade') ? 'is-invalid' : '' }}" 
-                                id="cidade" name="cidade" value="{{ old('cidade') }}" />
+                                id="cidade" name="cidade" value="{{ $cidade }}" />
                             <span class="text-danger">{{ $errors->first('cidade') }}</span>
                         </div>
                     </div>
@@ -148,7 +179,7 @@ $uf = old('uf');
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" 
-                                id="email" name="email" value="{{ old('email') }}" />
+                                id="email" name="email" value="{{ $email }}" />
                             <span class="text-danger">{{ $errors->first('email') }}</span>
                         </div>
                     </div>
@@ -159,7 +190,7 @@ $uf = old('uf');
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" 
-                                id="telefone" name="telefone" value="{{ old('telefone') }}" />
+                                id="telefone" name="telefone" value="{{ $telefone }}" />
                         </div>
                     </div>
 
@@ -169,12 +200,13 @@ $uf = old('uf');
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control {{ $errors->has('celular') ? 'is-invalid' : '' }}" 
-                                id="celular" name="celular" value="{{ old('celular') }}" />
+                                id="celular" name="celular" value="{{ $celular }}" />
                             <span class="text-danger">{{ $errors->first('celular') }}</span>
                         </div>
                     </div>
-                    
                     <br>
+                    </div>
+                    
                     <h5>Canal de Atendimento</h5>
                     <hr>
                     
@@ -212,9 +244,9 @@ $uf = old('uf');
 
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <label for="observacao_novo" class="control-label">Observação:</label>
-                            <textarea class="form-control" rows="5" id="observacao_novo" name="observacao_novo" 
-                                class="form-control">{{ $observacao_novo }}</textarea>
+                            <label for="observacao" class="control-label">Observação:</label>
+                            <textarea class="form-control" rows="5" id="observacao" name="observacao" 
+                                class="form-control">{{ $observacao }}</textarea>
                         </div>
                     </div>
 
@@ -236,7 +268,7 @@ $uf = old('uf');
                         </div>
                         <div class="col-md-9">
                             <textarea rows="5" id="mensagem" name="mensagem" 
-                                class="form-control">{{ old('mensagem') }}</textarea>
+                                class="form-control">{{ $mensagem }}</textarea>
                             <span class="text-danger">{{ $errors->first('mensagem') }}</span>
                         </div>
                     </div>
@@ -256,7 +288,7 @@ $uf = old('uf');
                             <label for="anexo" class="control-label">Anexar Arquivo</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="file" id="anexo" name="anexo" />
+                            <input type="file" id="anexo" name="anexo" value="{{ $anexo }}" />
                         </div>
                     </div>
 
@@ -266,15 +298,80 @@ $uf = old('uf');
 
                     <div class="row form-group">
                         <div class="col-md-6">
+                            <label for="categoria_id" class="control-label">Categoria</label>
+                            <select id="categoria_id" name="categoria_id" class="form-control">
+                                <option value=""> -- SELECIONE -- </option>
+                                @foreach ($categorias as $categoria)
+                                    @php $selected = ""; @endphp
+                                    @if ($categoria->id == $categoria_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{ $categoria->id }}" {{ $selected }}>
+                                        {{ strtoupper($categoria->descricao) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="setor_id" class="control-label">Setor / Área</label>
+                            <select id="setor_id" name="setor_id" 
+                                class="form-control">
+                                <option value="">- - SELECIONE - -</option>
+                                @foreach ($setores as $setor)
+                                    @php $selected = ""; @endphp
+                                    @if ($setor->id == $setor_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="assunto_id" class="control-label">Assunto</label>
+                            <select id="assunto_id" name="assunto_id" class="form-control">
+                                <option value=""> -- SELECIONE -- </option>
+                                @foreach ($assuntos as $assunto)
+                                    @php $selected = ""; @endphp
+                                    @if ($assunto->id == $assunto_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{ $assunto->id }}" {{ $selected }}>
+                                        {{ strtoupper($assunto->descricao) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="classificacao_id" class="control-label">Classificação</label>
+                            <select id="classificacao_id" name="classificacao_id" 
+                                class="form-control">
+                                <option value="">- - SELECIONE - -</option>
+                                @foreach ($classificacoes as $classificacao)
+                                    @php $selected = ""; @endphp
+                                    @if ($classificacao->id == $classificacao_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="sub_classificacao_id" class="control-label">Subclassificação</label>
                             <select id="sub_classificacao_id" name="sub_classificacao_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($subclassificacoes as $subclassificacao)
+                                @foreach ($subClassificacoes as $subclassificacao)
                                     @php $selected = ""; @endphp
                                     @if ($subclassificacao->id == $sub_classificacao_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                        {{ strtoupper($subclassificacao->classificacao->descricao) }} - {{ strtoupper($subclassificacao->descricao) }}
+                                        {{ strtoupper($subclassificacao->descricao) }}
                                     </option>
                                 @endforeach
                             </select>

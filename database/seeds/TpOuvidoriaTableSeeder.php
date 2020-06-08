@@ -56,7 +56,7 @@ class TpOuvidoriaTableSeeder extends Seeder
 
         foreach ($tiposOuvidorias as $tipoOuvidoria) {
             $this->command->info('Inserindo Tipo de Ouvidoria: ' . $tipoOuvidoria['nome']);
-            DB::table('fv_ouv_tp_ouvidoria')->insert([
+            DB::table('internet.fv_ouv_tp_ouvidoria')->insert([
                 'nome' => $tipoOuvidoria['nome'], 
                 'descricao' => $tipoOuvidoria['descricao'], 
                 'icone' => $tipoOuvidoria['icone'], 

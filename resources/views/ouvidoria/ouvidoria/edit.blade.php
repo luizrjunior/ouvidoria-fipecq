@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
+@php
+$route = route('ouvidoria.update');
+$routeEditCombo = route('ouvidoria.edit-combo');
+@endphp
+
 @section('javascript')
+<script type="text/javascript">
+    top.routeUpdate = '{{ $route }}';
+    top.routeEditCombo = '{{ $routeEditCombo }}';
+</script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
@@ -18,15 +27,23 @@
 $ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
 $tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
 $canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : $ouvidoria->canal_atendimento_id;
+
+$categoria_id = $errors->has('categoria_id') ? old('categoria_id') : $ouvidoria->categoria_id;
+$setor_id = $errors->has('setor_id') ? old('setor_id') : $ouvidoria->setor_id;
+$assunto_id = $errors->has('assunto_id') ? old('assunto_id') : $ouvidoria->assunto_id;
+$classificacao_id = $errors->has('classificacao_id') ? old('classificacao_id') : $ouvidoria->classificacao_id;
 $sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : $ouvidoria->sub_classificacao_id;
+
 $observacao = $errors->has('observacao') ? old('observacao') : $ouvidoria->observacao;
 $mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
 $anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
 
 $solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : $ouvidoria->solicitante_id;
-$email = $errors->has('email') ? old('email') : $ouvidoria->solicitante->email;
-$telefone = $errors->has('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
-$celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->celular;
+if ($solicitante_id != "") {
+    $email = $errors->has('email') ? old('email') : $ouvidoria->solicitante->email;
+    $telefone = $errors->has('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
+    $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->celular;
+}
 @endphp
 
 <div class="row justify-content-center">
@@ -39,8 +56,7 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                 </a>
             </div>
             <div class="card-body">
-                <form id="formSolicitacaoOuvidoria" method="POST" 
-                    action="{{ route('ouvidoria.update') }}" autocomplete="off">
+                <form id="formSolicitacaoOuvidoria" method="POST" action="{{ $route }}" autocomplete="off">
                     @csrf
 
                     <input type="hidden" id="ouvidoria_id" name="ouvidoria_id" value="{{ $ouvidoria_id }}">
@@ -83,8 +99,8 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                                     <tr>
                                         <td>{{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}</td>
                                         <td>{{ $ouvidoria->tipoOuvidoria->nome }}</td>
-                                        <td>{{ $ouvidoria->solicitante->tipoSolicitante->descricao }}</td>
-                                        <td>{{ $ouvidoria->solicitante->nome }}</td>
+                                        <td>{{ $ouvidoria->tipoSolicitante->descricao }}</td>
+                                        <td>{{ $solicitante_id != "" ? $ouvidoria->solicitante->nome : "ANÔNIMO" }}</td>
                                         <td>{{ date('d/m/Y', strtotime($ouvidoria->created_at)) }}</td>
                                         <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
                                         <td>
@@ -100,6 +116,7 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                         </div>
                     </div>
 
+                    @if ($solicitante_id != "")
                     <h5>Dados Pessoais</h5>
                     <hr>
 
@@ -132,8 +149,9 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
                                 value="{{ $celular }}" disabled />
                         </div>
                     </div>
-                    
                     <br>
+                    @endif
+                    
                     <h5>Canal de Atendimento</h5>
                     <hr>
                     
@@ -213,15 +231,80 @@ $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->c
 
                     <div class="row form-group">
                         <div class="col-md-6">
+                            <label for="categoria_id" class="control-label">Categoria</label>
+                            <select id="categoria_id" name="categoria_id" class="form-control">
+                                <option value=""> -- SELECIONE -- </option>
+                                @foreach ($categorias as $categoria)
+                                    @php $selected = ""; @endphp
+                                    @if ($categoria->id == $categoria_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{ $categoria->id }}" {{ $selected }}>
+                                        {{ strtoupper($categoria->descricao) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="setor_id" class="control-label">Setor / Área</label>
+                            <select id="setor_id" name="setor_id" 
+                                class="form-control">
+                                <option value="">- - SELECIONE - -</option>
+                                @foreach ($setores as $setor)
+                                    @php $selected = ""; @endphp
+                                    @if ($setor->id == $setor_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="assunto_id" class="control-label">Assunto</label>
+                            <select id="assunto_id" name="assunto_id" class="form-control">
+                                <option value=""> -- SELECIONE -- </option>
+                                @foreach ($assuntos as $assunto)
+                                    @php $selected = ""; @endphp
+                                    @if ($assunto->id == $assunto_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{ $assunto->id }}" {{ $selected }}>
+                                        {{ strtoupper($assunto->descricao) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label for="classificacao_id" class="control-label">Classificação</label>
+                            <select id="classificacao_id" name="classificacao_id" 
+                                class="form-control">
+                                <option value="">- - SELECIONE - -</option>
+                                @foreach ($classificacoes as $classificacao)
+                                    @php $selected = ""; @endphp
+                                    @if ($classificacao->id == $classificacao_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="sub_classificacao_id" class="control-label">Subclassificação</label>
                             <select id="sub_classificacao_id" name="sub_classificacao_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($subclassificacoes as $subclassificacao)
+                                @foreach ($subClassificacoes as $subclassificacao)
                                     @php $selected = ""; @endphp
                                     @if ($subclassificacao->id == $sub_classificacao_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                        {{ strtoupper($subclassificacao->classificacao->descricao) }} - {{ strtoupper($subclassificacao->descricao) }}
+                                        {{ strtoupper($subclassificacao->descricao) }}
                                     </option>
                                 @endforeach
                             </select>

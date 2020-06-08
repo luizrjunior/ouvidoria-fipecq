@@ -46,67 +46,66 @@
                     );
                     @endphp
 
-                    <form id="formSearchClassificacao" 
-                        class="form-horizontal" role="form" method="POST" action="#">
-                    <input type="hidden" id="_method" name="_method" value="">
-                    @csrf
+                    <form id="formSearchClassificacao" class="form-horizontal" role="form" method="POST" action="#">
+                        <input type="hidden" id="_method" name="_method" value="">
+                        @csrf
 
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td>Criado em</td>
-                                <td>Descrição</td>
-                                <td>Status</td>
-                                <td colspan="3">Ações</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @if (count($classificacaos) > 0)
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td>Criado em</td>
+                                    <td>Assunto</td>
+                                    <td>Descrição</td>
+                                    <td>Status</td>
+                                    <td colspan="3">Ações</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @if (count($classificacaos) > 0)
+                                @foreach($classificacaos as $classificacao)
+                                <tr>
+                                    <td>{{ date('d/m/Y H:i:s', strtotime($classificacao->created_at)) }}</td>
+                                    <td>{{ $classificacao->assunto->descricao }}</td>
+                                    <td>{{ $classificacao->descricao }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ $bgColor[$classificacao->status] }}"
+                                            data-toggle="tooltip" title="{{ $arrSituacao[$classificacao->status] }}">
+                                            {{ $arrSituacao[$classificacao->status] }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('classificacao.edit', $classificacao->id) }}" title="Editar" 
+                                            class="btn btn-primary btn-sm" onclick="return validar()">
+                                            Editar
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if ($classificacao->status)
+                                        <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
+                                            onclick="ativarDesativarClassificacao({{ $classificacao->id }})"> Desativar
+                                        </button>
+                                        @else
+                                        <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
+                                            onclick="ativarDesativarClassificacao({{ $classificacao->id }})"> Ativar
+                                        </button>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6">Nenhum registro encontrado!</td>
+                                </tr>
+                            @endif
 
-                            @foreach($classificacaos as $classificacao)
-                            <tr>
-                                <td>{{ date('d/m/Y H:i:s', strtotime($classificacao->created_at)) }}</td>
-                                <td>{{ $classificacao->descricao }}</td>
-                                <td>
-                                    <span class="badge badge-{{ $bgColor[$classificacao->status] }}"
-                                          data-toggle="tooltip" title="{{ $arrSituacao[$classificacao->status] }}">
-                                        {{ $arrSituacao[$classificacao->status] }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('classificacao.edit', $classificacao->id) }}" title="Editar" 
-                                        class="btn btn-primary btn-sm" onclick="return validar()">
-                                        Editar
-                                    </a>
-                                </td>
-                                <td>
-                                    @if ($classificacao->status)
-                                    <button class="btn btn-primary btn-sm" type="button" title="Desativar" 
-                                        onclick="ativarDesativarClassificacao({{ $classificacao->id }})"> Desativar
-                                    </button>
-                                    @else
-                                    <button class="btn btn-primary btn-sm" type="button" title="Ativar" 
-                                        onclick="ativarDesativarClassificacao({{ $classificacao->id }})"> Ativar
-                                    </button>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
+                            </tbody>
+                        </table>
 
-                        @else
-                            <tr>
-                                <td colspan="6">Nenhum registro encontrado!</td>
-                            </tr>
-                        @endif
-
-                        </tbody>
-                    </table>
-
-                    <div class="form-group row">
-                        <div class="col-md-12">
-                            <div style="margin-top: 23px;">{{ $classificacaos->links() }}</div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <div style="margin-top: 23px;">{{ $classificacaos->links() }}</div>
+                            </div>
                         </div>
-                    </div>
 
                     </form>
 

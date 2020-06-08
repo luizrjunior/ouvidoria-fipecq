@@ -60,6 +60,18 @@ Route::resource('situacao', 'SituacaoController');
 Route::post('/situacao/ativar-desativar-situacao', 'SituacaoController@ativarDesativarSituacao');
 
 /**
+ * CATEGORIA
+ */
+Route::resource('categoria', 'CategoriaController');
+Route::post('/categoria/ativar-desativar-categoria', 'CategoriaController@ativarDesativarCategoria');
+
+/**
+ * SETOR / AREA
+ */
+Route::resource('setor', 'SetorController');
+Route::post('/setor/ativar-desativar-setor', 'SetorController@ativarDesativarSetor');
+
+/**
  * ASSUNTO
  */
 Route::resource('assunto', 'AssuntoController');
@@ -100,9 +112,11 @@ Route::any('/ouvidoria/create', 'OuvidoriaController@create')->name('ouvidoria.c
 Route::post('/ouvidoria/store', 'OuvidoriaController@store')->name('ouvidoria.store');
 
 Route::get('/ouvidoria/{ouvidoria_id}/edit', 'OuvidoriaController@edit')->name('ouvidoria.edit');
+Route::post('/ouvidoria/edit-combo', 'OuvidoriaController@editCombo')->name('ouvidoria.edit-combo');
 Route::post('/ouvidoria/update', 'OuvidoriaController@update')->name('ouvidoria.update');
 
 Route::get('/ouvidoria/create-admin', 'OuvidoriaController@createAdmin');
+Route::post('/ouvidoria/create-combo', 'OuvidoriaController@createCombo')->name('ouvidoria.create-combo');
 Route::post('/ouvidoria/store-admin', 'OuvidoriaController@storeAdmin')->name('ouvidoria.store-admin');
 
 Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF');

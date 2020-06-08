@@ -18,12 +18,15 @@
                 Cadastros
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="{{ url('/tipo-solicitante') }}">Tipo Solicitante</a>
-                <a class="dropdown-item" href="{{ url('/tipo-ouvidoria') }}">Tipo Ouvidoria</a>
-                <a class="dropdown-item" href="{{ url('/canal-atendimento') }}">Canal Atendimento</a>
-                <a class="dropdown-item" href="{{ url('/classificacao') }}">Classificação</a>
-                <a class="dropdown-item" href="{{ url('/sub-classificacao') }}">SubClassificação</a>
-                <a class="dropdown-item" href="{{ url('/situacao') }}">Situação</a>
+                <a class="dropdown-item" href="{{ url('/tipo-solicitante') }}">Tipos Solicitantes</a>
+                <a class="dropdown-item" href="{{ url('/tipo-ouvidoria') }}">Tipos Ouvidorias</a>
+                <a class="dropdown-item" href="{{ url('/situacao') }}">Situações Ouvidorias</a>
+                <a class="dropdown-item" href="{{ url('/canal-atendimento') }}">Canais Atendimentos</a>
+                <a class="dropdown-item" href="{{ url('/categoria') }}">Categorias</a>
+                <a class="dropdown-item" href="{{ url('/setor') }}">Setores / Áreas</a>
+                <a class="dropdown-item" href="{{ url('/assunto') }}">Assuntos</a>
+                <a class="dropdown-item" href="{{ url('/classificacao') }}">Classificações</a>
+                <a class="dropdown-item" href="{{ url('/sub-classificacao') }}">SubClassificações</a>
             </div>
         </div>
     </div>&nbsp;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assunto;
 use App\Models\Classificacao;
 use Illuminate\Http\Request;
 
@@ -9,6 +10,8 @@ class ClassificacaoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
+        'assunto_id.required' => 'O Assunto precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
         'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
         'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
@@ -20,22 +23,25 @@ class ClassificacaoController extends Controller
 
     public function index()
     {
-        $classificacaos = Classificacao::paginate(25);
+        $classificacaos = Classificacao::with('assunto')->paginate(25);
         return view('ouvidoria.classificacao.index', compact('classificacaos'));
     }
 
     public function create()
     {
-        return view('ouvidoria.classificacao.create');
+        $assuntos = Assunto::orderBy('descricao', 'ASC')->get();
+        return view('ouvidoria.classificacao.create', compact('assuntos'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+                'assunto_id'=>'required',
                 'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $classificacao = new Classificacao([
+                'assunto_id' => $request->get('assunto_id'),
                 'descricao' => $request->get('descricao'),
                 'status'=> true
             ]);
@@ -45,17 +51,20 @@ class ClassificacaoController extends Controller
 
     public function edit(int $id)
     {
+        $assuntos = Assunto::orderBy('descricao', 'ASC')->get();
         $classificacao = Classificacao::find($id);
-        return view('ouvidoria.classificacao.edit', compact('classificacao'));
+        return view('ouvidoria.classificacao.edit', compact('assuntos', 'classificacao'));
     }
 
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'descricao'=>'required|string|max:100'
+                'assunto_id'=>'required',
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $classificacao = Classificacao::find($id);
+        $classificacao->assunto_id = $request->get('assunto_id');
         $classificacao->descricao = $request->get('descricao');
         $classificacao->save();
   

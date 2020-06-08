@@ -156,26 +156,26 @@ $total = 0;
             * ---------
             */
             var bar_data = {
-            data : [
-                @php
-                $total = 0;
-                @endphp
-                @if (count($institutoras) > 0)
-                    @foreach ($institutoras as $institutora)
-                        @php
-                        $qtde = $institutora['qtde'];
-                        $nome = $institutora['nome'];
-                        @endphp
-                        ['{{ $nome }}', {{ $qtde }}],
-                        @php
-                        $total += $qtde;
-                        @endphp
-                    @endforeach
-                @endif
-                ],
-                color: '#3c8dbc'
-            };
-
+                data : [
+                    @php
+                    $total = 0;
+                    @endphp
+                    @if (count($institutoras) > 0)
+                        @foreach ($institutoras as $institutora)
+                            @php
+                            $qtde = $institutora['qtde'];
+                            $nome = $institutora['nome'];
+                            @endphp
+                            ['{{ $nome }}', {{ $qtde }}],
+                            @php
+                            $total += $qtde;
+                            @endphp
+                        @endforeach
+                    @endif
+                    ],
+                    color: '#3c8dbc'
+                };
+    
             $.plot('#bar-chart', [bar_data], {
                 grid  : {
                     borderWidth: 1,
@@ -185,9 +185,8 @@ $total = 0;
                 series: {
                     bars: {
                         show    : true,
-                        horizontal: true,
                         barWidth: 0.3,
-                        align   : 'center'
+                        // align   : 'center'
                     }
                 },
                 xaxis : {
@@ -196,10 +195,9 @@ $total = 0;
                 }
             });
             /* END BAR CHART */
-
         });
     </script>
-    
+        
     </body>
 </html>
 

@@ -42,11 +42,11 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Bem Vindo a Ouvidoria da FIPECq Vida</h1>
+                    <h3>Bem Vindo a Ouvidoria da FIPECq Vida</h3>
                     <br/>
-                    Desde, 09 de junho de 2014, foi inaugurada a Ouvidoria Fipecq Vida. Este é um importante canal de comunicação entre os Associados, parceiros e gestores da FIPECq Vida. Por meio da Ouvidoria você poderá enviar elogios, sugestões, denúncias, informações, solicitações e reclamações inerentes aos serviços prestados pela Caixa de Assistência Social da FIPECq que, por algum motivo, não puderam ser solucionadas pelos habituais canais de atendimento.
+                    A Ouvidoria da FIPECq Vida foi inaugurada em junho de 2014, e desde então, tem sido uma importante ferramenta de comunicação entre nosso Associado e a gestão da Caixa de Assistência. Por meio da Ouvidoria o usuário poderia enviar elogios, sugestões, denúncias, pedidos de informação, solicitação e reclamações inerentes aos serviços prestados pela Caixa de Assistência Social da FIPECq Vida e seus parceiros, que por algum motivo, não puderam ser solucionadas pelos habituais canais de atendimento.
                     <br/><br/>
-                    A Ouvidoria FIPECq Vida tem a responsabilidade de representar a voz dos usuários (Associados, parceiros, fornecedores, funcionários etc.) dentro da empresa, propondo melhorias contínuas, capazes de satisfazer aspectos legais, como os previstos no Código de Defesa do Consumidor, ANS, SUSEP , Estatuto do Idoso ou de Gestão Interna, sugerindo ações e soluções para tornar a gestão da FIPECq Vida mais transparente, ética e social.
+                    A Ouvidoria tem a responsabilidade de representar a voz dos usuários (Associados, parceiros, fornecedores, funcionários etc.) dentro da FIPECq Vida, propondo melhorias contínuas, sugerindo ações e soluções para tornar a gestão da FIPECq Vida mais transparente, ética e social.
                     <br/><br/>
                 </div>
             </div>

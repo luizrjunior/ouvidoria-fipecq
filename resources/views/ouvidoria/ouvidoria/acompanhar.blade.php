@@ -15,20 +15,28 @@
 </style>
 
 @php
+$ouvidoria_id = "";
 $protocolo = "";
 $created_at = "";
 $tipo_ouvidoria_id = "";
+$solicitante_id = "";
 $cpf = "";
 $nome = "";
 $mensagem = "";
 $anexo = "";
 
 if ($ouvidoria) {
+    $ouvidoria_id = $ouvidoria->id;
     $protocolo = $errors->has('protocolo') ? old('protocolo') : str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT);
     $created_at = $errors->has('created_at') ? old('created_at') : date('d/m/Y H:i:s', strtotime($ouvidoria->created_at));
     $tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
-    $cpf = $errors->has('cpf') ? old('cpf') : $ouvidoria->solicitante->cpf;
-    $nome = $errors->has('nome') ? old('nome') : $ouvidoria->solicitante->nome;
+
+    $solicitante_id = $ouvidoria->solicitante_id;
+    if ($solicitante_id != "") {
+        $cpf = $errors->has('cpf') ? old('cpf') : $ouvidoria->solicitante->cpf;
+        $nome = $errors->has('nome') ? old('nome') : $ouvidoria->solicitante->nome;
+    }
+
     $mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
     $anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
 }
@@ -69,13 +77,14 @@ if ($ouvidoria) {
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($ouvidorias as $arrOuvidoria)
                                     <option value="{{ $arrOuvidoria->protocolo }}">
-                                        {{ str_pad($arrOuvidoria->protocolo, 14, 0, STR_PAD_LEFT) }}
+                                        {{ str_pad($arrOuvidoria->protocolo, 14, 0, STR_PAD_LEFT) }} - {{ $arrOuvidoria->notipoouvidoria }} - {{ date('d/m/Y', strtotime($arrOuvidoria->dtcriacao)) }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
+                    @if ($solicitante_id != "")
                     <h5>Dados Pessoais</h5>
                     <hr>
 
@@ -100,7 +109,9 @@ if ($ouvidoria) {
                             <span class="text-danger">{{ $errors->first('cpf') }}</span>
                         </div>
                     </div>
+                    @endif
                     
+                    @if ($ouvidoria_id != "")
                     <h5>Informações da Solicitação</h5>
                     <hr>
 
@@ -203,6 +214,7 @@ if ($ouvidoria) {
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="row form-group">
                         <div class="col-md-12">

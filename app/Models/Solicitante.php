@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Solicitante extends Model
 {
 
-    public $table = 'fv_ouv_solicitante';
+    public $table = 'internet.fv_ouv_solicitante';
 
     protected $fillable = [
         'nome',

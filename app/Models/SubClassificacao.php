@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubClassificacao extends Model
 {
 
-    public $table = 'fv_ouv_sub_classificacao';
+    public $table = 'internet.fv_ouv_sub_classificacao';
 
     protected $fillable = [
         'classificacao_id',

@@ -9,32 +9,52 @@
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/ouvidoria/index-ouvidoria.js') }}"></script>
 @endsection
 
-@section('content')
 @php
 $cpf_psq = "";
 $nome_psq = "";
+
 $tipo_ouvidoria_id_psq = "";
 $tipo_solicitante_id_psq = "";
+
 $data_inicio = date('01/m/Y');
 $data_termino = date('d/m/Y');
-$sub_classificacao_id_psq = "";
+
 $situacao_id_psq = "";
+$categoria_id_psq = "";
+
+$setor_id_psq = "";
+$assunto_id_psq = "";
+
+$classificacao_id_psq = "";
+$sub_classificacao_id_psq = "";
+
 $totalPage = 25;
 @endphp
 @if (isset($data))
     @php
     $cpf_psq = $data['cpf_psq'];
     $nome_psq = $data['nome_psq'];
+
     $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
     $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
+
     $data_inicio = $data['data_inicio'];
     $data_termino = $data['data_termino'];
-    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
+
     $situacao_id_psq = $data['situacao_id_psq'];
+    $categoria_id_psq = $data['categoria_id_psq'];
+
+    $setor_id_psq = $data['setor_id_psq'];
+    $assunto_id_psq = $data['assunto_id_psq'];
+
+    $classificacao_id_psq = $data['classificacao_id_psq'];
+    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
+
     $totalPage = $data['totalPage'];
     @endphp
 @endif
 
+@section('content')
 <style>
   .uper {
     margin-top: 40px;
@@ -156,7 +176,71 @@ $totalPage = 25;
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="sub_classificacao_id_psq" class="control-label">Classificação</label>
+                        <label for="categoria_id_psq" class="control-label">Categoria</label>
+                        <select id="categoria_id_psq" name="categoria_id_psq" class="form-control">
+                            <option value=""> -- SELECIONE -- </option>
+                            @foreach ($categorias as $categoria)
+                                @php $selected = ""; @endphp
+                                @if ($categoria->id == $categoria_id_psq)
+                                    @php $selected = "selected"; @endphp
+                                @endif
+                                <option value="{{ $categoria->id }}" {{ $selected }}>
+                                    {{ strtoupper($categoria->descricao) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="setor_id_psq" class="control-label">Setor / Área</label>
+                        <select id="setor_id_psq" name="setor_id_psq" 
+                            class="form-control">
+                            <option value="">- - SELECIONE - -</option>
+                            @foreach ($setores as $setor)
+                                @php $selected = ""; @endphp
+                                @if ($setor->id == $setor_id_psq)
+                                    @php $selected = "selected"; @endphp
+                                @endif
+                            <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="assunto_id_psq" class="control-label">Assunto</label>
+                        <select id="assunto_id_psq" name="assunto_id_psq" class="form-control">
+                            <option value=""> -- SELECIONE -- </option>
+                            @foreach ($assuntos as $assunto)
+                                @php $selected = ""; @endphp
+                                @if ($assunto->id == $assunto_id_psq)
+                                    @php $selected = "selected"; @endphp
+                                @endif
+                                <option value="{{ $assunto->id }}" {{ $selected }}>
+                                    {{ strtoupper($assunto->descricao) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="classificacao_id_psq" class="control-label">Classificação</label>
+                        <select id="classificacao_id_psq" name="classificacao_id_psq" 
+                            class="form-control">
+                            <option value="">- - SELECIONE - -</option>
+                            @foreach ($classificacoes as $classificacao)
+                                @php $selected = ""; @endphp
+                                @if ($classificacao->id == $classificacao_id_psq)
+                                    @php $selected = "selected"; @endphp
+                                @endif
+                            <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="sub_classificacao_id_psq" class="control-label">Subclassificação</label>
                         <select id="sub_classificacao_id_psq" name="sub_classificacao_id_psq" class="form-control">
                             <option value=""> -- SELECIONE -- </option>
                             @foreach ($subClassificacoes as $subclassificacao)
@@ -165,7 +249,7 @@ $totalPage = 25;
                                     @php $selected = "selected"; @endphp
                                 @endif
                                 <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                    {{ strtoupper($subclassificacao->classificacao->descricao) }} - {{ strtoupper($subclassificacao->descricao) }}
+                                    {{ strtoupper($subclassificacao->descricao) }}
                                 </option>
                             @endforeach
                         </select>
@@ -247,7 +331,7 @@ $totalPage = 25;
                             <td>{{ str_pad($ouvidoria->protocolo, 13, 0, STR_PAD_LEFT) }}</td>
                             <td>{{ $ouvidoria->notipoouvidoria }}</td>
                             <td>{{ $ouvidoria->dstiposolicitante }}</td>
-                            <td>{{ $ouvidoria->nosolicitante }}</td>
+                            <td>{{ $ouvidoria->nosolicitante != "" ? $ouvidoria->nosolicitante : "ANÔNIMO" }}</td>
                             <td>{{ date('d/m/Y', strtotime($ouvidoria->dtcriacao)) }}</td>
                             <td align="right">{{ str_pad($diasUteis, 2, 0, STR_PAD_LEFT) }}</td>
                             <td>

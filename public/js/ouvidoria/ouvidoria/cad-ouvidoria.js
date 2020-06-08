@@ -3,6 +3,26 @@ function validar() {
     $("#tipo_ouvidoria_id").prop('disabled', false);
 }
 
+function validarEdit() {
+    $('#carregando').show();
+    $("#formSolicitacaoOuvidoria").prop('action', top.routeUpdate);
+    $("#formSolicitacaoOuvidoria").submit();
+}
+
+function editCombo() {
+    $('#carregando').show();
+    $("#formSolicitacaoOuvidoria").prop('action', top.routeEditCombo);
+    $("#formSolicitacaoOuvidoria").submit();
+}
+
+function apresentarCamposSolicitante() {
+    if($("#anonima").is(':checked')) {
+        $("#divNaoAnonimo").hide();
+    } else {
+        $("#divNaoAnonimo").show();
+    }
+}
+
 function carregarSolicitanteCPF() {
     if ($('#cpf').val() != "") {
         $('#carregando').show();
@@ -18,7 +38,9 @@ function carregarSolicitanteCPF() {
             success: function (data) {
                 if (data.nome != undefined) {
                     $('#solicitante_id').val(data.id);
-                    $('#tipo_solicitante_id').val(data.tipo_solicitante_id);
+                    if (data.tipo_solicitante_id != undefined) {
+                        $('#tipo_solicitante_id').val(data.tipo_solicitante_id);
+                    }
                     $('#cpf').val(data.cpf);
                     $('#nome').val(data.nome);
                     $("#uf").val(data.uf);
@@ -63,6 +85,10 @@ $(document).ready(function () {
     $("#telefone").mask("(99) 99999-9999");
     $("#celular").mask("(99) 99999-9999");
 
+    $("#anonima").click(function () {
+        apresentarCamposSolicitante();
+    });
+
     $("#cpf").change(function () {
         carregarSolicitanteCPF();
     });
@@ -71,5 +97,22 @@ $(document).ready(function () {
 		$('#carregando').show();
 		$("#formSolicitacaoOuvidoria").submit();
     });
+
+    $("#categoria_id").change(function () {
+        editCombo();
+    });
+
+    $("#setor_id").change(function () {
+        editCombo();
+    });
+
+    $("#assunto_id").change(function () {
+        editCombo();
+    });
+
+    $("#classificacao_id").change(function () {
+        editCombo();
+    });
+
 });
 

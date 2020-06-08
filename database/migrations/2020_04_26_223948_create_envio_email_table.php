@@ -9,7 +9,7 @@ class CreateEnvioEmailTable extends Migration
 
     public function up()
     {
-        Schema::create('fv_ouv_envio_email', function (Blueprint $table) {
+        Schema::create('internet.fv_ouv_envio_email', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->integer('tipo_email_id');
@@ -26,7 +26,7 @@ class CreateEnvioEmailTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('fv_ouv_envio_email');
+        Schema::dropIfExists('internet.fv_ouv_envio_email');
     }
     
 }

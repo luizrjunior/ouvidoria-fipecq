@@ -13,7 +13,7 @@ class CreatePesquisaSatisfacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('fv_ouv_pesquisa_satisfacao', function (Blueprint $table) {
+        Schema::create('internet.fv_ouv_pesquisa_satisfacao', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->integer('resposta_1');
@@ -37,7 +37,7 @@ class CreatePesquisaSatisfacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fv_ouv_pesquisa_satisfacao');
+        Schema::dropIfExists('internet.fv_ouv_pesquisa_satisfacao');
     }
     
 }

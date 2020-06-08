@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PesquisaSatisfacao extends Model
 {
 
-    public $table = 'fv_ouv_pesquisa_satisfacao';
+    public $table = 'internet.fv_ouv_pesquisa_satisfacao';
 
     protected $fillable = [
         'ouvidoria_id',

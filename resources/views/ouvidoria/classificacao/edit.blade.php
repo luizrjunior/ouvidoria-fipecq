@@ -11,6 +11,7 @@
   }
 </style>
 @php
+$assunto_id = $errors->has('assunto_id') ? old('assunto_id') : $classificacao->assunto_id;
 $descricao = $errors->has('descricao') ? old('descricao') : $classificacao->descricao;
 @endphp
 <div class="container">
@@ -27,6 +28,21 @@ $descricao = $errors->has('descricao') ? old('descricao') : $classificacao->desc
                     <form method="post" action="{{ route('classificacao.update', $classificacao->id) }}" autocomplete="off">
                         @method('PATCH')
                         @csrf
+                        <div class="form-group {{ $errors->has('assunto_id') ? 'has-error' : '' }}">
+                            <label for="assunto_id" class="control-label">Setor / Área (*)</label>
+                            <select id="assunto_id" name="assunto_id" 
+                                class="form-control {{ $errors->has('assunto_id') ? 'is-invalid' : '' }}" autofocus>
+                                <option value="">- - Selecione - -</option>
+                                @foreach ($assuntos as $assunto)
+                                    @php $selected = ""; @endphp
+                                    @if ($assunto->id == $assunto_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{$assunto->id}}" {{$selected}}>{{$assunto->descricao}}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">{{ $errors->first('assunto_id') }}</span>
+                        </div>
                         <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
                             <label for="descricao">Descrição (*)</label>
                             <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 

@@ -15,4 +15,21 @@ $(document).ready(function () {
         format: "dd/mm/yyyy",	
         language: "pt-BR"
     });
+
+    $("#categoria_id_psq").change(function () {
+        $("#formSearchSolicitacaoOuvidoria").submit();
+    });
+
+    $("#setor_id_psq").change(function () {
+        $("#formSearchSolicitacaoOuvidoria").submit();
+    });
+
+    $("#assunto_id_psq").change(function () {
+        $("#formSearchSolicitacaoOuvidoria").submit();
+    });
+
+    $("#classificacao_id_psq").change(function () {
+        $("#formSearchSolicitacaoOuvidoria").submit();
+    });
+
 });

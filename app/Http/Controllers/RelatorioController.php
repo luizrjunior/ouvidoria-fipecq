@@ -6,6 +6,11 @@ use App\Models\Ouvidoria;
 use App\Models\Beneficiario;
 use App\Models\TipoOuvidoria;
 use App\Models\TipoSolicitante;
+
+use App\Models\Categoria;
+use App\Models\Setor;
+use App\Models\Assunto;
+use App\Models\Classificacao;
 use App\Models\SubClassificacao;
 
 use Illuminate\Http\Request;
@@ -22,8 +27,9 @@ class RelatorioController extends Controller
     public function relatorioTipoOuvidoria(Request $request)
     {
         $data = $request->except('_token');
+        $timestamp = strtotime("-15 days");
         if (empty($data['data_inicio'])) {
-            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('01/m/Y'))->format('d/m/Y');
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y', $timestamp))->format('d/m/Y');
         }
         if (empty($data['data_termino'])) {
             $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y'))->format('d/m/Y');
@@ -113,40 +119,43 @@ class RelatorioController extends Controller
         $faixaEtaria49_53 = 0;
         $faixaEtaria54_58 = 0;
         $faixaEtaria59 = 0;
+        
         foreach ($ouvidorias as $ouvidoria) {
-            $cpf = $this->limpaCPF_CNPJ($ouvidoria->solicitante->cpf);
-            $benef = Beneficiario::select(
-                    'cad_benef.nascimento'
-                )->where('cad_benef.cic', $cpf)->get();
-
-            if (count($benef) > 0) {
-                $dataNascimento = $benef[0]->nascimento;
-                $date = new \DateTime($dataNascimento);
-                $interval = $date->diff(new \DateTime( date('Y-m-d')));
-                $idade = (int) $interval->format('%Y');
-                if ($idade >= 24 && $idade <= 28) {
-                    $faixaEtaria24_28++;
-                }
-                if ($idade >= 29 && $idade <= 33) {
-                    $faixaEtaria29_33++;
-                }
-                if ($idade >= 34 && $idade <= 38) {
-                    $faixaEtaria34_38++;
-                }
-                if ($idade >= 39 && $idade <= 43) {
-                    $faixaEtaria39_43++;
-                }
-                if ($idade >= 44 && $idade <= 48) {
-                    $faixaEtaria44_48++;
-                }
-                if ($idade >= 49 && $idade <= 53) {
-                    $faixaEtaria49_53++;
-                }
-                if ($idade >= 54 && $idade <= 58) {
-                    $faixaEtaria54_58++;
-                }
-                if ($idade >= 59) {
-                    $faixaEtaria59++;
+            if ($ouvidoria->solicitante_id != "") {
+                $cpf = $this->limpaCPF_CNPJ($ouvidoria->solicitante->cpf);
+                $benef = Beneficiario::select(
+                        'cad_benef.nascimento'
+                    )->where('cad_benef.cic', $cpf)->get();
+    
+                if (count($benef) > 0) {
+                    $dataNascimento = $benef[0]->nascimento;
+                    $date = new \DateTime($dataNascimento);
+                    $interval = $date->diff(new \DateTime( date('Y-m-d')));
+                    $idade = (int) $interval->format('%Y');
+                    if ($idade >= 24 && $idade <= 28) {
+                        $faixaEtaria24_28++;
+                    }
+                    if ($idade >= 29 && $idade <= 33) {
+                        $faixaEtaria29_33++;
+                    }
+                    if ($idade >= 34 && $idade <= 38) {
+                        $faixaEtaria34_38++;
+                    }
+                    if ($idade >= 39 && $idade <= 43) {
+                        $faixaEtaria39_43++;
+                    }
+                    if ($idade >= 44 && $idade <= 48) {
+                        $faixaEtaria44_48++;
+                    }
+                    if ($idade >= 49 && $idade <= 53) {
+                        $faixaEtaria49_53++;
+                    }
+                    if ($idade >= 54 && $idade <= 58) {
+                        $faixaEtaria54_58++;
+                    }
+                    if ($idade >= 59) {
+                        $faixaEtaria59++;
+                    }
                 }
             }
         }
@@ -306,6 +315,21 @@ class RelatorioController extends Controller
         if (empty($data['tipo_solicitante_id_psq'])) {
             $data['tipo_solicitante_id_psq'] = "";
         }
+        if (empty($data['categoria_id_psq'])) {
+            $data['categoria_id_psq'] = "";
+        }
+
+        if (empty($data['setor_id_psq'])) {
+            $data['setor_id_psq'] = "";
+        }
+
+        if (empty($data['assunto_id_psq'])) {
+            $data['assunto_id_psq'] = "";
+        }
+
+        if (empty($data['classificacao_id_psq'])) {
+            $data['classificacao_id_psq'] = "";
+        }
 
         if (empty($data['sub_classificacao_id_psq'])) {
             $data['sub_classificacao_id_psq'] = "";
@@ -313,7 +337,31 @@ class RelatorioController extends Controller
 
         $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
         $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
-        $subClassificacoes = SubClassificacao::where('status', 1)->get();
+        $categorias = Categoria::where('status', 1)->get();
+
+        $setores = array();
+        if ($data['categoria_id_psq'] != "") {
+            $setores = Setor::where('categoria_id', $data['categoria_id_psq'])
+                ->where('status', 1)->get();
+        }
+
+        $assuntos = array();
+        if ($data['setor_id_psq'] != "") {
+            $assuntos = Assunto::where('setor_id', $data['setor_id_psq'])
+                ->where('status', 1)->get();
+        }
+
+        $classificacoes = array();
+        if ($data['assunto_id_psq'] != "") {
+            $classificacoes = Classificacao::where('assunto_id', $data['assunto_id_psq'])
+                ->where('status', 1)->get();
+        }
+
+        $subClassificacoes = array();
+        if ($data['classificacao_id_psq'] != "") {
+            $subClassificacoes = SubClassificacao::where('classificacao_id', $data['classificacao_id_psq'])
+                ->where('status', 1)->get();
+        }
 
         $ouvidorias = $this->getOuvidoriasPersonalizado($data);
 
@@ -321,8 +369,8 @@ class RelatorioController extends Controller
             return view('ouvidoria.relatorios.relatorio-personalizado-print', 
                 compact('ouvidorias', 'data'));
         }
-        return view('ouvidoria.relatorios.relatorio-personalizado', 
-            compact('tiposOuvidorias', 'tiposSolicitantes', 'subClassificacoes', 'ouvidorias', 'data'));
+        return view('ouvidoria.relatorios.relatorio-personalizado', compact('tiposOuvidorias', 'tiposSolicitantes', 
+            'categorias', 'setores', 'assuntos', 'classificacoes', 'subClassificacoes', 'ouvidorias', 'data'));
     }
 
     private function getOuvidoriasPersonalizado(Array $data = null)
@@ -343,19 +391,31 @@ class RelatorioController extends Controller
             ->join('plano.cad_empresa', 'fv_ouv_solicitante.institutora_id', 'cad_empresa.empresa')
             ->whereNotNull('fv_ouv_solicitante.institutora_id')
             ->where(function ($query) use ($data) {
-                if (isset($data['data_inicio']) && $data['data_inicio'] != "") {
+                if ($data['data_inicio'] != "") {
                     $query->where('fv_ouv_ouvidoria.created_at', '>=', $data['data_inicio'] . ' 00:00:00');
                 }
-                if (isset($data['data_termino']) && $data['data_termino'] != "") {
+                if ($data['data_termino'] != "") {
                     $query->where('fv_ouv_ouvidoria.created_at', '<=', $data['data_termino'] . ' 23:59:59');
                 }
-                if (isset($data['tipo_ouvidoria_id_psq']) && $data['tipo_ouvidoria_id_psq'] != "") {
+                if ($data['tipo_ouvidoria_id_psq'] != "") {
                     $query->where('fv_ouv_ouvidoria.tp_ouvidoria_id', $data['tipo_ouvidoria_id_psq']);
                 }
-                if (isset($data['tipo_solicitante_id_psq']) && $data['tipo_solicitante_id_psq'] != "") {
+                if ($data['tipo_solicitante_id_psq'] != "") {
                     $query->where('fv_ouv_solicitante.tipo_solicitante_id', $data['tipo_solicitante_id_psq']);
                 }
-                if (isset($data['sub_classificacao_id_psq']) && $data['sub_classificacao_id_psq'] != "") {
+                if ($data['categoria_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.categoria_id', $data['categoria_id_psq']);
+                }
+                if ($data['setor_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.setor_id', $data['setor_id_psq']);
+                }
+                if ($data['assunto_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.assunto_id', $data['assunto_id_psq']);
+                }
+                if ($data['classificacao_id_psq'] != "") {
+                    $query->where('fv_ouv_ouvidoria.classificacao_id', $data['classificacao_id_psq']);
+                }
+                if ($data['sub_classificacao_id_psq'] != "") {
                     $query->where('fv_ouv_ouvidoria.sub_classificacao_id', $data['sub_classificacao_id_psq']);
                 }
             })->orderBy('cad_empresa.nome')->get();

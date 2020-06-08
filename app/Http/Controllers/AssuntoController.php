@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setor;
 use App\Models\Assunto;
 use Illuminate\Http\Request;
 
@@ -9,6 +10,8 @@ class AssuntoController extends Controller
 {
 
     const MESSAGES_ERRORS = [
+        'setor_id.required' => 'O Setor precisa ser informado. Por favor, '
+        . 'você pode verificar isso?',
         'descricao.required' => 'A Descrição precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
         'descricao.max' => 'Ops, a Descrição não precisa ter mais que 100 caracteres. '
@@ -20,22 +23,25 @@ class AssuntoController extends Controller
 
     public function index()
     {
-        $assuntos = Assunto::paginate(25);
+        $assuntos = Assunto::with('setor')->paginate(25);
         return view('ouvidoria.assunto.index', compact('assuntos'));
     }
 
     public function create()
     {
-        return view('ouvidoria.assunto.create');
+        $setores = Setor::orderBy('descricao', 'ASC')->get();
+        return view('ouvidoria.assunto.create', compact('setores'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+                'setor_id'=>'required',
                 'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
             
         $assunto = new Assunto([
+                'setor_id' => $request->get('setor_id'),
                 'descricao' => $request->get('descricao'),
                 'status'=> true
             ]);
@@ -45,17 +51,20 @@ class AssuntoController extends Controller
 
     public function edit(int $id)
     {
+        $setores = Setor::orderBy('descricao', 'ASC')->get();
         $assunto = Assunto::find($id);
-        return view('ouvidoria.assunto.edit', compact('assunto'));
+        return view('ouvidoria.assunto.edit', compact('setores', 'assunto'));
     }
 
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'descricao'=>'required|string|max:100'
+                'setor_id'=>'required',
+                'descricao'=>'required|string|max:100'
             ], self::MESSAGES_ERRORS);
   
         $assunto = Assunto::find($id);
+        $assunto->setor_id = $request->get('setor_id');
         $assunto->descricao = $request->get('descricao');
         $assunto->save();
   

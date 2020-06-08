@@ -13,11 +13,18 @@ class CreateClassificacaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('fv_ouv_classificacao', function (Blueprint $table) {
+        Schema::create('internet.fv_ouv_classificacao', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('descricao', 100);
             $table->boolean('status');
+
+            $table->unsignedBigInteger('assunto_id');
+            $table->foreign('assunto_id')
+                ->references('id')
+                ->on('fv_ouv_assunto')
+                ->onDelete('cascade');
+                
             $table->timestamps();
         });
     }
@@ -29,6 +36,6 @@ class CreateClassificacaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fv_ouv_classificacao');
+        Schema::dropIfExists('internet.fv_ouv_classificacao');
     }
 }

@@ -32,7 +32,7 @@ class CanalAtendimentoTableSeeder extends Seeder
 
         foreach ($canaisAtendimentos as $tipoPrestador) {
             $this->command->info('Inserindo Canal de Atendimento: ' . $tipoPrestador['descricao']);
-            DB::table('fv_ouv_canal_atendimento')->insert([
+            DB::table('internet.fv_ouv_canal_atendimento')->insert([
                 'descricao' => $tipoPrestador['descricao'], 
                 'status' => $tipoPrestador['status'],
                 'created_at' => date('Y-m-d H:i:s'),

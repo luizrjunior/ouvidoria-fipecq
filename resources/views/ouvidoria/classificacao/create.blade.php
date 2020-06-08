@@ -23,6 +23,17 @@
                 <div class="card-body">
                     <form method="post" action="{{ route('classificacao.store') }}" autocomplete="off">
                         @csrf
+                        <div class="form-group {{ $errors->has('assunto_id') ? 'text-danger' : '' }}">
+                            <label for="assunto_id" class="control-label">Assunto (*)</label>
+                            <select id="assunto_id" name="assunto_id" 
+                                class="form-control {{ $errors->has('assunto_id') ? 'is-invalid' : '' }}" autofocus>
+                                <option value="">- - Selecione - -</option>
+                                @foreach ($assuntos as $assunto)
+                                    <option value="{{$assunto->id}}">{{$assunto->descricao}}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">{{ $errors->first('assunto_id') }}</span>
+                        </div>
                         <div class="form-group {{ $errors->has('descricao') ? 'text-danger' : '' }}">
                             <label for="descricao">Descrição (*)</label>
                             <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" 

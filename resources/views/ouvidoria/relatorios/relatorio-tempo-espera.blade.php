@@ -192,7 +192,7 @@ $data_termino = date('d/m/Y');
     <div class="col-md-12">
         
         <form id="formRelatorios" class="form-horizontal" 
-            role="form" method="POST" action="{{ route('relatorio.tipo-solicitacao') }}">
+            role="form" method="POST" action="{{ route('relatorio.tempo-espera') }}">
             @csrf
             <input type="hidden" id="print" name="print" value="">
 

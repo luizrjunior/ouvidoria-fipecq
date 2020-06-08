@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ouvidoria extends Model
 {
 
-    public $table = 'fv_ouv_ouvidoria';
+    public $table = 'internet.fv_ouv_ouvidoria';
 
     protected $fillable = [
         'protocolo',
@@ -15,15 +15,25 @@ class Ouvidoria extends Model
         'observacao',
         'anexo',
         'tp_ouvidoria_id',
+        'tipo_solicitante_id',
         'solicitante_id',
         'situacao_id',
+        'categoria_id',
+        'setor_id',
+        'assunto_id',
+        'classificacao_id',
         'sub_classificacao_id',
-        'canal_atendimento_id'
+        'canal_atendimento_id',
     ];
 
     public function tipoOuvidoria()
     {
         return $this->belongsTo('App\Models\TipoOuvidoria', 'tp_ouvidoria_id');
+    }
+    
+    public function tipoSolicitante()
+    {
+        return $this->belongsTo('App\Models\TipoSolicitante', 'tipo_solicitante_id');
     }
     
     public function solicitante()

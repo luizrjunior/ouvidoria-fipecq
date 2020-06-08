@@ -34,7 +34,7 @@ class SituacaoTableSeeder extends Seeder
 
         foreach ($situacaoes as $situacao) {
             $this->command->info('Inserindo Situação: ' . $situacao['nome']);
-            DB::table('fv_ouv_situacao')->insert([
+            DB::table('internet.fv_ouv_situacao')->insert([
                 'nome' => $situacao['nome'],
                 'descricao' => $situacao['descricao'],
                 'cor' => $situacao['cor'],

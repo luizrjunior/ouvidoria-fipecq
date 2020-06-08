@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EnvioEmail extends Model
 {
 
-    public $table = 'fv_ouv_envio_email';
+    public $table = 'internet.fv_ouv_envio_email';
 
     protected $fillable = [
         'tipo_email_id',
