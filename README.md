@@ -22,7 +22,7 @@ Sistema de Ouvidoria FIPECq Vida desenvolvido em Laravel framework, Bootstrap, J
 ```
 git clone https://github.com/luizrjunior/ouvidoria-fipecq.git
 ```
-2. Criar o arquivo .env baseado no arquivo .env.example e configurar a conexão com banco de dados:
+2. Criar o arquivo .env baseado no arquivo .env.example do diretório root da aplicação e configurar a conexão com banco de dados:
 ```
 DB_CONNECTION=oracle
 DB_HOST=192.168.12.40
