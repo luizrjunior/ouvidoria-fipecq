@@ -60,5 +60,14 @@ composer dump-autoload
 php artisan db:seed
 ```
 10. Criar alias ou vhost da aplicação apontando para o diretório 
-public
+```
+/public
+```
+11. Criar uma tarefa agendada no servidor de aplicação chamando o seguinte link:
+```
+http://alias-aplicacao/enviar-emails
+```
 11. Acessar a aplicação de acordo com o alias criado
+```
+http://alias-aplicacao/
+```
