@@ -33,7 +33,7 @@ class OuvidoriaController extends Controller
         'tipo_ouvidoria_id.required' => 'O Tipo de Solicitação precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'tipo_solicitante_id.required' => 'Você é precisa ser informado. Por favor, '
+        'tipo_solicitante_id.required' => 'O campo Você é precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
         'cpf.required' => 'O CPF precisa ser informado. Por favor, '
@@ -60,7 +60,7 @@ class OuvidoriaController extends Controller
         'celular.required' => 'O Celular precisa ser informado. Por favor, '
         . 'você pode verificar isso?',
 
-        'mensagem.required' => 'A Mensagem precisa ser informado. Por favor, '
+        'mensagem.required' => 'A Mensagem precisa ser informada. Por favor, '
         . 'você pode verificar isso?',
         'mensagem.max' => 'Ops, a Mensagem não precisa ter mais que 1200 caracteres. '
         . 'Por favor, você pode verificar isso?',
@@ -74,12 +74,18 @@ class OuvidoriaController extends Controller
         . 'Por favor, você pode verificar isso?',
     ];
 
-    const MESSAGE_ADD_SUCCESS = "A sua demanda foi recebida com sucesso. Em breve você será contatado.
+    const MESSAGE_ADD_SUCCESS_EMAIL = "A sua demanda foi recebida com sucesso. Em breve você será contatado.
     <br />O número do protocolo da sua demanda é: ";
 
-    const MESSAGE_UPDATE_SUCCESS = "Solicitação de Ouvidoria alterada com sucesso!";
+    const MESSAGE_ADD_SUCCESS = "A sua demanda foi recebida com sucesso.
+    <br />O número do protocolo da sua demanda é: ";
 
-    const MESSAGE_DESTROY_SUCCESS = "Solicitação de Ouvidoria removido com sucesso!";
+    const MESSAGE_ADD_SUCCESS_CONCLUIDA = "Demanda concluída com sucesso.
+    <br />O número do protocolo da demanda é: ";
+
+    const MESSAGE_UPDATE_SUCCESS = "A demanda foi alterada com sucesso!";
+
+    const MESSAGE_DESTROY_SUCCESS = "A demanda foi removida com sucesso!";
 
     const UFS = [
         ["sigla" => "AC", "descricao" => "ACRE"],
@@ -359,6 +365,7 @@ class OuvidoriaController extends Controller
     {
         if ($request->anonima != "A") {
             $request->validate([
+                'tipo_ouvidoria_id'=>'required',
                 'tipo_solicitante_id' => 'required',
                 'cpf' => 'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
                 'nome' => 'required|max:120',
@@ -366,6 +373,7 @@ class OuvidoriaController extends Controller
                 'cidade' => 'required|max:120',
                 'email' => 'required|max:120',
                 'celular' => 'required|max:15',
+                'mensagem'=>'required|max:1200',
             ], self::MESSAGES_ERRORS);
 
             if ($request->solicitante_id == "") {
@@ -426,12 +434,14 @@ class OuvidoriaController extends Controller
 
         $this->anexarArquivo($ouvidoria, $request);
 
+        $msg = self::MESSAGE_ADD_SUCCESS;
         if ($request->email != "") {
             $this->enviarEmailOuvidoria($request->email, $ouvidoria);
+            $msg = self::MESSAGE_ADD_SUCCESS_EMAIL;
         }
         
         return redirect('/fale-com-ouvidor')
-            ->with('success', self::MESSAGE_ADD_SUCCESS . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
+            ->with('success', $msg . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
     }
 
     private function anexarArquivo($ouvidoria, $request)
@@ -627,9 +637,14 @@ class OuvidoriaController extends Controller
     {
         $request->validate([
             'observacao' => 'nullable|max:600',
-            'comentario' => 'nullable|max:600',
         ], self::MESSAGES_ERRORS);
 
+        if ($request->situacao_id != "") {
+            $request->validate([
+                'comentario' => 'required|max:600',
+            ], self::MESSAGES_ERRORS);
+        }
+        
         $ouvidoria = Ouvidoria::find($request->ouvidoria_id);
         $ouvidoria->canal_atendimento_id = $request->canal_atendimento_id;
         $ouvidoria->tp_ouvidoria_id = $request->tipo_ouvidoria_id;
@@ -644,6 +659,7 @@ class OuvidoriaController extends Controller
         }
         $ouvidoria->save();
         
+        $msg = self::MESSAGE_UPDATE_SUCCESS;
         if ($request->situacao_id != "") {
             $situacaoOuvidoria = new SituacaoOuvidoria([
                 'ouvidoria_id' => $request->ouvidoria_id,
@@ -653,6 +669,7 @@ class OuvidoriaController extends Controller
             $situacaoOuvidoria->save();
 
             if ($request->situacao_id == 3) {
+                $msg = self::MESSAGE_ADD_SUCCESS_CONCLUIDA;
                 if ($ouvidoria->solicitante->email != "") {
                     $para = $ouvidoria->solicitante->email;
                     $this->enviarEmailOuvidoriaConcluida($para);
@@ -660,7 +677,7 @@ class OuvidoriaController extends Controller
             }
         }
 
-        return redirect('/ouvidoria')->with('success', self::MESSAGE_UPDATE_SUCCESS);
+        return redirect('/ouvidoria')->with('success', $msg);
     }
 
     private function enviarEmailOuvidoriaConcluida($para)
@@ -744,6 +761,9 @@ class OuvidoriaController extends Controller
                 'cidade' => 'required|max:120',
                 'email' => 'required|max:120',
                 'celular' => 'required|max:15',
+                'mensagem' => 'required|max:1200',
+                'situacao_id' => 'required',
+                'comentario' => 'required|max:1200',
             ], self::MESSAGES_ERRORS);
 
             if ($request->solicitante_id == "") {
@@ -776,9 +796,11 @@ class OuvidoriaController extends Controller
         }
 
         $request->validate([
-            'tipo_ouvidoria_id'=>'required',
-            'tipo_solicitante_id'=>'required',
-            'mensagem'=>'required|max:1200',
+            'tipo_solicitante_id' => 'required',
+            'observacao' => 'nullable|max:600',
+            'mensagem' => 'required|max:1200',
+            'situacao_id' => 'required',
+            'comentario' => 'required|max:1200',
         ], self::MESSAGES_ERRORS);
 
         $protocolo = Ouvidoria::get();
@@ -814,19 +836,23 @@ class OuvidoriaController extends Controller
             ]);
             $situacaoOuvidoria->save();
 
-            if ($request->email != "") {
-                if ($request->situacao_id == 1) {
-                    $this->enviarEmailOuvidoria($solicitante->email, $ouvidoria);
+            $msg = self::MESSAGE_ADD_SUCCESS;
+            if ($request->situacao_id == 1) {
+                if ($request->email != "") {
+                    $msg = self::MESSAGE_ADD_SUCCESS_EMAIL;
+                    $this->enviarEmailOuvidoria($request->email, $ouvidoria);
                 }
-                if ($request->situacao_id == 3) {
-                    $para = $ouvidoria->solicitante->email;
-                    $this->enviarEmailOuvidoriaConcluida($para);
+            }
+            if ($request->situacao_id == 3) {
+                $msg = self::MESSAGE_ADD_SUCCESS_CONCLUIDA;
+                if ($request->email != "") {
+                    $this->enviarEmailOuvidoriaConcluida($request->email);
                 }
             }
         }
 
         return redirect('/ouvidoria')
-            ->with('success', self::MESSAGE_ADD_SUCCESS . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
+            ->with('success', $msg . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
     }
 
     public function carregarSolicitantePorCPF(Request $request)
@@ -836,11 +862,6 @@ class OuvidoriaController extends Controller
         //Localizar na Tabela de Beneficiarios
         if (count($solicitante_request) == 0) {
             $cpf = $this->limpaCPF_CNPJ($request->cpf);
-
-            // $benef = Beneficiario::where('cic', $cpf)->get();
-            // $planoBenef = array();
-            // $planoBenef[0]->empresa = 102;
-            
             $benef = Beneficiario::select(
                     'cad_benef.matricula', 
                     'cad_benef.nome', 

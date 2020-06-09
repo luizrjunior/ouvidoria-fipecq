@@ -17,7 +17,7 @@ class CreateSolicitanteTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('nome', 120);
-            $table->string('cpf', 15);
+            $table->string('cpf', 15)->unique();
             $table->string('email', 120);
             $table->string('telefone', 15)->nullable();
             $table->string('celular', 15);

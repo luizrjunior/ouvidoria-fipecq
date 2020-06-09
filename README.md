@@ -59,15 +59,23 @@ composer dump-autoload
 ```
 php artisan db:seed
 ```
-10. Criar alias ou vhost da aplicação apontando para o diretório 
+10. Criar storage link para armazenar os arquivos anexos 
+```
+php artisan storage:link
+```
+11. Criar alias ou vhost da aplicação apontando para o diretório: 
 ```
 /public
 ```
-11. Criar uma tarefa agendada no servidor de aplicação chamando o seguinte link:
+12. Criar uma tarefa agendada no servidor de aplicação chamando o seguinte link:
 ```
 http://alias-aplicacao/enviar-emails
 ```
-11. Acessar a aplicação de acordo com o alias criado
+13. Acesso a aplicação de acordo com o alias criado para usuários normais e anônimos
 ```
-http://alias-aplicacao/
+http://alias-aplicacao/home
+```
+14. Acesso a aplicação de acordo com o alias criado para usuários administratores:
+```
+http://alias-aplicacao/home/admin
 ```

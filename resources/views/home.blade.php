@@ -140,7 +140,7 @@
             <div class="card border-warning mb-3" style="max-width: 18rem;">
               <div class="card-body text-warning" style="text-align:center;">
                 <h5 class="card-title"><span class="badge badge-pill badge-warning">Valores</span></h5>
-                <p class="card-text">Ética, respeito, transparência, responsabilidade, imparcialidade e solidariedade.</p>
+                <p class="text-dark">Ética, respeito, transparência, responsabilidade, imparcialidade e solidariedade.</p>
               </div>
             </div>
 
@@ -150,5 +150,4 @@
     </div>   
     <!-- /.row (main row) -->
 </div>
-
 @endsection

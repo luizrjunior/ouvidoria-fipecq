@@ -24,27 +24,42 @@ $routeEditCombo = route('ouvidoria.edit-combo');
 </style>
 
 @php
-$ouvidoria_id = $errors->has('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
-$tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
-$canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : $ouvidoria->canal_atendimento_id;
+$ouvidoria_id = old('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
+$canal_atendimento_id = old('canal_atendimento_id') ? old('canal_atendimento_id') : $ouvidoria->canal_atendimento_id;
 
-$categoria_id = $errors->has('categoria_id') ? old('categoria_id') : $ouvidoria->categoria_id;
-$setor_id = $errors->has('setor_id') ? old('setor_id') : $ouvidoria->setor_id;
-$assunto_id = $errors->has('assunto_id') ? old('assunto_id') : $ouvidoria->assunto_id;
-$classificacao_id = $errors->has('classificacao_id') ? old('classificacao_id') : $ouvidoria->classificacao_id;
-$sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : $ouvidoria->sub_classificacao_id;
+$categoria_id = old('categoria_id') ? old('categoria_id') : $ouvidoria->categoria_id;
+$setor_id = old('setor_id') ? old('setor_id') : $ouvidoria->setor_id;
+$assunto_id = old('assunto_id') ? old('assunto_id') : $ouvidoria->assunto_id;
+$classificacao_id = old('classificacao_id') ? old('classificacao_id') : $ouvidoria->classificacao_id;
+$sub_classificacao_id = old('sub_classificacao_id') ? old('sub_classificacao_id') : $ouvidoria->sub_classificacao_id;
 
-$observacao = $errors->has('observacao') ? old('observacao') : $ouvidoria->observacao;
-$mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
-$anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
+$observacao = old('observacao') ? old('observacao') : $ouvidoria->observacao;
+$mensagem = old('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
+$anexo = old('anexo') ? old('anexo') : $ouvidoria->anexo;
 
-$solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : $ouvidoria->solicitante_id;
+$solicitante_id = old('solicitante_id') ? old('solicitante_id') : $ouvidoria->solicitante_id;
 if ($solicitante_id != "") {
-    $email = $errors->has('email') ? old('email') : $ouvidoria->solicitante->email;
-    $telefone = $errors->has('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
-    $celular = $errors->has('celular') ? old('celular') : $ouvidoria->solicitante->celular;
+    $email = old('email') ? old('email') : $ouvidoria->solicitante->email;
+    $telefone = old('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
+    $celular = old('celular') ? old('celular') : $ouvidoria->solicitante->celular;
 }
+$situacao_id = old('situacao_id') ? old('situacao_id') : "";
 @endphp
+
+@if ($errors->any())
+<!-- Alert -->
+<div id="_sent_ok_" class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-check"></i> Alerta!</h4>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+<!-- /Alert -->
+@endif
 
 <div class="row justify-content-center">
     <div class="col-md-12">
@@ -358,17 +373,22 @@ if ($solicitante_id != "") {
                             <select id="situacao_id" name="situacao_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
                                 @foreach ($situacoes as $situacao)
-                                    <option value="{{ $situacao->id }}">{{ strtoupper($situacao->nome) }}</option>
+                                    @php $selected = ""; @endphp
+                                    @if ($situacao->id == $situacao_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{ $situacao->id }}" {{ $selected }}>{{ strtoupper($situacao->nome) }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="row form-group">
+                    <div class="row form-group {{ $errors->has('comentario') ? 'text-danger' : '' }}">
                         <div class="col-md-12">
                             <label for="comentario" class="control-label">Digite aqui sua mensagem:</label>
                             <textarea class="form-control" rows="5" id="comentario" name="comentario" 
                                 class="form-control"></textarea>
+                            <span class="text-danger">{{ $errors->first('comentario') }}</span>
                         </div>
                     </div>
 

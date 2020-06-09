@@ -8,14 +8,16 @@
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
     src="{{ asset('/js/ouvidoria/ouvidoria/cad-ouvidoria.js') }}"></script>
+<script type="text/javascript">
+    @if (old('anonima') == "A")
+    apresentarCamposSolicitante();
+    @endif
+</script>
 @endsection
 
 @php
 $tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $tipo_ouvidoria_id;
-$tipo_solicitante_id = old('tipo_solicitante_id');
-$solicitante_id = old('solicitante_id');
-$institutora_id = old('institutora_id');
-$uf = old('uf');
+$checked = old('anonima') == "A" ? "checked" : "";
 @endphp
 
 @section('content')
@@ -24,6 +26,22 @@ $uf = old('uf');
     margin-top: 40px;
   }
 </style>
+
+@if ($errors->any())
+<!-- Alert -->
+<div id="_sent_ok_" class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-exclamation-triangle"></i> Atenção!</h4>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+<!-- /Alert -->
+@endif
+
+{{ $checked }}
 
 <div class="row justify-content-center">
     <div class="col-md-12">
@@ -39,7 +57,7 @@ $uf = old('uf');
                     action="{{ route('ouvidoria.store') }}" enctype="multipart/form-data" autocomplete="off">
                     @csrf
 
-                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="{{ $solicitante_id }}">
+                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="{{ old('solicitante_id') }}">
 
                     <div class="row form-group">
                         <div class="col-md-3 {{ $errors->has('tipo_ouvidoria_id') ? 'text-danger' : '' }}">
@@ -71,7 +89,7 @@ $uf = old('uf');
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($tiposSolicitantes as $tipoSolicitante)
                                     @php $selected = ""; @endphp
-                                    @if ($tipoSolicitante->id == $tipo_solicitante_id)
+                                    @if ($tipoSolicitante->id == old('tipo_solicitante_id'))
                                         @php $selected = "selected"; @endphp
                                     @endif
                                 <option value="{{ $tipoSolicitante->id }}" {{ $selected }}>{{ $tipoSolicitante->descricao  }}</option>
@@ -81,14 +99,14 @@ $uf = old('uf');
                         </div>
                         <div class="col-md-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="A" id="anonima" name="anonima">
+                                <input class="form-check-input" type="checkbox" value="A" id="anonima" name="anonima" {{ $checked }}>
                                 <label class="form-check-label" for="anonima">
                                   Ouvidoria anônima
                                 </label>
                               </div>
                         </div>
                     </div>
-
+                    
                     <div id="divNaoAnonimo">
                     <div class="row form-group {{ $errors->has('cpf') ? 'text-danger' : '' }}">
                         <div class="col-md-3">
@@ -122,7 +140,7 @@ $uf = old('uf');
                                 <option value="">- - Selecione - -</option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
-                                    @if ($institutora->empresa == $institutora_id)
+                                    @if ($institutora->empresa == old('institutora_id'))
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $institutora->empresa }}" {{ $selected }}>{{ $institutora->nome }}</option>
@@ -138,12 +156,12 @@ $uf = old('uf');
                         <div class="col-md-9">
                             <select id="uf" name="uf" class="form-control {{ $errors->has('uf') ? 'is-invalid' : '' }}">
                                 <option value="">- - Selecione - -</option>
-                                @foreach ($ufs as $arrUf)
+                                @foreach ($ufs as $uf)
                                     @php $selected = ""; @endphp
-                                    @if ($arrUf["sigla"] == $uf)
+                                    @if ($uf["sigla"] == old('uf'))
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{ $arrUf["sigla"] }}" {{ $selected }}>{{ $arrUf["descricao"] }}</option>
+                                <option value="{{ $uf["sigla"] }}" {{ $selected }}>{{ $uf["descricao"] }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('uf') }}</span>

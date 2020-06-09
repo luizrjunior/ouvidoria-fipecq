@@ -17,6 +17,11 @@ $routeEditCombo = route('ouvidoria.create-combo');
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" 
     src="{{ asset('/js/ouvidoria/ouvidoria/cad-ouvidoria.js') }}"></script>
+<script type="text/javascript">
+    @if (old('anonima') == "A")
+    apresentarCamposSolicitante();
+    @endif
+</script>
 @endsection
 
 @section('content')
@@ -27,32 +32,47 @@ $routeEditCombo = route('ouvidoria.create-combo');
 </style>
 
 @php
-$ouvidoria_id = old('ouvidoria_id');
-
-$tipo_solicitante_id = $errors->has('tipo_solicitante_id') ? old('tipo_solicitante_id') : $request->tipo_solicitante_id;
-$solicitante_id = $errors->has('solicitante_id') ? old('solicitante_id') : $request->solicitante_id;
-$cpf = $errors->has('cpf') ? old('cpf') : $request->cpf;
-$nome = $errors->has('nome') ? old('nome') : $request->nome;
-$institutora_id = $errors->has('institutora_id') ? old('institutora_id') : $request->institutora_id;
-$uf = $errors->has('uf') ? old('uf') : $request->uf;
-$cidade = $errors->has('cidade') ? old('cidade') : $request->cidade;
-$email = $errors->has('email') ? old('email') : $request->email;
-$telefone = $errors->has('telefone') ? old('telefone') : $request->telefone;
-$celular = $errors->has('celular') ? old('celular') : $request->celular;
-
-$tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $request->tp_ouvidoria_id;
-$canal_atendimento_id = $errors->has('canal_atendimento_id') ? old('canal_atendimento_id') : $request->canal_atendimento_id;
-$observacao = $errors->has('observacao') ? old('observacao') : $request->observacao;
-
-$categoria_id = $errors->has('categoria_id') ? old('categoria_id') : $request->categoria_id;
-$setor_id = $errors->has('setor_id') ? old('setor_id') : $request->setor_id;
-$assunto_id = $errors->has('assunto_id') ? old('assunto_id') : $request->assunto_id;
-$classificacao_id = $errors->has('classificacao_id') ? old('classificacao_id') : $request->classificacao_id;
-$sub_classificacao_id = $errors->has('sub_classificacao_id') ? old('sub_classificacao_id') : $request->sub_classificacao_id;
-
-$mensagem = $errors->has('mensagem') ? old('mensagem') : $request->mensagem;
-$anexo = $errors->has('anexo') ? old('anexo') : $request->anexo;
+// DADOS DO SOLICITANTE
+$checked = $request->anonima == "A" ? "checked" : "";
+$solicitante_id = old('solicitante_id') ? old('solicitante_id') : $request->solicitante_id;
+$tipo_solicitante_id = old('tipo_solicitante_id') ? old('tipo_solicitante_id') : $request->tipo_solicitante_id;
+$cpf = old('cpf') ? old('cpf') : $request->cpf;
+$nome = old('nome') ? old('nome') : $request->nome;
+$institutora_id = old('institutora_id') ? old('institutora_id') : $request->institutora_id;
+$uf = old('uf') ? old('uf') : $request->uf;
+$cidade = old('cidade') ? old('cidade') : $request->cidade;
+$email = old('email') ? old('email') : $request->email;
+$telefone = old('telefone') ? old('telefone') : $request->telefone;
+$celular = old('celular') ? old('celular') : $request->celular;
+// DADOS DA OUVIDORIA
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $request->tp_ouvidoria_id;
+$canal_atendimento_id = old('canal_atendimento_id') ? old('canal_atendimento_id') : $request->canal_atendimento_id;
+$observacao = old('observacao') ? old('observacao') : $request->observacao;
+$categoria_id = old('categoria_id') ? old('categoria_id') : $request->categoria_id;
+$setor_id = old('setor_id') ? old('setor_id') : $request->setor_id;
+$assunto_id = old('assunto_id') ? old('assunto_id') : $request->assunto_id;
+$classificacao_id = old('classificacao_id') ? old('classificacao_id') : $request->classificacao_id;
+$sub_classificacao_id = old('sub_classificacao_id') ? old('sub_classificacao_id') : $request->sub_classificacao_id;
+$mensagem = old('mensagem') ? old('mensagem') : $request->mensagem;
+$anexo = old('anexo') ? old('anexo') : $request->anexo;
+// DADOS DA SITUACAO DA OUVIDORIA
+$situacao_id = old('situacao_id') ? old('situacao_id') : $request->situacao_id;
+$comentario = old('comentario') ? old('comentario') : $request->comentario;
 @endphp
+
+@if ($errors->any())
+<!-- Alert -->
+<div id="_sent_ok_" class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-exclamation-triangle"></i> Atenção!</h4>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+<!-- /Alert -->
+@endif
 
 <div class="row justify-content-center">
     <div class="col-md-12">
@@ -68,7 +88,7 @@ $anexo = $errors->has('anexo') ? old('anexo') : $request->anexo;
                     @csrf
 
                     <input type="hidden" id="ouvidoria_id" name="ouvidoria_id" value="">
-                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="">
+                    <input type="hidden" id="solicitante_id" name="solicitante_id" value="{{ $solicitante_id }}">
 
                     <h5>Dados Pessoais</h5>
                     <hr>
@@ -86,14 +106,14 @@ $anexo = $errors->has('anexo') ? old('anexo') : $request->anexo;
                                     @if ($tipoSolicitante->id == $tipo_solicitante_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{$tipoSolicitante->id}}" {{$selected}}>{{$tipoSolicitante->descricao}}</option>
+                                <option value="{{ $tipoSolicitante->id }}" {{ $selected }}>{{ $tipoSolicitante->descricao }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('tipo_solicitante_id') }}</span>
                         </div>
                         <div class="col-md-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="A" id="anonima" name="anonima">
+                                <input class="form-check-input" type="checkbox" value="A" id="anonima" name="anonima" {{ $checked }}>
                                 <label class="form-check-label" for="anonima">
                                   Ouvidoria anônima
                                 </label>
@@ -389,7 +409,11 @@ $anexo = $errors->has('anexo') ? old('anexo') : $request->anexo;
                                 class="form-control {{ $errors->has('situacao_id') ? 'is-invalid' : '' }}">
                                 <option value=""> -- SELECIONE -- </option>
                                 @foreach ($situacoes as $situacao)
-                                    <option value="{{ $situacao->id }}">{{ strtoupper($situacao->nome) }}</option>
+                                    @php $selected = ""; @endphp
+                                    @if ($situacao->id == $situacao_id)
+                                        @php $selected = "selected"; @endphp
+                                    @endif
+                                    <option value="{{ $situacao->id }}" {{ $selected }}>{{ strtoupper($situacao->nome) }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('situacao_id') }}</span>

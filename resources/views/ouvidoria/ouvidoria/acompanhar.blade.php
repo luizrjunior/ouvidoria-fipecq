@@ -27,18 +27,18 @@ $anexo = "";
 
 if ($ouvidoria) {
     $ouvidoria_id = $ouvidoria->id;
-    $protocolo = $errors->has('protocolo') ? old('protocolo') : str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT);
-    $created_at = $errors->has('created_at') ? old('created_at') : date('d/m/Y H:i:s', strtotime($ouvidoria->created_at));
-    $tipo_ouvidoria_id = $errors->has('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
+    $protocolo = old('protocolo') ? old('protocolo') : str_pad($ouvidoria->protocolo, 14, 0, STR_PAD_LEFT);
+    $created_at = old('created_at') ? old('created_at') : date('d/m/Y H:i:s', strtotime($ouvidoria->created_at));
+    $tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
 
     $solicitante_id = $ouvidoria->solicitante_id;
     if ($solicitante_id != "") {
-        $cpf = $errors->has('cpf') ? old('cpf') : $ouvidoria->solicitante->cpf;
-        $nome = $errors->has('nome') ? old('nome') : $ouvidoria->solicitante->nome;
+        $cpf = old('cpf') ? old('cpf') : $ouvidoria->solicitante->cpf;
+        $nome = old('nome') ? old('nome') : $ouvidoria->solicitante->nome;
     }
 
-    $mensagem = $errors->has('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
-    $anexo = $errors->has('anexo') ? old('anexo') : $ouvidoria->anexo;
+    $mensagem = old('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
+    $anexo = old('anexo') ? old('anexo') : $ouvidoria->anexo;
 }
 @endphp
 
