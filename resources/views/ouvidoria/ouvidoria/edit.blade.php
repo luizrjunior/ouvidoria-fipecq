@@ -1,14 +1,47 @@
-@extends('layouts.app')
-
 @php
 $route = route('ouvidoria.update');
-$routeEditCombo = route('ouvidoria.edit-combo');
+$routeCarregarSetores = route('ouvidoria.carrregar-setores');
+$routeCarregarAssuntos = route('ouvidoria.carrregar-assuntos');
+$routeCarregarClassificacoes = route('ouvidoria.carrregar-classificacoes');
+$routeCarregarSubClassificacoes = route('ouvidoria.carrregar-sub-classificacoes');
+// DADOS DO SOLICITANTE
+$solicitante_id = old('solicitante_id') ? old('solicitante_id') : $ouvidoria->solicitante_id;
+if ($solicitante_id != "") {
+    $email = old('email') ? old('email') : $ouvidoria->solicitante->email;
+    $telefone = old('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
+    $celular = old('celular') ? old('celular') : $ouvidoria->solicitante->celular;
+}
+// DADOS DA OUVIDORIA
+$ouvidoria_id = old('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
+$canal_atendimento_id = old('canal_atendimento_id') ? old('canal_atendimento_id') : $ouvidoria->canal_atendimento_id;
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
+$observacao = old('observacao') ? old('observacao') : $ouvidoria->observacao;
+$mensagem = old('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
+$anexo = old('anexo') ? old('anexo') : $ouvidoria->anexo;
+$categoria_id = old('categoria_id') ? old('categoria_id') : $ouvidoria->categoria_id;
+$setor_id = old('setor_id') ? old('setor_id') : $ouvidoria->setor_id;
+$assunto_id = old('assunto_id') ? old('assunto_id') : $ouvidoria->assunto_id;
+$classificacao_id = old('classificacao_id') ? old('classificacao_id') : $ouvidoria->classificacao_id;
+$sub_classificacao_id = old('sub_classificacao_id') ? old('sub_classificacao_id') : $ouvidoria->sub_classificacao_id;
+// DADOS DA SITUACAO DA OUVIDORIA
+$situacao_id = old('situacao_id') ? old('situacao_id') : "";
+$comentario = old('comentario') ? old('comentario') : "";
 @endphp
+
+@extends('layouts.app')
 
 @section('javascript')
 <script type="text/javascript">
-    top.routeUpdate = '{{ $route }}';
-    top.routeEditCombo = '{{ $routeEditCombo }}';
+    top.routeCarregarSetores = '{{ $routeCarregarSetores }}';
+    top.routeCarregarAssuntos = '{{ $routeCarregarAssuntos }}';
+    top.routeCarregarClassificacoes = '{{ $routeCarregarClassificacoes }}';
+    top.routeCarregarSubClassificacoes = '{{ $routeCarregarSubClassificacoes }}';
+
+    top.valorCategoria = '{{ $categoria_id }}';
+    top.valorSetor = '{{ $setor_id }}';
+    top.valorAssunto = '{{ $assunto_id }}';
+    top.valorClassificacao = '{{ $classificacao_id }}';
+    top.valorSubClassificacao = '{{ $sub_classificacao_id }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
@@ -22,30 +55,6 @@ $routeEditCombo = route('ouvidoria.edit-combo');
     margin-top: 40px;
   }
 </style>
-
-@php
-$ouvidoria_id = old('ouvidoria_id') ? old('ouvidoria_id') : $ouvidoria->id;
-$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $ouvidoria->tp_ouvidoria_id;
-$canal_atendimento_id = old('canal_atendimento_id') ? old('canal_atendimento_id') : $ouvidoria->canal_atendimento_id;
-
-$categoria_id = old('categoria_id') ? old('categoria_id') : $ouvidoria->categoria_id;
-$setor_id = old('setor_id') ? old('setor_id') : $ouvidoria->setor_id;
-$assunto_id = old('assunto_id') ? old('assunto_id') : $ouvidoria->assunto_id;
-$classificacao_id = old('classificacao_id') ? old('classificacao_id') : $ouvidoria->classificacao_id;
-$sub_classificacao_id = old('sub_classificacao_id') ? old('sub_classificacao_id') : $ouvidoria->sub_classificacao_id;
-
-$observacao = old('observacao') ? old('observacao') : $ouvidoria->observacao;
-$mensagem = old('mensagem') ? old('mensagem') : $ouvidoria->mensagem;
-$anexo = old('anexo') ? old('anexo') : $ouvidoria->anexo;
-
-$solicitante_id = old('solicitante_id') ? old('solicitante_id') : $ouvidoria->solicitante_id;
-if ($solicitante_id != "") {
-    $email = old('email') ? old('email') : $ouvidoria->solicitante->email;
-    $telefone = old('telefone') ? old('telefone') : $ouvidoria->solicitante->telefone;
-    $celular = old('celular') ? old('celular') : $ouvidoria->solicitante->celular;
-}
-$situacao_id = old('situacao_id') ? old('situacao_id') : "";
-@endphp
 
 @if ($errors->any())
 <!-- Alert -->
@@ -180,7 +189,7 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $canalAtendimento->id }}" {{ $selected }}>
-                                        {{ strtoupper($canalAtendimento->descricao) }}
+                                        {{ $canalAtendimento->descricao }}
                                     </option>
                                 @endforeach
                             </select>
@@ -195,7 +204,7 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $tipoOuvidoria->id }}" {{ $selected }}>
-                                        {{ strtoupper($tipoOuvidoria->nome) }}
+                                        {{ $tipoOuvidoria->nome }}
                                     </option>
                                 @endforeach
                             </select>
@@ -255,7 +264,7 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $categoria->id }}" {{ $selected }}>
-                                        {{ strtoupper($categoria->descricao) }}
+                                        {{ $categoria->descricao }}
                                     </option>
                                 @endforeach
                             </select>
@@ -264,14 +273,7 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                             <label for="setor_id" class="control-label">Setor / Área</label>
                             <select id="setor_id" name="setor_id" 
                                 class="form-control">
-                                <option value="">- - SELECIONE - -</option>
-                                @foreach ($setores as $setor)
-                                    @php $selected = ""; @endphp
-                                    @if ($setor->id == $setor_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
-                                @endforeach
+                                <option value=""> -- SELECIONE -- </option>
                             </select>
                         </div>
                     </div>
@@ -281,15 +283,6 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                             <label for="assunto_id" class="control-label">Assunto</label>
                             <select id="assunto_id" name="assunto_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($assuntos as $assunto)
-                                    @php $selected = ""; @endphp
-                                    @if ($assunto->id == $assunto_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                    <option value="{{ $assunto->id }}" {{ $selected }}>
-                                        {{ strtoupper($assunto->descricao) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -299,29 +292,13 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                             <label for="classificacao_id" class="control-label">Classificação</label>
                             <select id="classificacao_id" name="classificacao_id" 
                                 class="form-control">
-                                <option value="">- - SELECIONE - -</option>
-                                @foreach ($classificacoes as $classificacao)
-                                    @php $selected = ""; @endphp
-                                    @if ($classificacao->id == $classificacao_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
-                                @endforeach
+                                <option value=""> -- SELECIONE -- </option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="sub_classificacao_id" class="control-label">Subclassificação</label>
                             <select id="sub_classificacao_id" name="sub_classificacao_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($subClassificacoes as $subclassificacao)
-                                    @php $selected = ""; @endphp
-                                    @if ($subclassificacao->id == $sub_classificacao_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                    <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                        {{ strtoupper($subclassificacao->descricao) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -377,7 +354,9 @@ $situacao_id = old('situacao_id') ? old('situacao_id') : "";
                                     @if ($situacao->id == $situacao_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                    <option value="{{ $situacao->id }}" {{ $selected }}>{{ strtoupper($situacao->nome) }}</option>
+                                    <option value="{{ $situacao->id }}" {{ $selected }}>
+                                        {{ $situacao->nome }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

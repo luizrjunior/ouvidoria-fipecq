@@ -104,23 +104,24 @@ Route::post('/tipo-prestador/ativar-desativar-tipo-prestador', 'TipoPrestadorCon
 /**
  * OUVIDORIA
  */
-// Route::resource('ouvidoria', 'OuvidoriaController');
-Route::get('/ouvidoria', 'OuvidoriaController@index');
-Route::any('/ouvidoria/search', 'OuvidoriaController@search')->name('ouvidoria.search');
+Route::any('/ouvidoria', 'OuvidoriaController@index')->name('ouvidoria.index');
 
 Route::any('/ouvidoria/create', 'OuvidoriaController@create')->name('ouvidoria.create');
 Route::post('/ouvidoria/store', 'OuvidoriaController@store')->name('ouvidoria.store');
 
 Route::get('/ouvidoria/{ouvidoria_id}/edit', 'OuvidoriaController@edit')->name('ouvidoria.edit');
-Route::post('/ouvidoria/edit-combo', 'OuvidoriaController@editCombo')->name('ouvidoria.edit-combo');
 Route::post('/ouvidoria/update', 'OuvidoriaController@update')->name('ouvidoria.update');
 
 Route::get('/ouvidoria/create-admin', 'OuvidoriaController@createAdmin');
-Route::post('/ouvidoria/create-combo', 'OuvidoriaController@createCombo')->name('ouvidoria.create-combo');
 Route::post('/ouvidoria/store-admin', 'OuvidoriaController@storeAdmin')->name('ouvidoria.store-admin');
 
-Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF');
 Route::post('/ouvidoria/acompanhar', 'OuvidoriaController@acompanhar')->name('ouvidoria.acompanhar');
+
+Route::post('/ouvidoria/carregar-solicitante-cpf', 'OuvidoriaController@carregarSolicitantePorCPF')->name('ouvidoria.carrregar-solicitante-cpf');
+Route::post('/ouvidoria/carregar-setores', 'OuvidoriaController@carregarSelectSetor')->name('ouvidoria.carrregar-setores');
+Route::post('/ouvidoria/carregar-assuntos', 'OuvidoriaController@carregarSelectAssunto')->name('ouvidoria.carrregar-assuntos');
+Route::post('/ouvidoria/carregar-classificacoes', 'OuvidoriaController@carregarSelectClassificacao')->name('ouvidoria.carrregar-classificacoes');
+Route::post('/ouvidoria/carregar-sub-classificacoes', 'OuvidoriaController@carregarSelectSubClassificacao')->name('ouvidoria.carrregar-sub-classificacoes');
 
 /**
  * PESQUISA DE SATISFACAO

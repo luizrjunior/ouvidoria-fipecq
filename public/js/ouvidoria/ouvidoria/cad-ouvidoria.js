@@ -3,18 +3,6 @@ function validar() {
     $("#tipo_ouvidoria_id").prop('disabled', false);
 }
 
-function validarEdit() {
-    $('#carregando').show();
-    $("#formSolicitacaoOuvidoria").prop('action', top.routeUpdate);
-    $("#formSolicitacaoOuvidoria").submit();
-}
-
-function editCombo() {
-    $('#carregando').show();
-    $("#formSolicitacaoOuvidoria").prop('action', top.routeEditCombo);
-    $("#formSolicitacaoOuvidoria").submit();
-}
-
 function apresentarCamposSolicitante() {
     if($("#anonima").is(':checked')) {
         $("#divNaoAnonimo").hide();
@@ -26,7 +14,7 @@ function apresentarCamposSolicitante() {
 function carregarSolicitanteCPF() {
     if ($('#cpf').val() != "") {
         $('#carregando').show();
-        var formURL = top.urlCarregarSolicitanteCPF;
+        var formURL = top.routeCarregarSolicitanteCPF;
         $.ajax({
             type: "POST",
             url: formURL,
@@ -54,6 +42,107 @@ function carregarSolicitanteCPF() {
             }
         });
     }
+}
+
+function carregarSelectSetores() {
+    var formURL = top.routeCarregarSetores;
+    $.ajax({
+        type: 'POST',
+        url: formURL,
+        data: { 
+            _token: $("input[name='_token']").val(),
+            categoria_id: $("#categoria_id").val() 
+        },
+        dataType: "json",
+        success: function (data) {
+            var selectbox = $('#setor_id');
+            selectbox.find('option').remove();
+            $('<option>').val('').text(' -- SELECIONE -- ').appendTo(selectbox);
+            $.each(data, function (i, d) {
+                $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
+            });
+            if (top.valorSetor != "") {
+                selectbox.val(top.valorSetor);
+            }
+            carregarSelectAssuntos();
+        }
+    });
+}
+
+function carregarSelectAssuntos() {
+    var formURL = top.routeCarregarAssuntos;
+    $.ajax({
+        type: 'POST',
+        url: formURL,
+        data: {
+            _token: $("input[name='_token']").val(),
+            setor_id: $("#setor_id").val() 
+        },
+        dataType: "json",
+        success: function (data) {
+            var selectbox = $('#assunto_id');
+            selectbox.find('option').remove();
+            $('<option>').val('').text(' -- SELECIONE -- ').appendTo(selectbox);
+            $.each(data, function (i, d) {
+                $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
+            });
+            if (top.valorAssunto != "") {
+                selectbox.val(top.valorAssunto);
+            }
+            carregarSelectClassificacoes();
+        }
+    });
+}
+
+function carregarSelectClassificacoes() {
+    var formURL = top.routeCarregarClassificacoes;
+    $.ajax({
+        type: 'POST',
+        url: formURL,
+        data: {
+            _token: $("input[name='_token']").val(),
+            assunto_id: $("#assunto_id").val() 
+        },
+        dataType: "json",
+        success: function (data) {
+            var selectbox = $('#classificacao_id');
+            selectbox.find('option').remove();
+            $('<option>').val('').text(' -- SELECIONE -- ').appendTo(selectbox);
+            $.each(data, function (i, d) {
+                $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
+            });
+            if (top.valorClassificacao != "") {
+                selectbox.val(top.valorClassificacao);
+            }
+            carregarSelectSubClassificacoes();
+        }
+    });
+}
+
+function carregarSelectSubClassificacoes() {
+    var formURL = top.routeCarregarSubClassificacoes;
+    $.ajax({
+        type: 'POST',
+        url: formURL,
+        data: {
+            _token: $("input[name='_token']").val(),
+            classificacao_id: $("#classificacao_id").val() 
+        },
+        dataType: "json",
+        success: function (data) {
+            var selectbox = $('#sub_classificacao_id');
+            selectbox.find('option').remove();
+            $('<option>').val('').text(' -- SELECIONE -- ').appendTo(selectbox);
+            $.each(data, function (i, d) {
+                $('<option>').val(d.id).text(d.descricao).appendTo(selectbox);
+            });
+            selectbox.val(top.valorSubClassificacao);
+            top.valorSetor = null;
+            top.valorAssunto = null;
+            top.valorClassificacao = null;
+            top.valorSubClassificacao = null;
+        }
+    });
 }
 
 $(document).on("keydown", "#mensagem", function () {
@@ -99,20 +188,24 @@ $(document).ready(function () {
     });
 
     $("#categoria_id").change(function () {
-        editCombo();
+        carregarSelectSetores();
     });
 
     $("#setor_id").change(function () {
-        editCombo();
+        carregarSelectAssuntos();
     });
 
     $("#assunto_id").change(function () {
-        editCombo();
+        carregarSelectClassificacoes();
     });
 
     $("#classificacao_id").change(function () {
-        editCombo();
+        carregarSelectSubClassificacoes();
     });
+
+    if (top.valorCategoria != "") {
+        carregarSelectSetores();
+    }
 
 });
 

@@ -1,31 +1,45 @@
-@extends('layouts.app')
-
-@section('javascript')
-<script type="text/javascript">
-    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
-    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
-    top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
-    top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
-    top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
-    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
-</script>
-<script type="text/javascript" 
-    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
-<script type="text/javascript" 
-    src="{{ asset('/js/ouvidoria/relatorios/relatorios.js') }}"></script>
-<!-- FLOT CHARTS -->
-<script src="{{ asset('Flot/jquery.flot.js') }}"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
-<!-- Page script -->
 @php
-$institutoras = array();
+$routeCarregarSetores = route('ouvidoria.carrregar-setores');
+$routeCarregarAssuntos = route('ouvidoria.carrregar-assuntos');
+$routeCarregarClassificacoes = route('ouvidoria.carrregar-classificacoes');
+$routeCarregarSubClassificacoes = route('ouvidoria.carrregar-sub-classificacoes');
+
+$data_inicio = date('01/m/Y');
+$data_termino = date('d/m/Y');
+
+$tipo_ouvidoria_id_psq = "";
+$tipo_solicitante_id_psq = "";
+
+$categoria_id_psq = "";
+
+$setor_id_psq = "";
+$assunto_id_psq = "";
+
+$classificacao_id_psq = "";
+$sub_classificacao_id_psq = "";
+@endphp
+@if (isset($data))
+    @php
+    $data_inicio = $data['data_inicio'];
+    $data_termino = $data['data_termino'];
+
+    $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
+    $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
+
+    $categoria_id_psq = $data['categoria_id_psq'];
+
+    $setor_id_psq = $data['setor_id_psq'];
+    $assunto_id_psq = $data['assunto_id_psq'];
+
+    $classificacao_id_psq = $data['classificacao_id_psq'];
+    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
+    @endphp
+@endif
+
+@php
 $y = 0;
 $id_old = "";
+$institutoras = array();
 @endphp
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
@@ -42,6 +56,41 @@ $id_old = "";
     @endforeach
 @endif
 
+@extends('layouts.app')
+
+@section('javascript')
+<script type="text/javascript">
+    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
+    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
+    top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
+    top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
+    top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
+    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+
+    top.routeCarregarSetores = '{{ $routeCarregarSetores }}';
+    top.routeCarregarAssuntos = '{{ $routeCarregarAssuntos }}';
+    top.routeCarregarClassificacoes = '{{ $routeCarregarClassificacoes }}';
+    top.routeCarregarSubClassificacoes = '{{ $routeCarregarSubClassificacoes }}';
+
+    top.valorCategoria = '{{ $categoria_id_psq }}';
+    top.valorSetor = '{{ $setor_id_psq }}';
+    top.valorAssunto = '{{ $assunto_id_psq }}';
+    top.valorClassificacao = '{{ $classificacao_id_psq }}';
+    top.valorSubClassificacao = '{{ $sub_classificacao_id_psq }}';
+</script>
+<script type="text/javascript" 
+    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
+<script type="text/javascript" 
+    src="{{ asset('/js/ouvidoria/relatorios/relatorios.js') }}"></script>
+<!-- FLOT CHARTS -->
+<script src="{{ asset('Flot/jquery.flot.js') }}"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
+<!-- Page script -->
 <script>
     $(function () {
         /*
@@ -93,39 +142,6 @@ $id_old = "";
 @endsection
 
 @section('content')
-@php
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-
-$tipo_ouvidoria_id_psq = "";
-$tipo_solicitante_id_psq = "";
-
-$categoria_id_psq = "";
-
-$setor_id_psq = "";
-$assunto_id_psq = "";
-
-$classificacao_id_psq = "";
-$sub_classificacao_id_psq = "";
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-
-    $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
-    $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
-
-    $categoria_id_psq = $data['categoria_id_psq'];
-
-    $setor_id_psq = $data['setor_id_psq'];
-    $assunto_id_psq = $data['assunto_id_psq'];
-
-    $classificacao_id_psq = $data['classificacao_id_psq'];
-    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
-    @endphp
-@endif
-
 <style>
   .uper {
     margin-top: 40px;
@@ -184,13 +200,12 @@ $sub_classificacao_id_psq = "";
                         </div>
                     </div>
 
-
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label for="tipo_ouvidoria_id_psq" class="control-label">Tipo de Solicitação</label>
                             <select id="tipo_ouvidoria_id_psq" name="tipo_ouvidoria_id_psq" 
                                 class="form-control {{ $errors->has('tipo_ouvidoria_id_psq') ? 'is-invalid' : '' }}">
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                     @php $selected = ""; @endphp
                                     @if ($tipoOuvidoria->id == $tipo_ouvidoria_id_psq)
@@ -204,7 +219,7 @@ $sub_classificacao_id_psq = "";
                             <label for="tipo_solicitante_id_psq" class="control-label">Tipo de Solicitante</label>
                             <select id="tipo_solicitante_id_psq" name="tipo_solicitante_id_psq" 
                                 class="form-control {{ $errors->has('tipo_solicitante_id_psq') ? 'is-invalid' : '' }}">
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($tiposSolicitantes as $tipoSolicitante)
                                     @php $selected = ""; @endphp
                                     @if ($tipoSolicitante->id == $tipo_solicitante_id_psq)
@@ -215,7 +230,6 @@ $sub_classificacao_id_psq = "";
                             </select>
                         </div>
                     </div>
-
         
                     <div class="form-group row">
                         <div class="col-md-6">
@@ -237,14 +251,7 @@ $sub_classificacao_id_psq = "";
                             <label for="setor_id_psq" class="control-label">Setor / Área</label>
                             <select id="setor_id_psq" name="setor_id_psq" 
                                 class="form-control">
-                                <option value="">- - SELECIONE - -</option>
-                                @foreach ($setores as $setor)
-                                    @php $selected = ""; @endphp
-                                    @if ($setor->id == $setor_id_psq)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
-                                @endforeach
+                                <option value=""> -- SELECIONE -- </option>
                             </select>
                         </div>
                     </div>
@@ -254,15 +261,6 @@ $sub_classificacao_id_psq = "";
                             <label for="assunto_id_psq" class="control-label">Assunto</label>
                             <select id="assunto_id_psq" name="assunto_id_psq" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($assuntos as $assunto)
-                                    @php $selected = ""; @endphp
-                                    @if ($assunto->id == $assunto_id_psq)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                    <option value="{{ $assunto->id }}" {{ $selected }}>
-                                        {{ strtoupper($assunto->descricao) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -272,33 +270,16 @@ $sub_classificacao_id_psq = "";
                             <label for="classificacao_id_psq" class="control-label">Classificação</label>
                             <select id="classificacao_id_psq" name="classificacao_id_psq" 
                                 class="form-control">
-                                <option value="">- - SELECIONE - -</option>
-                                @foreach ($classificacoes as $classificacao)
-                                    @php $selected = ""; @endphp
-                                    @if ($classificacao->id == $classificacao_id_psq)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
-                                @endforeach
+                                <option value=""> -- SELECIONE -- </option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="sub_classificacao_id_psq" class="control-label">Subclassificação</label>
                             <select id="sub_classificacao_id_psq" name="sub_classificacao_id_psq" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($subClassificacoes as $subclassificacao)
-                                    @php $selected = ""; @endphp
-                                    @if ($subclassificacao->id == $sub_classificacao_id_psq)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                    <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                        {{ strtoupper($subclassificacao->descricao) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
-    
     
                     <div class="form-group row">
                         <div class="col-md-6">

@@ -1,17 +1,54 @@
-@extends('layouts.app')
-
 @php
 $route = route('ouvidoria.store-admin');
-$routeEditCombo = route('ouvidoria.create-combo');
+$routeCarregarSolicitanteCPF = route('ouvidoria.carrregar-solicitante-cpf');
+$routeCarregarSetores = route('ouvidoria.carrregar-setores');
+$routeCarregarAssuntos = route('ouvidoria.carrregar-assuntos');
+$routeCarregarClassificacoes = route('ouvidoria.carrregar-classificacoes');
+$routeCarregarSubClassificacoes = route('ouvidoria.carrregar-sub-classificacoes');
+// DADOS DO SOLICITANTE
+$checked = old('anonima') == "A" ? "checked" : "";
+$solicitante_id = old('solicitante_id') ? old('solicitante_id') : "";
+$tipo_solicitante_id = old('tipo_solicitante_id') ? old('tipo_solicitante_id') : "";
+$cpf = old('cpf') ? old('cpf') : "";
+$nome = old('nome') ? old('nome') : "";
+$institutora_id = old('institutora_id') ? old('institutora_id') : "";
+$uf = old('uf') ? old('uf') : "";
+$cidade = old('cidade') ? old('cidade') : "";
+$email = old('email') ? old('email') : "";
+$telefone = old('telefone') ? old('telefone') : "";
+$celular = old('celular') ? old('celular') : "";
+// DADOS DA OUVIDORIA
+$canal_atendimento_id = old('canal_atendimento_id') ? old('canal_atendimento_id') : "";
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : "";
+$observacao = old('observacao') ? old('observacao') : "";
+$mensagem = old('mensagem') ? old('mensagem') : "";
+$anexo = old('anexo') ? old('anexo') : "";
+$categoria_id = old('categoria_id') ? old('categoria_id') : "";
+$setor_id = old('setor_id') ? old('setor_id') : "";
+$assunto_id = old('assunto_id') ? old('assunto_id') : "";
+$classificacao_id = old('classificacao_id') ? old('classificacao_id') : "";
+$sub_classificacao_id = old('sub_classificacao_id') ? old('sub_classificacao_id') : "";
+// DADOS DA SITUACAO DA OUVIDORIA
+$situacao_id = old('situacao_id') ? old('situacao_id') : "";
+$comentario = old('comentario') ? old('comentario') : "";
 @endphp
+
+@extends('layouts.app')
 
 @section('javascript')
 <script type="text/javascript">
-    top.routeUpdate = '{{ $route }}';
-    top.routeEditCombo = '{{ $routeEditCombo }}';
-</script>
-<script type="text/javascript">
-    top.urlCarregarSolicitanteCPF = "{{ url('/ouvidoria/carregar-solicitante-cpf') }}";
+    top.routeCarregarSolicitanteCPF = "{{ $routeCarregarSolicitanteCPF }}";
+
+    top.routeCarregarSetores = '{{ $routeCarregarSetores }}';
+    top.routeCarregarAssuntos = '{{ $routeCarregarAssuntos }}';
+    top.routeCarregarClassificacoes = '{{ $routeCarregarClassificacoes }}';
+    top.routeCarregarSubClassificacoes = '{{ $routeCarregarSubClassificacoes }}';
+
+    top.valorCategoria = '{{ $categoria_id }}';
+    top.valorSetor = '{{ $setor_id }}';
+    top.valorAssunto = '{{ $assunto_id }}';
+    top.valorClassificacao = '{{ $classificacao_id }}';
+    top.valorSubClassificacao = '{{ $sub_classificacao_id }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
@@ -30,35 +67,6 @@ $routeEditCombo = route('ouvidoria.create-combo');
     margin-top: 40px;
   }
 </style>
-
-@php
-// DADOS DO SOLICITANTE
-$checked = $request->anonima == "A" ? "checked" : "";
-$solicitante_id = old('solicitante_id') ? old('solicitante_id') : $request->solicitante_id;
-$tipo_solicitante_id = old('tipo_solicitante_id') ? old('tipo_solicitante_id') : $request->tipo_solicitante_id;
-$cpf = old('cpf') ? old('cpf') : $request->cpf;
-$nome = old('nome') ? old('nome') : $request->nome;
-$institutora_id = old('institutora_id') ? old('institutora_id') : $request->institutora_id;
-$uf = old('uf') ? old('uf') : $request->uf;
-$cidade = old('cidade') ? old('cidade') : $request->cidade;
-$email = old('email') ? old('email') : $request->email;
-$telefone = old('telefone') ? old('telefone') : $request->telefone;
-$celular = old('celular') ? old('celular') : $request->celular;
-// DADOS DA OUVIDORIA
-$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $request->tp_ouvidoria_id;
-$canal_atendimento_id = old('canal_atendimento_id') ? old('canal_atendimento_id') : $request->canal_atendimento_id;
-$observacao = old('observacao') ? old('observacao') : $request->observacao;
-$categoria_id = old('categoria_id') ? old('categoria_id') : $request->categoria_id;
-$setor_id = old('setor_id') ? old('setor_id') : $request->setor_id;
-$assunto_id = old('assunto_id') ? old('assunto_id') : $request->assunto_id;
-$classificacao_id = old('classificacao_id') ? old('classificacao_id') : $request->classificacao_id;
-$sub_classificacao_id = old('sub_classificacao_id') ? old('sub_classificacao_id') : $request->sub_classificacao_id;
-$mensagem = old('mensagem') ? old('mensagem') : $request->mensagem;
-$anexo = old('anexo') ? old('anexo') : $request->anexo;
-// DADOS DA SITUACAO DA OUVIDORIA
-$situacao_id = old('situacao_id') ? old('situacao_id') : $request->situacao_id;
-$comentario = old('comentario') ? old('comentario') : $request->comentario;
-@endphp
 
 @if ($errors->any())
 <!-- Alert -->
@@ -106,7 +114,9 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                                     @if ($tipoSolicitante->id == $tipo_solicitante_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{ $tipoSolicitante->id }}" {{ $selected }}>{{ $tipoSolicitante->descricao }}</option>
+                                <option value="{{ $tipoSolicitante->id }}" {{ $selected }}>
+                                    {{ $tipoSolicitante->descricao }}
+                                </option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('tipo_solicitante_id') }}</span>
@@ -151,13 +161,15 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                         <div class="col-md-9">
                             <select id="institutora_id" name="institutora_id" 
                                 class="form-control">
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
                                     @if ($institutora->empresa == $institutora_id)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                    <option value="{{ $institutora->empresa }}" {{ $selected }}>{{ $institutora->nome }}</option>
+                                    <option value="{{ $institutora->empresa }}" {{ $selected }}>
+                                        {{ $institutora->nome }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -169,13 +181,15 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                         </div>
                         <div class="col-md-9">
                             <select id="uf" name="uf" class="form-control {{ $errors->has('uf') ? 'is-invalid' : '' }}">
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($ufs as $arrUf)
                                     @php $selected = ""; @endphp
                                     @if ($arrUf["sigla"] == $uf)
                                         @php $selected = "selected"; @endphp
                                     @endif
-                                <option value="{{ $arrUf["sigla"] }}" {{ $selected }}>{{ $arrUf["descricao"] }}</option>
+                                <option value="{{ $arrUf["sigla"] }}" {{ $selected }}>
+                                    {{ $arrUf["descricao"] }}
+                                </option>
                                 @endforeach
                             </select>
                             <span class="text-danger">{{ $errors->first('uf') }}</span>
@@ -240,7 +254,7 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $canalAtendimento->id }}" {{ $selected }}>
-                                        {{ strtoupper($canalAtendimento->descricao) }}
+                                        {{ $canalAtendimento->descricao }}
                                     </option>
                                 @endforeach
                             </select>
@@ -255,7 +269,7 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $tipoOuvidoria->id }}" {{ $selected }}>
-                                        {{ strtoupper($tipoOuvidoria->nome) }}
+                                        {{ $tipoOuvidoria->nome }}
                                     </option>
                                 @endforeach
                             </select>
@@ -327,7 +341,7 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                                         @php $selected = "selected"; @endphp
                                     @endif
                                     <option value="{{ $categoria->id }}" {{ $selected }}>
-                                        {{ strtoupper($categoria->descricao) }}
+                                        {{ $categoria->descricao }}
                                     </option>
                                 @endforeach
                             </select>
@@ -336,14 +350,7 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                             <label for="setor_id" class="control-label">Setor / Área</label>
                             <select id="setor_id" name="setor_id" 
                                 class="form-control">
-                                <option value="">- - SELECIONE - -</option>
-                                @foreach ($setores as $setor)
-                                    @php $selected = ""; @endphp
-                                    @if ($setor->id == $setor_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
-                                @endforeach
+                                <option value=""> -- SELECIONE -- </option>
                             </select>
                         </div>
                     </div>
@@ -353,15 +360,6 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                             <label for="assunto_id" class="control-label">Assunto</label>
                             <select id="assunto_id" name="assunto_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($assuntos as $assunto)
-                                    @php $selected = ""; @endphp
-                                    @if ($assunto->id == $assunto_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                    <option value="{{ $assunto->id }}" {{ $selected }}>
-                                        {{ strtoupper($assunto->descricao) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -371,29 +369,13 @@ $comentario = old('comentario') ? old('comentario') : $request->comentario;
                             <label for="classificacao_id" class="control-label">Classificação</label>
                             <select id="classificacao_id" name="classificacao_id" 
                                 class="form-control">
-                                <option value="">- - SELECIONE - -</option>
-                                @foreach ($classificacoes as $classificacao)
-                                    @php $selected = ""; @endphp
-                                    @if ($classificacao->id == $classificacao_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
-                                @endforeach
+                                <option value=""> -- SELECIONE -- </option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="sub_classificacao_id" class="control-label">Subclassificação</label>
                             <select id="sub_classificacao_id" name="sub_classificacao_id" class="form-control">
                                 <option value=""> -- SELECIONE -- </option>
-                                @foreach ($subClassificacoes as $subclassificacao)
-                                    @php $selected = ""; @endphp
-                                    @if ($subclassificacao->id == $sub_classificacao_id)
-                                        @php $selected = "selected"; @endphp
-                                    @endif
-                                    <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                        {{ strtoupper($subclassificacao->descricao) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>

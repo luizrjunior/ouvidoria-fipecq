@@ -1,8 +1,14 @@
+@php
+$routeCarregarSolicitanteCPF = route('ouvidoria.carrregar-solicitante-cpf');
+$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $tipo_ouvidoria_id;
+$checked = old('anonima') == "A" ? "checked" : "";
+@endphp
+
 @extends('layouts.app')
 
 @section('javascript')
 <script type="text/javascript">
-    top.urlCarregarSolicitanteCPF = "{{ url('/ouvidoria/carregar-solicitante-cpf') }}";
+    top.routeCarregarSolicitanteCPF = "{{ $routeCarregarSolicitanteCPF }}";
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
@@ -14,11 +20,6 @@
     @endif
 </script>
 @endsection
-
-@php
-$tipo_ouvidoria_id = old('tipo_ouvidoria_id') ? old('tipo_ouvidoria_id') : $tipo_ouvidoria_id;
-$checked = old('anonima') == "A" ? "checked" : "";
-@endphp
 
 @section('content')
 <style>
@@ -40,8 +41,6 @@ $checked = old('anonima') == "A" ? "checked" : "";
 </div>
 <!-- /Alert -->
 @endif
-
-{{ $checked }}
 
 <div class="row justify-content-center">
     <div class="col-md-12">
@@ -66,7 +65,7 @@ $checked = old('anonima') == "A" ? "checked" : "";
                         <div class="col-md-9">
                             <select id="tipo_ouvidoria_id" name="tipo_ouvidoria_id" 
                                 class="form-control {{ $errors->has('tipo_ouvidoria_id') ? 'is-invalid' : '' }}" disabled>
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                     @php $selected = ""; @endphp
                                     @if ($tipoOuvidoria->id == $tipo_ouvidoria_id)
@@ -86,7 +85,7 @@ $checked = old('anonima') == "A" ? "checked" : "";
                         <div class="col-md-6">
                             <select id="tipo_solicitante_id" name="tipo_solicitante_id" 
                                 class="form-control {{ $errors->has('tipo_solicitante_id') ? 'is-invalid' : '' }}" autofocus>
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($tiposSolicitantes as $tipoSolicitante)
                                     @php $selected = ""; @endphp
                                     @if ($tipoSolicitante->id == old('tipo_solicitante_id'))
@@ -137,7 +136,7 @@ $checked = old('anonima') == "A" ? "checked" : "";
                         <div class="col-md-9">
                             <select id="institutora_id" name="institutora_id" 
                                 class="form-control">
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($institutoras as $institutora)
                                     @php $selected = ""; @endphp
                                     @if ($institutora->empresa == old('institutora_id'))
@@ -155,7 +154,7 @@ $checked = old('anonima') == "A" ? "checked" : "";
                         </div>
                         <div class="col-md-9">
                             <select id="uf" name="uf" class="form-control {{ $errors->has('uf') ? 'is-invalid' : '' }}">
-                                <option value="">- - Selecione - -</option>
+                                <option value=""> -- SELECIONE -- </option>
                                 @foreach ($ufs as $uf)
                                     @php $selected = ""; @endphp
                                     @if ($uf["sigla"] == old('uf'))
@@ -266,9 +265,11 @@ $checked = old('anonima') == "A" ? "checked" : "";
                             </span>
                         </div>
                     </div>
-            </form>
+                </form>
+
             </div>
         </div>
+
     </div>
 </div>
 @endsection

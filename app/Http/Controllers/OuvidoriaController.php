@@ -15,12 +15,10 @@ use App\Models\Solicitante;
 use App\Models\TipoOuvidoria;
 use App\Models\TipoSolicitante;
 use App\Models\SituacaoOuvidoria;
-
 use App\Models\CanalAtendimento;
-
-use App\Models\Categoria;
 use App\Models\Setor;
 use App\Models\Assunto;
+use App\Models\Categoria;
 use App\Models\Classificacao;
 use App\Models\SubClassificacao;
 
@@ -117,81 +115,7 @@ class OuvidoriaController extends Controller
         ["sigla" => "TO", "descricao" => "TOCANTINS"]
     ];
 
-    public function index()
-    {
-        $data = array();
-        if (empty($data['protocolo_psq'])) {
-            $data['protocolo_psq'] = "";
-        }
-
-        if (empty($data['cpf_psq'])) {
-            $data['cpf_psq'] = "";
-        }
-
-        if (empty($data['nome_psq'])) {
-            $data['nome_psq'] = "";
-        }
-
-        if (empty($data['tipo_ouvidoria_id_psq'])) {
-            $data['tipo_ouvidoria_id_psq'] = "";
-        }
-
-        if (empty($data['tipo_solicitante_id_psq'])) {
-            $data['tipo_solicitante_id_psq'] = "";
-        }
-
-        if (empty($data['categoria_id_psq'])) {
-            $data['categoria_id_psq'] = "";
-        }
-
-        if (empty($data['setor_id_psq'])) {
-            $data['setor_id_psq'] = "";
-        }
-
-        if (empty($data['assunto_id_psq'])) {
-            $data['assunto_id_psq'] = "";
-        }
-
-        if (empty($data['classificacao_id_psq'])) {
-            $data['classificacao_id_psq'] = "";
-        }
-
-        if (empty($data['sub_classificacao_id_psq'])) {
-            $data['sub_classificacao_id_psq'] = "";
-        }
-
-        if (empty($data['situacao_id_psq'])) {
-            $data['situacao_id_psq'] = "";
-        }
-
-        if (empty($data['data_inicio'])) {
-            $timestamp = strtotime("-15 days");
-            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y', $timestamp))->format('d/m/Y');
-        }
-
-        if (empty($data['data_termino'])) {
-            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y'))->format('d/m/Y');
-        }
-
-        $data['totalPage'] = isset($data['totalPage']) ? $data['totalPage'] : 25;
-
-        $ouvidorias = $this->getOuvidorias($data);
-
-        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
-        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
-        $situacoes = Situacao::where('status', 1)->get();
-
-        $categorias = Categoria::where('status', 1)->get();
-        $setores = array();
-        $assuntos = array();
-        $classificacoes = array();
-        $subClassificacoes = array();
-
-        return view('ouvidoria.ouvidoria.index', compact('tiposOuvidorias', 'tiposSolicitantes', 'situacoes', 
-            'categorias', 'setores', 'assuntos', 'classificacoes', 'subClassificacoes', 'ouvidorias', 'data'));
-    }
-
-    public function search(Request $request)
+    private function filtrosPesquisa($request)
     {
         $data = $request->except('_token');
         if (empty($data['protocolo_psq'])) {
@@ -248,40 +172,35 @@ class OuvidoriaController extends Controller
 
         $data['totalPage'] = isset($data['totalPage']) ? $data['totalPage'] : 25;
 
+        return $data;
+    }
+
+    public function index(Request $request)
+    {
+        $data = $this->filtrosPesquisa($request);
         $ouvidorias = $this->getOuvidorias($data);
 
         $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
         $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
         $situacoes = Situacao::where('status', 1)->get();
-
         $categorias = Categoria::where('status', 1)->get();
 
-        $setores = array();
-        if ($data['categoria_id_psq'] != "") {
-            $setores = Setor::where('categoria_id', $data['categoria_id_psq'])
-                ->where('status', 1)->get();
-        }
+        return view('ouvidoria.ouvidoria.index', compact('tiposOuvidorias', 'tiposSolicitantes', 'situacoes', 
+            'categorias', 'ouvidorias', 'data'));
+    }
 
-        $assuntos = array();
-        if ($data['setor_id_psq'] != "") {
-            $assuntos = Assunto::where('setor_id', $data['setor_id_psq'])
-                ->where('status', 1)->get();
-        }
+    public function search(Request $request)
+    {
+        $data = $this->filtrosPesquisa($request);
+        $ouvidorias = $this->getOuvidorias($data);
 
-        $classificacoes = array();
-        if ($data['assunto_id_psq'] != "") {
-            $classificacoes = Classificacao::where('assunto_id', $data['assunto_id_psq'])
-                ->where('status', 1)->get();
-        }
-
-        $subClassificacoes = array();
-        if ($data['classificacao_id_psq'] != "") {
-            $subClassificacoes = SubClassificacao::where('classificacao_id', $data['classificacao_id_psq'])
-                ->where('status', 1)->get();
-        }
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
+        $situacoes = Situacao::where('status', 1)->get();
+        $categorias = Categoria::where('status', 1)->get();
 
         return view('ouvidoria.ouvidoria.index', compact('tiposOuvidorias', 'tiposSolicitantes', 'situacoes', 
-            'categorias', 'setores', 'assuntos', 'classificacoes', 'subClassificacoes', 'ouvidorias', 'data'));
+            'categorias', 'ouvidorias', 'data'));
     }
 
     private function getOuvidorias(Array $data = null)
@@ -363,6 +282,49 @@ class OuvidoriaController extends Controller
 
     public function store(Request $request)
     {
+        $this->salvarSolicitante($request);
+
+        $request->validate([
+            'tipo_ouvidoria_id'=>'required',
+            'tipo_solicitante_id'=>'required',
+            'mensagem'=>'required|max:1200',
+        ], self::MESSAGES_ERRORS);
+
+        $protocolo = Ouvidoria::get();
+        $numero = count($protocolo)+1;
+        $protocolo = $numero . date('dmY');
+
+        $ouvidoria = new Ouvidoria([
+            'protocolo' => $protocolo,
+            'mensagem' => $request->mensagem,
+            'tp_ouvidoria_id' => $request->tipo_ouvidoria_id,
+            'tipo_solicitante_id' => $request->tipo_solicitante_id,
+            'solicitante_id' => $request->solicitante_id,
+            'situacao_id' => 1,
+        ]);
+        $ouvidoria->save();
+
+        $situacaoOuvidoria = new SituacaoOuvidoria([
+            'comentario' => 'Solicitação de ouvidoria registrada em ' . date('d/m/Y H:i'),
+            'ouvidoria_id' => $ouvidoria->id,
+            'situacao_id' => 1
+        ]);
+        $situacaoOuvidoria->save();
+
+        $this->anexarArquivo($ouvidoria, $request);
+
+        $msg = self::MESSAGE_ADD_SUCCESS;
+        if ($request->email != "") {
+            $this->enviarEmailOuvidoria($request->email, $ouvidoria);
+            $msg = self::MESSAGE_ADD_SUCCESS_EMAIL;
+        }
+        
+        return redirect('/fale-com-ouvidor')
+            ->with('success', $msg . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
+    }
+
+    private function salvarSolicitante($request)
+    {
         if ($request->anonima != "A") {
             $request->validate([
                 'tipo_ouvidoria_id'=>'required',
@@ -404,44 +366,6 @@ class OuvidoriaController extends Controller
                 $solicitante->save();
             }
         }
-
-        $request->validate([
-            'tipo_ouvidoria_id'=>'required',
-            'tipo_solicitante_id'=>'required',
-            'mensagem'=>'required|max:1200',
-        ], self::MESSAGES_ERRORS);
-
-        $protocolo = Ouvidoria::get();
-        $numero = count($protocolo)+1;
-        $protocolo = $numero . date('dmY');
-
-        $ouvidoria = new Ouvidoria([
-            'protocolo' => $protocolo,
-            'mensagem' => $request->mensagem,
-            'tp_ouvidoria_id' => $request->tipo_ouvidoria_id,
-            'tipo_solicitante_id' => $request->tipo_solicitante_id,
-            'solicitante_id' => $request->solicitante_id,
-            'situacao_id' => 1,
-        ]);
-        $ouvidoria->save();
-
-        $situacaoOuvidoria = new SituacaoOuvidoria([
-            'comentario' => 'Solicitação de ouvidoria registrada em ' . date('d/m/Y H:i'),
-            'ouvidoria_id' => $ouvidoria->id,
-            'situacao_id' => 1
-        ]);
-        $situacaoOuvidoria->save();
-
-        $this->anexarArquivo($ouvidoria, $request);
-
-        $msg = self::MESSAGE_ADD_SUCCESS;
-        if ($request->email != "") {
-            $this->enviarEmailOuvidoria($request->email, $ouvidoria);
-            $msg = self::MESSAGE_ADD_SUCCESS_EMAIL;
-        }
-        
-        return redirect('/fale-com-ouvidor')
-            ->with('success', $msg . " " . str_pad($protocolo, 14, 0, STR_PAD_LEFT));
     }
 
     private function anexarArquivo($ouvidoria, $request)
@@ -465,57 +389,7 @@ class OuvidoriaController extends Controller
 
     public function acompanhar(Request $request)
     {
-        $data = $request->except('_token');
-        if (empty($data['cpf_psq'])) {
-            $data['cpf_psq'] = "";
-        }
-
-        if (empty($data['nome_psq'])) {
-            $data['nome_psq'] = "";
-        }
-
-        if (empty($data['tipo_ouvidoria_id_psq'])) {
-            $data['tipo_ouvidoria_id_psq'] = "";
-        }
-
-        if (empty($data['tipo_solicitante_id_psq'])) {
-            $data['tipo_solicitante_id_psq'] = "";
-        }
-
-        if (empty($data['categoria_id_psq'])) {
-            $data['categoria_id_psq'] = "";
-        }
-
-        if (empty($data['setor_id_psq'])) {
-            $data['setor_id_psq'] = "";
-        }
-
-        if (empty($data['assunto_id_psq'])) {
-            $data['assunto_id_psq'] = "";
-        }
-
-        if (empty($data['classificacao_id_psq'])) {
-            $data['classificacao_id_psq'] = "";
-        }
-
-        if (empty($data['sub_classificacao_id_psq'])) {
-            $data['sub_classificacao_id_psq'] = "";
-        }
-
-        if (empty($data['situacao_id_psq'])) {
-            $data['situacao_id_psq'] = "";
-        }
-
-        if (empty($data['data_inicio'])) {
-            $data['data_inicio'] = "";
-        }
-
-        if (empty($data['data_termino'])) {
-            $data['data_termino'] = "";
-        }
-
-        $data['totalPage'] = isset($data['totalPage']) ? $data['totalPage'] : 25;
-
+        $data = $this->filtrosPesquisa($request);
         $ouvidorias = $this->getOuvidorias($data);
 
         if (count($ouvidorias) == 0) {
@@ -550,87 +424,13 @@ class OuvidoriaController extends Controller
         $ouvidoria = Ouvidoria::find($ouvidoria_id);
         $tiposOuvidorias = TipoOuvidoria::get();
         $canaisAtendimentos = CanalAtendimento::where('status', 1)->get();
-
         $categorias = Categoria::where('status', 1)->get();
-        $setores = array();
-        if ($ouvidoria->categoria_id != "") {
-            $setores = Setor::where('categoria_id', $ouvidoria->categoria_id)
-                ->where('status', 1)->get();
-        }
-
-        $assuntos = array();
-        if ($ouvidoria->setor_id != "") {
-            $assuntos = Assunto::where('setor_id', $ouvidoria->setor_id)
-                ->where('status', 1)->get();
-        }
-
-        $classificacoes = array();
-        if ($ouvidoria->assunto_id != "") {
-            $classificacoes = Classificacao::where('assunto_id', $ouvidoria->assunto_id)
-                ->where('status', 1)->get();
-        }
-
-        $subClassificacoes = array();
-        if ($ouvidoria->classificacao_id != "") {
-            $subClassificacoes = SubClassificacao::where('classificacao_id', $ouvidoria->classificacao_id)
-                ->where('status', 1)->get();
-        }
-
         $situacoes = Situacao::where('status', 1)->get();
         $situacoesOuvidoria = SituacaoOuvidoria::where('ouvidoria_id', $ouvidoria->id)->orderBy('id', 'DESC')->get();
         $situacaoOuvidoria = $situacoesOuvidoria[0];
 
         return view('ouvidoria.ouvidoria.edit', compact('tiposOuvidorias', 'ouvidoria', 'canaisAtendimentos', 
-            'categorias', 'setores', 'assuntos', 'classificacoes', 'subClassificacoes', 'situacaoOuvidoria', 'situacoes'));
-    }
-
-    public function editCombo(Request $request)
-    {
-        $ouvidoria = Ouvidoria::find($request->ouvidoria_id);
-        $ouvidoria->canal_atendimento_id = $request->canal_atendimento_id;
-        $ouvidoria->observacao = $request->observacao;
-        $ouvidoria->categoria_id = $request->categoria_id;
-        $ouvidoria->setor_id = $request->setor_id;
-        $ouvidoria->assunto_id = $request->assunto_id;
-        $ouvidoria->classificacao_id = $request->classificacao_id;
-        $ouvidoria->sub_classificacao_id = $request->sub_classificacao_id;
-
-        $tiposOuvidorias = TipoOuvidoria::get();
-        $canaisAtendimentos = CanalAtendimento::where('status', 1)->get();
-
-        $categorias = Categoria::where('status', 1)->get();
-
-        $data = $request->except('_token');
-        $setores = array();
-        if ($data['categoria_id'] != "") {
-            $setores = Setor::where('categoria_id', $data['categoria_id'])
-                ->where('status', 1)->get();
-        }
-
-        $assuntos = array();
-        if ($data['setor_id'] != "") {
-            $assuntos = Assunto::where('setor_id', $data['setor_id'])
-                ->where('status', 1)->get();
-        }
-
-        $classificacoes = array();
-        if ($data['assunto_id'] != "") {
-            $classificacoes = Classificacao::where('assunto_id', $data['assunto_id'])
-                ->where('status', 1)->get();
-        }
-
-        $subClassificacoes = array();
-        if ($data['classificacao_id'] != "") {
-            $subClassificacoes = SubClassificacao::where('classificacao_id', $data['classificacao_id'])
-                ->where('status', 1)->get();
-        }
-
-        $situacoes = Situacao::where('status', 1)->get();
-        $situacoesOuvidoria = SituacaoOuvidoria::where('ouvidoria_id', $ouvidoria->id)->orderBy('id', 'DESC')->get();
-        $situacaoOuvidoria = $situacoesOuvidoria[0];
-
-        return view('ouvidoria.ouvidoria.edit', compact('tiposOuvidorias', 'ouvidoria', 'canaisAtendimentos', 
-            'categorias', 'setores', 'assuntos', 'classificacoes', 'subClassificacoes', 'situacaoOuvidoria', 'situacoes'));
+            'categorias', 'situacaoOuvidoria', 'situacoes'));
     }
 
     public function update(Request $request)
@@ -685,115 +485,24 @@ class OuvidoriaController extends Controller
         Mail::to($para)->send(new SendMailOuvidoriaConcluida());
     }
 
-    public function createAdmin(Request $request)
+    public function createAdmin()
     {   
-        $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
-        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
         $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
         $institutoras = Institutora::get();
         $ufs = self::UFS;
-        $canaisAtendimentos = CanalAtendimento::where('status', 1)->get();
 
-        $categorias = Categoria::where('status', 1)->get();
-        $setores = array();
-        $assuntos = array();
-        $classificacoes = array();
-        $subClassificacoes = array();
-
-        $situacoes = Situacao::where('status', 1)->get();
-
-        return view('ouvidoria.ouvidoria.create-admin', compact( 'tipo_ouvidoria_id', 'tiposOuvidorias', 
-            'tiposSolicitantes', 'institutoras', 'ufs', 'canaisAtendimentos', 'categorias', 'setores', 'assuntos', 
-            'classificacoes', 'subClassificacoes', 'situacoes', 'request'));
-    }
-
-    public function createCombo(Request $request)
-    {   
-        $tipo_ouvidoria_id = $request->tipo_ouvidoria_id;
         $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
-        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
-        $institutoras = Institutora::get();
-        $ufs = self::UFS;
         $canaisAtendimentos = CanalAtendimento::where('status', 1)->get();
-
         $categorias = Categoria::where('status', 1)->get();
-
-        $data = $request->except('_token');
-        $setores = array();
-        if ($data['categoria_id'] != "") {
-            $setores = Setor::where('categoria_id', $data['categoria_id'])
-                ->where('status', 1)->get();
-        }
-
-        $assuntos = array();
-        if ($data['setor_id'] != "") {
-            $assuntos = Assunto::where('setor_id', $data['setor_id'])
-                ->where('status', 1)->get();
-        }
-
-        $classificacoes = array();
-        if ($data['assunto_id'] != "") {
-            $classificacoes = Classificacao::where('assunto_id', $data['assunto_id'])
-                ->where('status', 1)->get();
-        }
-
-        $subClassificacoes = array();
-        if ($data['classificacao_id'] != "") {
-            $subClassificacoes = SubClassificacao::where('classificacao_id', $data['classificacao_id'])
-                ->where('status', 1)->get();
-        }
-
         $situacoes = Situacao::where('status', 1)->get();
 
-        return view('ouvidoria.ouvidoria.create-admin', compact( 'tipo_ouvidoria_id', 'tiposOuvidorias', 
-            'tiposSolicitantes', 'institutoras', 'ufs', 'canaisAtendimentos', 'categorias', 'setores', 'assuntos', 
-            'classificacoes', 'subClassificacoes', 'situacoes', 'request'));
+        return view('ouvidoria.ouvidoria.create-admin', compact('tiposOuvidorias', 
+            'tiposSolicitantes', 'institutoras', 'ufs', 'canaisAtendimentos', 'categorias', 'situacoes'));
     }
 
     public function storeAdmin(Request $request)
     {
-        if ($request->anonima != "A") {
-            $request->validate([
-                'tipo_solicitante_id' => 'required',
-                'cpf' => 'required|cpf|unique:fv_ouv_solicitante,cpf,' . $request->solicitante_id,
-                'nome' => 'required|max:120',
-                'uf' => 'required',
-                'cidade' => 'required|max:120',
-                'email' => 'required|max:120',
-                'celular' => 'required|max:15',
-                'mensagem' => 'required|max:1200',
-                'situacao_id' => 'required',
-                'comentario' => 'required|max:1200',
-            ], self::MESSAGES_ERRORS);
-
-            if ($request->solicitante_id == "") {
-                $solicitante = new Solicitante([
-                    'cpf' => $request->cpf,
-                    'nome' => $request->nome,
-                    'email' => $request->email,
-                    'telefone' => $request->telefone,
-                    'celular' => $request->celular,
-                    'uf' => $request->uf,
-                    'cidade' => $request->cidade,
-                    'institutora_id' => $request->institutora_id,
-                    'tipo_solicitante_id' => $request->tipo_solicitante_id,
-                ]);
-                $solicitante->save();
-                $request->solicitante_id = $solicitante->id;
-            } else {
-                $solicitante = Solicitante::find($request->solicitante_id);
-                $solicitante->cpf = $request->cpf;
-                $solicitante->nome = $request->nome;
-                $solicitante->email = $request->email;
-                $solicitante->telefone = $request->telefone;
-                $solicitante->celular = $request->celular;
-                $solicitante->uf = $request->uf;
-                $solicitante->cidade = $request->cidade;
-                $solicitante->institutora_id = $request->institutora_id;
-                $solicitante->tipo_solicitante_id = $request->tipo_solicitante_id;
-                $solicitante->save();
-            }
-        }
+        $this->salvarSolicitante($request);
 
         $request->validate([
             'tipo_solicitante_id' => 'required',
@@ -893,6 +602,7 @@ class OuvidoriaController extends Controller
         if (count($solicitante_request) > 0) {
             $solicitante = $solicitante_request[0];
         }
+
         return response()->json($solicitante, 200);
     }
 
@@ -1022,6 +732,36 @@ class OuvidoriaController extends Controller
         return $total_dias_uteis-$feriados_em_dias_uteis; //O AJAX PEGA COMO PADRÃO ESTE ECO
     }
 
+    public function carregarSelectSetor(Request $request)
+    {
+        $setores = Setor::where('categoria_id', $request->categoria_id)
+            ->where('status', 1)->get();
+
+        return response()->json($setores, 200);
+    }
+
+    public function carregarSelectAssunto(Request $request)
+    {
+        $assuntos = Assunto::where('setor_id', $request->setor_id)
+        ->where('status', 1)->get();
+
+        return response()->json($assuntos, 200);
+    }
+
+    public function carregarSelectClassificacao(Request $request)
+    {
+        $classificacoes = Classificacao::where('assunto_id', $request->assunto_id)
+            ->where('status', 1)->get();
+
+        return response()->json($classificacoes, 200);
+    }
+
+    public function carregarSelectSubClassificacao(Request $request)
+    {
+        $subClassificacoes = SubClassificacao::where('classificacao_id', $request->classificacao_id)
+            ->where('status', 1)->get();
+
+        return response()->json($subClassificacoes, 200);
+    }
     
 }
-

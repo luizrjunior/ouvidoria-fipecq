@@ -1,3 +1,47 @@
+@php
+$data_inicio = date('01/m/Y');
+$data_termino = date('d/m/Y');
+@endphp
+@if (isset($data))
+    @php
+    $data_inicio = $data['data_inicio'];
+    $data_termino = $data['data_termino'];
+    @endphp
+@endif
+
+@php
+$bgColor = [
+    1 => '#6495ED',
+    2 => '#4169E1',
+    3 => '#1E90FF',
+    4 => '#00BFFF',
+    5 => '#87CEFA',
+    6 => '#87CEEB',
+    7 => '#ADD8E6',
+    8 => '#4682B4',
+    9 => '#B0C4DE',
+    10 => '#0000FF',
+];
+$y = 0;
+$id_old = "";
+$tiposSolicitacao = array();
+@endphp
+
+@if (count($ouvidorias) > 0)
+    @foreach ($ouvidorias as $ouvidoria)
+        @php
+        $id = $ouvidoria->tp_ouvidoria_id;
+        if ($id != $id_old) {
+            $y = 1;
+        }
+        $tiposSolicitacao[$id]['qtde'] = $y;
+        $tiposSolicitacao[$id]['nome'] = $ouvidoria->tipoOuvidoria->nome;
+        $id_old = $id;
+        $y++;
+        @endphp
+    @endforeach
+@endif
+
 @extends('layouts.app')
 
 @section('javascript')
@@ -22,52 +66,17 @@
 <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
 <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
 <!-- Page script -->
-@php
-$tiposSolicitacao = array();
-$dataChart = "";
-$bgColor = [
-    1 => '#6495ED',
-    2 => '#4169E1',
-    3 => '#1E90FF',
-    4 => '#00BFFF',
-    5 => '#87CEFA',
-    6 => '#87CEEB',
-    7 => '#ADD8E6',
-    8 => '#4682B4',
-    9 => '#B0C4DE',
-    10 => '#0000FF',
-];
-$y = 0;
-$id_old = "";
-@endphp
-@if (count($ouvidorias) > 0)
-    @foreach ($ouvidorias as $ouvidoria)
-        @php
-        $id = $ouvidoria->tp_ouvidoria_id;
-        if ($id != $id_old) {
-            $y = 1;
-        }
-        $tiposSolicitacao[$id]['qtde'] = $y;
-        $tiposSolicitacao[$id]['nome'] = $ouvidoria->tipoOuvidoria->nome;
-        $id_old = $id;
-        $y++;
-        @endphp
-    @endforeach
-@endif
-
 <script>
     $(function () {
-    /*
-    * DONUT CHART
-    * -----------
-    */
-    @php
-    $i = 1;
-    @endphp
-    var donutData = [
+        /*
+        * DONUT CHART
+        * -----------
+        */
         @php
+        $i = 1;
         $total = 0;
         @endphp
+        var donutData = [
         @if (count($tiposSolicitacao) > 0)
             @foreach ($tiposSolicitacao as $tipoSolicitacao)
                 @php
@@ -83,7 +92,8 @@ $id_old = "";
             @endforeach
         @endif
         ];
-    $.plot('#donut-chart', donutData, {
+
+        $.plot('#donut-chart', donutData, {
             series: {
                 pie: {
                     show       : true,
@@ -124,17 +134,6 @@ $id_old = "";
 @endsection
 
 @section('content')
-@php
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-    @endphp
-@endif
-
 <style>
   .uper {
     margin-top: 40px;

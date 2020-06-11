@@ -1,58 +1,62 @@
+@php
+$routeUpdate = route('ouvidoria.update');
+$routeCarregarSetores = route('ouvidoria.carrregar-setores');
+$routeCarregarAssuntos = route('ouvidoria.carrregar-assuntos');
+$routeCarregarClassificacoes = route('ouvidoria.carrregar-classificacoes');
+$routeCarregarSubClassificacoes = route('ouvidoria.carrregar-sub-classificacoes');
+
+$cpf_psq = $data['cpf_psq'] ? $data['cpf_psq'] : "";
+$nome_psq = $data['nome_psq'] ? $data['nome_psq'] : "";
+
+$tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'] ? $data['tipo_ouvidoria_id_psq'] : "";
+$tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'] ? $data['tipo_solicitante_id_psq'] : "";
+
+$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
+$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
+
+$situacao_id_psq = $data['situacao_id_psq'] ? $data['situacao_id_psq'] : "";
+$categoria_id_psq = $data['categoria_id_psq'] ? $data['categoria_id_psq'] : "";
+
+$setor_id_psq = $data['setor_id_psq'] ? $data['setor_id_psq'] : "";
+$assunto_id_psq = $data['assunto_id_psq'] ? $data['assunto_id_psq'] : "";
+
+$classificacao_id_psq = $data['classificacao_id_psq'] ? $data['classificacao_id_psq'] : "";
+$sub_classificacao_id_psq = $data['sub_classificacao_id_psq'] ? $data['sub_classificacao_id_psq'] : "";
+
+$totalPage = $data['totalPage'] ? $data['totalPage'] : 25;
+
+$arrSituacao = array(
+    '0' => "Desativado",
+    '1' => "Ativado"
+);
+
+$bgColor = array(
+    '0' => "danger",
+    '1' => "success"
+);
+@endphp
+
 @extends('layouts.app')
 
 @section('javascript')
 <script>
     top.urlDestroySolicitacaoOuvidoria = "{{ url('/ouvidoria/') }}";
+
+    top.routeCarregarSetores = '{{ $routeCarregarSetores }}';
+    top.routeCarregarAssuntos = '{{ $routeCarregarAssuntos }}';
+    top.routeCarregarClassificacoes = '{{ $routeCarregarClassificacoes }}';
+    top.routeCarregarSubClassificacoes = '{{ $routeCarregarSubClassificacoes }}';
+
+    top.valorCategoria = '{{ $categoria_id_psq }}';
+    top.valorSetor = '{{ $setor_id_psq }}';
+    top.valorAssunto = '{{ $assunto_id_psq }}';
+    top.valorClassificacao = '{{ $classificacao_id_psq }}';
+    top.valorSubClassificacao = '{{ $sub_classificacao_id_psq }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/js/ouvidoria/ouvidoria/index-ouvidoria.js') }}"></script>
 @endsection
-
-@php
-$cpf_psq = "";
-$nome_psq = "";
-
-$tipo_ouvidoria_id_psq = "";
-$tipo_solicitante_id_psq = "";
-
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-
-$situacao_id_psq = "";
-$categoria_id_psq = "";
-
-$setor_id_psq = "";
-$assunto_id_psq = "";
-
-$classificacao_id_psq = "";
-$sub_classificacao_id_psq = "";
-
-$totalPage = 25;
-@endphp
-@if (isset($data))
-    @php
-    $cpf_psq = $data['cpf_psq'];
-    $nome_psq = $data['nome_psq'];
-
-    $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
-    $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
-
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-
-    $situacao_id_psq = $data['situacao_id_psq'];
-    $categoria_id_psq = $data['categoria_id_psq'];
-
-    $setor_id_psq = $data['setor_id_psq'];
-    $assunto_id_psq = $data['assunto_id_psq'];
-
-    $classificacao_id_psq = $data['classificacao_id_psq'];
-    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
-
-    $totalPage = $data['totalPage'];
-    @endphp
-@endif
 
 @section('content')
 <style>
@@ -74,8 +78,8 @@ $totalPage = 25;
 <div class="row justify-content-center">
     <div class="col-md-12">
         
-        <form id="formSearchSolicitacaoOuvidoria" 
-            class="form-horizontal" role="form" method="POST" action="{{ route('ouvidoria.search') }}">
+        <form id="formSearchSolicitacaoOuvidoria" class="form-horizontal" role="form" method="POST" 
+            action="{{ route('ouvidoria.index') }}">
             <input type="hidden" id="_method" name="_method" value="">
             @csrf
 
@@ -117,7 +121,9 @@ $totalPage = 25;
                                 @if ($tipoOuvidoria->id == $tipo_ouvidoria_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                                <option value="{{ $tipoOuvidoria->id }}" {{$selected}}>{{ $tipoOuvidoria->nome }}</option>
+                            <option value="{{ $tipoOuvidoria->id }}" {{ $selected }}>
+                                {{ $tipoOuvidoria->nome }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -131,7 +137,9 @@ $totalPage = 25;
                                 @if ($tipoSolicitante->id == $tipo_solicitante_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                            <option value="{{$tipoSolicitante->id}}" {{$selected}}>{{$tipoSolicitante->descricao}}</option>
+                            <option value="{{ $tipoSolicitante->id }}" {{ $selected }}>
+                                {{ $tipoSolicitante->descricao }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -171,7 +179,9 @@ $totalPage = 25;
                                 @if ($situacao->id == $situacao_id_psq)
                                     @php $selected = "selected"; @endphp
                                 @endif
-                            <option value="{{ $situacao->id }}" {{ $selected }}>{{ $situacao->nome }}</option>
+                            <option value="{{ $situacao->id }}" {{ $selected }}>
+                                {{ $situacao->nome }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -185,7 +195,7 @@ $totalPage = 25;
                                     @php $selected = "selected"; @endphp
                                 @endif
                                 <option value="{{ $categoria->id }}" {{ $selected }}>
-                                    {{ strtoupper($categoria->descricao) }}
+                                    {{ $categoria->descricao }}
                                 </option>
                             @endforeach
                         </select>
@@ -197,29 +207,13 @@ $totalPage = 25;
                         <label for="setor_id_psq" class="control-label">Setor / Área</label>
                         <select id="setor_id_psq" name="setor_id_psq" 
                             class="form-control">
-                            <option value="">- - SELECIONE - -</option>
-                            @foreach ($setores as $setor)
-                                @php $selected = ""; @endphp
-                                @if ($setor->id == $setor_id_psq)
-                                    @php $selected = "selected"; @endphp
-                                @endif
-                            <option value="{{ $setor->id }}" {{ $selected }}>{{ $setor->descricao }}</option>
-                            @endforeach
+                            <option value=""> -- SELECIONE -- </option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="assunto_id_psq" class="control-label">Assunto</label>
                         <select id="assunto_id_psq" name="assunto_id_psq" class="form-control">
                             <option value=""> -- SELECIONE -- </option>
-                            @foreach ($assuntos as $assunto)
-                                @php $selected = ""; @endphp
-                                @if ($assunto->id == $assunto_id_psq)
-                                    @php $selected = "selected"; @endphp
-                                @endif
-                                <option value="{{ $assunto->id }}" {{ $selected }}>
-                                    {{ strtoupper($assunto->descricao) }}
-                                </option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -229,29 +223,13 @@ $totalPage = 25;
                         <label for="classificacao_id_psq" class="control-label">Classificação</label>
                         <select id="classificacao_id_psq" name="classificacao_id_psq" 
                             class="form-control">
-                            <option value="">- - SELECIONE - -</option>
-                            @foreach ($classificacoes as $classificacao)
-                                @php $selected = ""; @endphp
-                                @if ($classificacao->id == $classificacao_id_psq)
-                                    @php $selected = "selected"; @endphp
-                                @endif
-                            <option value="{{ $classificacao->id }}" {{ $selected }}>{{ $classificacao->descricao }}</option>
-                            @endforeach
+                            <option value=""> -- SELECIONE -- </option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="sub_classificacao_id_psq" class="control-label">Subclassificação</label>
                         <select id="sub_classificacao_id_psq" name="sub_classificacao_id_psq" class="form-control">
                             <option value=""> -- SELECIONE -- </option>
-                            @foreach ($subClassificacoes as $subclassificacao)
-                                @php $selected = ""; @endphp
-                                @if ($subclassificacao->id == $sub_classificacao_id_psq)
-                                    @php $selected = "selected"; @endphp
-                                @endif
-                                <option value="{{ $subclassificacao->id }}" {{ $selected }}>
-                                    {{ strtoupper($subclassificacao->descricao) }}
-                                </option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -274,21 +252,8 @@ $totalPage = 25;
             </div>
         </div>
 
-
         <div class="card uper">
             <div class="card-body">
-
-                @php
-                $arrSituacao = array(
-                    '0' => "Desativado",
-                    '1' => "Ativado"
-                );
-                $bgColor = array(
-                    '0' => "danger",
-                    '1' => "success"
-                );
-                @endphp
-
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -304,7 +269,6 @@ $totalPage = 25;
                     </thead>
                     <tbody>
                     @if (count($ouvidorias) > 0)
-
                         @foreach($ouvidorias as $ouvidoria)
 
                             @php
@@ -387,10 +351,9 @@ $totalPage = 25;
                     </tbody>
                 </table>
 
-                </form>
-
             </div>
         </div>
+        </form>
 
     </div>
 </div>
