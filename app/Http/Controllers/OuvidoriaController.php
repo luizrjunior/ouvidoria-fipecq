@@ -189,20 +189,6 @@ class OuvidoriaController extends Controller
             'categorias', 'ouvidorias', 'data'));
     }
 
-    public function search(Request $request)
-    {
-        $data = $this->filtrosPesquisa($request);
-        $ouvidorias = $this->getOuvidorias($data);
-
-        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
-        $tiposSolicitantes = TipoSolicitante::where('status', 1)->get();
-        $situacoes = Situacao::where('status', 1)->get();
-        $categorias = Categoria::where('status', 1)->get();
-
-        return view('ouvidoria.ouvidoria.index', compact('tiposOuvidorias', 'tiposSolicitantes', 'situacoes', 
-            'categorias', 'ouvidorias', 'data'));
-    }
-
     private function getOuvidorias(Array $data = null)
     {
         if ($data['data_inicio'] != "") {

@@ -22,7 +22,12 @@ Sistema de Ouvidoria FIPECq Vida desenvolvido em Laravel framework, Bootstrap, J
 ```
 git clone https://github.com/luizrjunior/ouvidoria-fipecq.git
 ```
-2. Criar o arquivo .env baseado no arquivo .env.example do diretório root da aplicação e configurar a conexão com banco de dados:
+2. Criar o arquivo .env baseado no arquivo .env.example do diretório root da aplicação
+3. Definir a chave da aplicação
+```
+php artisan key:generate
+```
+4. Configurar a conexão com banco de dados:
 ```
 DB_CONNECTION=oracle
 DB_HOST=192.168.12.40
@@ -32,7 +37,7 @@ DB_DATABASE=dbvida
 DB_USERNAME=internet
 DB_PASSWORD=caixa
 ```
-3. Configurar a aplicação para enviar e-mail informando os dados SMTP:
+5. Configurar a aplicação para enviar e-mail informando os dados SMTP:
 ```
 MAIL_MAILER=smtp
 MAIL_HOST=
@@ -43,11 +48,11 @@ MAIL_ENCRYPTION=null
 MAIL_FROM_ADDRESS=null
 MAIL_FROM_NAME="${APP_NAME}"
 ```
-5. Instalar as dependencias da aplicação
+6. Instalar as dependencias da aplicação
 ```
 composer install
 ```
-6. Gerar as Tabelas do Banco de Dados
+7. Gerar as Tabelas do Banco de Dados
 ``` 
 php artisan migrate
 ```

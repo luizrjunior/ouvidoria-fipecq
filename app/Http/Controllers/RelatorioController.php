@@ -11,6 +11,7 @@ use App\Models\Categoria;
 use App\Models\Setor;
 use App\Models\Assunto;
 use App\Models\Classificacao;
+use App\Models\Institutora;
 use App\Models\SubClassificacao;
 
 use Illuminate\Http\Request;
@@ -290,6 +291,31 @@ class RelatorioController extends Controller
             })->orderBy('cad_empresa.nome')->get();
     }
 
+
+    public function relatorios(Request $request)
+    {
+        // dd($request->all());
+
+        $data = $request->except('_token');
+        $timestamp = strtotime("-15 days");
+        if (empty($data['data_inicio'])) {
+            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y', $timestamp))->format('d/m/Y');
+        }
+        if (empty($data['data_termino'])) {
+            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', date('d/m/Y'))->format('d/m/Y');
+        }
+
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->get();
+        $institutoras = Institutora::orderBy('nome')->get();
+        $ouvidorias = $this->getOuvidoriasPorTipoSolicitacao($data);
+
+        if (!empty($data['print'])) {
+            return view('ouvidoria.relatorios.relatorio-relatorios-print', 
+                compact('ouvidorias', 'data'));
+        }
+        return view('ouvidoria.relatorios.relatorio-relatorios', 
+            compact('ouvidorias', 'tiposOuvidorias', 'institutoras', 'data'));
+    }
 
 
     /**

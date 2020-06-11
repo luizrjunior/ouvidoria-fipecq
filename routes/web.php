@@ -126,8 +126,7 @@ Route::post('/ouvidoria/carregar-sub-classificacoes', 'OuvidoriaController@carre
 /**
  * PESQUISA DE SATISFACAO
  */
-Route::any('/pesquisa-satisfacao/relatorio', 'PesquisaSatisfacaoController@relatorio')
-    ->name('pesquisa-satisfacao.relatorio');
+Route::any('/pesquisa-satisfacao/relatorio', 'PesquisaSatisfacaoController@relatorio')->name('pesquisa-satisfacao.relatorio');
 
 Route::get('/pesquisa-satisfacao/{ouvidoria_id}/create', 'PesquisaSatisfacaoController@create');
 Route::post('/pesquisa-satisfacao/store', 'PesquisaSatisfacaoController@store')->name('pesquisa-satisfacao.store');
@@ -147,8 +146,14 @@ Route::post('/relatorio/tempo-espera', 'RelatorioController@relatorioTempoEspera
 Route::post('/relatorio/institutora', 'RelatorioController@relatorioInstitutora')
     ->name('relatorio.institutora');
 
+Route::post('/relatorio/relatorios', 'RelatorioController@relatorios')
+    ->name('relatorio.relatorios');
+
 Route::post('/relatorio/relatorio-personalizado', 'RelatorioController@relatorioPersonalizado')
     ->name('relatorio.relatorio-personalizado');
+
+Route::post('/relatorio/comparativo', 'RelatorioController@comparativo')
+    ->name('relatorio.comparativo');
 
 /**
  * BENEFICIARIO
