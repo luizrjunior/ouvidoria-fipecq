@@ -18,7 +18,7 @@ class CreatePesquisaSatisfacaoTable extends Migration
             $table->bigIncrements('id');
             $table->integer('resposta_1');
             $table->integer('resposta_2');
-            $table->text('resposta_3');
+            $table->text('resposta_3')->nullable();
 
             $table->unsignedBigInteger('ouvidoria_id');
             $table->foreign('ouvidoria_id')
