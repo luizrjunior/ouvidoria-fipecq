@@ -1,8 +1,10 @@
 @php
-$institutoras = array();
 $y = 0;
+$total = 0;
 $id_old = "";
+$institutoras = array();
 @endphp
+
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
@@ -18,9 +20,6 @@ $id_old = "";
     @endforeach
 @endif
 
-@php
-$total = 0;
-@endphp
 @if (count($institutoras) > 0)
     @foreach ($institutoras as $institutora)
         @php
@@ -62,17 +61,17 @@ $total = 0;
             <div class="row justify-content-center">
                 <div class="col-md-12" style="text-align:center;">
                     <img src="{{ url('images/logo_ouvidoria.png') }}" class="p-4">
-                    <br>
-                    <br>
-                    <h3>Institutora</h3>
                 </div>
             </div>
+
+            <br>
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     
                     <div class="card uper">
                         <div class="card-body">
+                            <h3>Total Por Institutora</h3>
                             <div class="row">
                                 <div class="col-md-1">
                                     &nbsp;
@@ -91,7 +90,7 @@ $total = 0;
             
                     <div class="card uper">
                         <div class="card-body">
-                            <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                            <table class="table table-striped" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center"><b>Institutora</b></td>
                                     <td align="center" width="25%"><b>Total</b></td>
@@ -122,6 +121,8 @@ $total = 0;
                             </table>
                         </div>
                     </div>
+
+                    <br>
             
                 </div>
             </div>
@@ -144,59 +145,50 @@ $total = 0;
     <script src="{{ asset('Flot/jquery.flot.js') }}"></script>
     <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
     <script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
-    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-    <script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
     <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
     <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
     <!-- Page script -->
     <script>
         $(function () {
-            /*
-            * BAR CHART
-            * ---------
-            */
+            @php
+            $i = 0;
+            $total = 0;
+            @endphp
             var bar_data = {
                 data : [
-                    @php
-                    $i = 0;
-                    $total = 0;
-                    @endphp
-                    @if (count($institutoras) > 0)
-                        @foreach ($institutoras as $institutora)
-                            @php
-                            $qtde = $institutora['qtde'];
-                            @endphp
-                            [{{ $qtde }}, {{ $i }}],
-                            @php
-                            $i++;
-                            $total += $qtde;
-                            @endphp
-                        @endforeach
-                    @endif
-                    ],
-                    color: '#FFD700'
-                };
-
-            // Setup labels for use on the Y-axis  
-            var tickLabels = [
-                @php
-                $i = 0;
-                $total = 0;
-                @endphp
                 @if (count($institutoras) > 0)
                     @foreach ($institutoras as $institutora)
                         @php
-                        $nome = $institutora['nome'];
                         $qtde = $institutora['qtde'];
                         @endphp
-                        [{{ $i }}, '{{ $nome }}'],
+                        [{{ $qtde }}, {{ $i }}],
                         @php
                         $i++;
                         $total += $qtde;
                         @endphp
                     @endforeach
                 @endif
-                ];
+                ],
+                color: '#FFD700'
+            };
+
+            // Setup labels for use on the Y-axis  
+            @php
+            $i = 0;
+            @endphp
+            var tickLabels = [
+                @if (count($institutoras) > 0)
+                    @foreach ($institutoras as $institutora)
+                        @php
+                        $nome = $institutora['nome'];
+                        @endphp
+                        [{{ $i }}, '{{ $nome }}'],
+                        @php
+                        $i++;
+                        @endphp
+                    @endforeach
+                @endif
+            ];
 
             $.plot('#bar-chart', [bar_data], {
                 grid  : {
@@ -216,8 +208,6 @@ $total = 0;
                     ticks: tickLabels
                 }
             });
-            /* END BAR CHART */
-
         });
     </script>
     

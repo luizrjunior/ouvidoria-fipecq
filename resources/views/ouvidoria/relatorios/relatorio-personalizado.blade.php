@@ -4,43 +4,25 @@ $routeCarregarAssuntos = route('ouvidoria.carrregar-assuntos');
 $routeCarregarClassificacoes = route('ouvidoria.carrregar-classificacoes');
 $routeCarregarSubClassificacoes = route('ouvidoria.carrregar-sub-classificacoes');
 
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
+$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
+$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
 
-$tipo_ouvidoria_id_psq = "";
-$tipo_solicitante_id_psq = "";
+$tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'] ? $data['tipo_ouvidoria_id_psq'] : "";
+$tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'] ? $data['tipo_solicitante_id_psq'] : "";
 
-$categoria_id_psq = "";
+$categoria_id_psq = $data['categoria_id_psq'] ? $data['categoria_id_psq'] : "";
 
-$setor_id_psq = "";
-$assunto_id_psq = "";
+$setor_id_psq = $data['setor_id_psq'] ? $data['setor_id_psq'] : "";
+$assunto_id_psq = $data['assunto_id_psq'] ? $data['assunto_id_psq'] : "";
 
-$classificacao_id_psq = "";
-$sub_classificacao_id_psq = "";
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
+$classificacao_id_psq = $data['classificacao_id_psq'] ? $data['classificacao_id_psq'] : "";
+$sub_classificacao_id_psq = $data['sub_classificacao_id_psq'] ? $data['sub_classificacao_id_psq'] : "";
 
-    $tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
-    $tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
-
-    $categoria_id_psq = $data['categoria_id_psq'];
-
-    $setor_id_psq = $data['setor_id_psq'];
-    $assunto_id_psq = $data['assunto_id_psq'];
-
-    $classificacao_id_psq = $data['classificacao_id_psq'];
-    $sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
-    @endphp
-@endif
-
-@php
 $y = 0;
 $id_old = "";
 $institutoras = array();
 @endphp
+
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
@@ -66,6 +48,7 @@ $institutoras = array();
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
     top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
     top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+    top.urlRelComparativo = '{{ url("/relatorio/relatorio-comparativo") }}';
 
     top.routeCarregarSetores = '{{ $routeCarregarSetores }}';
     top.routeCarregarAssuntos = '{{ $routeCarregarAssuntos }}';
@@ -86,37 +69,31 @@ $institutoras = array();
 <script src="{{ asset('Flot/jquery.flot.js') }}"></script>
 <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
 <script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
 <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
 <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
 <!-- Page script -->
 <script>
     $(function () {
-        /*
-        * BAR CHART
-        * ---------
-        */
+        @php
+        $total = 0;
+        @endphp
         var bar_data = {
             data : [
-                @php
-                $total = 0;
-                @endphp
-                @if (count($institutoras) > 0)
-                    @foreach ($institutoras as $institutora)
-                        @php
-                        $qtde = $institutora['qtde'];
-                        $nome = $institutora['nome'];
-                        @endphp
-                        ['{{ $nome }}', {{ $qtde }}],
-                        @php
-                        $total += $qtde;
-                        @endphp
-                    @endforeach
-                @endif
-                ],
-                color: '#3c8dbc'
-            };
+            @if (count($institutoras) > 0)
+                @foreach ($institutoras as $institutora)
+                    @php
+                    $qtde = $institutora['qtde'];
+                    $nome = $institutora['nome'];
+                    @endphp
+                    ['{{ $nome }}', {{ $qtde }}],
+                    @php
+                    $total += $qtde;
+                    @endphp
+                @endforeach
+            @endif
+            ],
+            color: '#3c8dbc'
+        };
 
         $.plot('#bar-chart', [bar_data], {
             grid  : {
@@ -128,7 +105,6 @@ $institutoras = array();
                 bars: {
                     show    : true,
                     barWidth: 0.3,
-                    // align   : 'center'
                 }
             },
             xaxis : {
@@ -136,7 +112,6 @@ $institutoras = array();
                 tickLength: 0
             }
         });
-        /* END BAR CHART */
     });
 </script>
 @endsection
@@ -150,22 +125,25 @@ $institutoras = array();
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="#">Relatório Personalizado</a>
+        <a class="nav-link active" href="#">Relatório Personalizado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="abrirRelatorio('6')">Relatório Comparativo</a>
     </li>
 </ul>
 
@@ -301,6 +279,7 @@ $institutoras = array();
 
             <div class="card uper">
                 <div class="card-body">
+                    <h3>Relatório Personalizado</h3>
                     <div class="row">
                         <div class="col-md-1">
                             &nbsp;
@@ -317,7 +296,7 @@ $institutoras = array();
 
             <div class="card uper">
                 <div class="card-body">
-                    <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                    <table class="table table-striped" cellspacing="0" width="100%">
                         <tr>
                             <td align="center"><b>Institutora</b></td>
                             <td align="center" width="25%"><b>Total</b></td>

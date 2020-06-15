@@ -7,22 +7,17 @@ $bgColor = [
     5 => '#87CEFA',
     6 => '#87CEEB',
     7 => '#ADD8E6',
-    8 => '#4682B4',
+    8 => '#FFFFFF',
     9 => '#B0C4DE',
     10 => '#0000FF',
 ];
-@endphp
-@php
-$i = 1;
 $total = 0;
 @endphp
+
 @if (count($faixasEtarias) > 0)
     @foreach ($faixasEtarias as $faixaEtaria)
         @php
-        $nome = $faixaEtaria['nome'];
         $qtde = $faixaEtaria['qtde'];
-        $color = $bgColor[$i];
-        $i++;
         $total += $qtde;
         @endphp
     @endforeach
@@ -60,17 +55,17 @@ $total = 0;
             <div class="row justify-content-center">
                 <div class="col-md-12" style="text-align:center;">
                     <img src="{{ url('images/logo_ouvidoria.png') }}" class="p-4">
-                    <br>
-                    <br>
-                    <h3>Faixa Etária</h3>
                 </div>
             </div>
+
+            <br>
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     
                     <div class="card uper">
                         <div class="card-body">
+                            <h3>Total Por Faixa Etária</h3>
                             <div class="row">
                                 <div class="col-md-1">
                                     &nbsp;
@@ -84,10 +79,12 @@ $total = 0;
                             </div>
                         </div>
                     </div>
-            
+
+                    <br>
+
                     <div class="card uper">
                         <div class="card-body">
-                            <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                            <table class="table table-striped" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center"><b>Faixa Etária</b></td>
                                     <td align="center" width="25%"><b>Total</b></td>
@@ -118,7 +115,9 @@ $total = 0;
                             </table>
                         </div>
                     </div>
-            
+
+                    <br>
+
                 </div>
             </div>
 
@@ -142,19 +141,14 @@ $total = 0;
     <script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
     <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
     <script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
-    <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-    <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
     <!-- Page script -->
     <script>
         $(function () {
-        /*
-        * DONUT CHART
-        * -----------
-        */
-        @php
-        $i = 1;
-        @endphp
-        var donutData = [
+            @php
+            $i = 1;
+            $total = 0;
+            @endphp
+            var data = [
             @if (count($faixasEtarias) > 0)
                 @foreach ($faixasEtarias as $faixaEtaria)
                     @php
@@ -162,24 +156,22 @@ $total = 0;
                     $qtde = $faixaEtaria['qtde'];
                     $color = $bgColor[$i];
                     @endphp
-                    { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
+                { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
                     @php
                     $i++;
+                    $total += $qtde;
                     @endphp
                 @endforeach
             @endif
             ];
-        $.plot('#donut-chart', donutData, {
+
+            $.plot('#donut-chart', data, {
                 series: {
                     pie: {
-                        show       : true,
-                        radius     : 1,
-                        innerRadius: 0.5,
+                        show: true,
                         label      : {
                             show     : true,
-                            radius   : 2 / 3,
                             formatter: labelFormatter,
-                            threshold: 0.1
                         }
                     }
                 },
@@ -188,24 +180,17 @@ $total = 0;
                     clickable: true
                 },
                 legend: {
-                    show: true
+                    show: false
                 }
             });
-            /*
-            * END DONUT CHART
-            */
         });
-    
-        /*
-        * Custom Label formatter
-        * ----------------------
-        */
+
         function labelFormatter(label, series) {
-            return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+            return '<div style="font-size:13px; font-weight: 600; color: #000000;">'
                 + label
-                + '<br>'
+                + ': '
                 + Math.round(series.percent) + '%</div>'
-        }
+        }    
     </script>
     
     </body>

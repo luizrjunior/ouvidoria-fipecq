@@ -8,6 +8,7 @@
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
     top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
     top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+    top.urlRelComparativo = '{{ url("/relatorio/relatorio-comparativo") }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
@@ -43,22 +44,25 @@ $data_termino = date('d/m/Y');
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="#">Relatórios</a>
+        <a class="nav-link active" href="#">Relatórios</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="abrirRelatorio('6')">Relatório Comparativo</a>
     </li>
 </ul>
 

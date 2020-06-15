@@ -1,9 +1,10 @@
 @php
-$tiposSolicitacao = array();
-$dataChart = "";
 $y = 0;
+$total = 0;
 $id_old = "";
+$tiposSolicitacao = array();
 @endphp
+
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
@@ -42,6 +43,15 @@ $id_old = "";
     @endforeach
 @endif
 
+@if (count($tiposSolicitacao) > 0)
+    @foreach ($tiposSolicitacao as $tipoSolicitacao)
+        @php
+        $qtde = $tipoSolicitacao['dias'] / $tipoSolicitacao['qtde'];
+        $total += $qtde;
+        @endphp
+    @endforeach
+@endif
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -74,17 +84,17 @@ $id_old = "";
             <div class="row justify-content-center">
                 <div class="col-md-12" style="text-align:center;">
                     <img src="{{ url('images/logo_ouvidoria.png') }}" class="p-4">
-                    <br>
-                    <br>
-                    <h3>Tempo de Espera Por Tipo de Solicitação</h3>
                 </div>
             </div>
+
+            <br>
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     
                     <div class="card uper">
                         <div class="card-body">
+                            <h3>Tempo de Espera Por Tipo de Solicitação</h3>
                             <div class="row">
                                 <div class="col-md-1">
                                     &nbsp;
@@ -98,10 +108,12 @@ $id_old = "";
                             </div>
                         </div>
                     </div>
+
+                    <br>
             
                     <div class="card uper">
                         <div class="card-body">
-                            <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                            <table class="table table-striped" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center"><b>Tipo de Solicitação</b></td>
                                     <td align="center" width="25%"><b>Total de Dias</b></td>
@@ -127,6 +139,8 @@ $id_old = "";
                             </table>
                         </div>
                     </div>
+
+                    <br>
             
                 </div>
             </div>
@@ -211,8 +225,8 @@ $id_old = "";
             ];
 
             var data = [
-                {label: 'Dias Consumidos', data: d1},
-                {label: 'Dias Restantes', data: d2},
+                { label: 'Dias Consumidos', data: d1 },
+                { label: 'Dias Restantes', data: d2 },
             ];
 
             var options = {

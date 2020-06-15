@@ -7,6 +7,8 @@ use App\Models\Beneficiario;
 use App\Models\TipoOuvidoria;
 use App\Models\TipoSolicitante;
 
+use App\Models\CanalAtendimento;
+
 use App\Models\Categoria;
 use App\Models\Setor;
 use App\Models\Assunto;
@@ -189,7 +191,6 @@ class RelatorioController extends Controller
         return $faixasEtarias;
     }
 
-
     /**
      * RELATORIO TEMPO DE ESPERA POR TIPO DE OUVIDORIA
      *
@@ -235,8 +236,6 @@ class RelatorioController extends Controller
                 }
             })->where('situacao_id', 3)->orderBy('tp_ouvidoria_id')->get();
     }
-
-
 
     /**
      * RELATORIO INSITUTORA
@@ -445,6 +444,82 @@ class RelatorioController extends Controller
                     $query->where('fv_ouv_ouvidoria.sub_classificacao_id', $data['sub_classificacao_id_psq']);
                 }
             })->orderBy('cad_empresa.nome')->get();
+    }
+
+
+    /**
+     * RELATORIO TIPO DE OUVIDORIA
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function relatorioComparativo(Request $request)
+    {
+        $data = $request->except('_token');
+        if (empty($data['ano_inicio'])) {
+            $data['ano_inicio'] = date('Y') - 1;
+        }
+        if (empty($data['ano_termino'])) {
+            $data['ano_termino'] = date('Y');
+        }
+
+        $canaisAtendimentos = CanalAtendimento::orderBy('id')->get();
+        $tiposOuvidorias = TipoOuvidoria::orderBy('id')->get();
+
+        $ouvidoriasAnoInicioCA = $this->getOuvidoriasAnoInicioCA($data);
+        $ouvidoriasAnoTerminoCA = $this->getOuvidoriasAnoTerminoCA($data);
+
+        $ouvidoriasAnoInicioTS = $this->getOuvidoriasAnoInicioTS($data);
+        $ouvidoriasAnoTerminoTS = $this->getOuvidoriasAnoTerminoTS($data);
+
+        if (!empty($data['print'])) {
+            return view('ouvidoria.relatorios.relatorio-comparativo-print', compact('canaisAtendimentos', 'tiposOuvidorias', 'data',
+            'ouvidoriasAnoInicioCA', 'ouvidoriasAnoTerminoCA', 'ouvidoriasAnoInicioTS', 'ouvidoriasAnoTerminoTS'));
+        }
+        return view('ouvidoria.relatorios.relatorio-comparativo', compact('canaisAtendimentos', 'tiposOuvidorias', 'data',
+            'ouvidoriasAnoInicioCA', 'ouvidoriasAnoTerminoCA', 'ouvidoriasAnoInicioTS', 'ouvidoriasAnoTerminoTS'));
+    }
+
+    private function getOuvidoriasAnoInicioCA(Array $data = null)
+    {
+        return Ouvidoria::where(function ($query) use ($data) {
+                $query->whereNotNull('canal_atendimento_id');
+                if (isset($data['ano_inicio']) && $data['ano_inicio'] != "") {
+                    $query->where('created_at', '>=', $data['ano_inicio'] . '-01-01 00:00:00');
+                    $query->where('created_at', '<=', $data['ano_inicio'] . '-12-31 23:59:59');
+                }
+            })->orderBy('canal_atendimento_id')->get();
+    }
+
+    private function getOuvidoriasAnoTerminoCA(Array $data = null)
+    {
+        return Ouvidoria::where(function ($query) use ($data) {
+                $query->whereNotNull('canal_atendimento_id');
+                if (isset($data['ano_termino']) && $data['ano_termino'] != "") {
+                    $query->where('created_at', '>=', $data['ano_termino'] . '-01-01 00:00:00');
+                    $query->where('created_at', '<=', $data['ano_termino'] . '-12-31 23:59:59');
+                }
+            })->orderBy('canal_atendimento_id')->get();
+    }
+
+    private function getOuvidoriasAnoInicioTS(Array $data = null)
+    {
+        return Ouvidoria::where(function ($query) use ($data) {
+                if (isset($data['ano_inicio']) && $data['ano_inicio'] != "") {
+                    $query->where('created_at', '>=', $data['ano_inicio'] . '-01-01 00:00:00');
+                    $query->where('created_at', '<=', $data['ano_inicio'] . '-12-31 23:59:59');
+                }
+            })->orderBy('tp_ouvidoria_id')->get();
+    }
+
+    private function getOuvidoriasAnoTerminoTS(Array $data = null)
+    {
+        return Ouvidoria::where(function ($query) use ($data) {
+                if (isset($data['ano_termino']) && $data['ano_termino'] != "") {
+                    $query->where('created_at', '>=', $data['ano_termino'] . '-01-01 00:00:00');
+                    $query->where('created_at', '<=', $data['ano_termino'] . '-12-31 23:59:59');
+                }
+            })->orderBy('tp_ouvidoria_id')->get();
     }
 
     public function obterPercentual($percentage, $of)

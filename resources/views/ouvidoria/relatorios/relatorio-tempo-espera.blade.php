@@ -1,34 +1,11 @@
-@extends('layouts.app')
-
-@section('javascript')
-<script type="text/javascript">
-    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
-    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
-    top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
-    top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
-    top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
-    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
-</script>
-<script type="text/javascript" 
-    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
-<script type="text/javascript" 
-    src="{{ asset('/js/ouvidoria/relatorios/relatorios.js') }}"></script>
-<!-- FLOT CHARTS -->
-<script src="{{ asset('Flot/jquery.flot.js') }}"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
-<script src="{{ asset('Flot/jquery.flot.stack.js') }}"></script>
-<!-- Page script -->
 @php
-$tiposSolicitacao = array();
-$dataChart = "";
+$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
+$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
 $y = 0;
 $id_old = "";
+$tiposSolicitacao = array();
 @endphp
+
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
@@ -67,6 +44,29 @@ $id_old = "";
     @endforeach
 @endif
 
+@extends('layouts.app')
+
+@section('javascript')
+<script type="text/javascript">
+    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
+    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
+    top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
+    top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
+    top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
+    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+    top.urlRelComparativo = '{{ url("/relatorio/relatorio-comparativo") }}';
+</script>
+<script type="text/javascript" 
+    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
+<script type="text/javascript" 
+    src="{{ asset('/js/ouvidoria/relatorios/relatorios.js') }}"></script>
+<!-- FLOT CHARTS -->
+<script src="{{ asset('Flot/jquery.flot.js') }}"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="{{ asset('Flot/jquery.flot.stack.js') }}"></script>
+<!-- Page script -->
 <script>
     $(function () {
 		var d2 = [
@@ -123,8 +123,8 @@ $id_old = "";
         ];
 
         var data = [
-            {label: 'Dias Consumidos', data: d1},
-            {label: 'Dias Restantes', data: d2},
+            { label: 'Dias Consumidos', data: d1 },
+            { label: 'Dias Restantes', data: d2 },
         ];
 
         var options = {
@@ -150,17 +150,6 @@ $id_old = "";
 @endsection
 
 @section('content')
-@php
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-    @endphp
-@endif
-
 <style>
   .uper {
     margin-top: 40px;
@@ -175,7 +164,7 @@ $data_termino = date('d/m/Y');
       <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="#">Tempo de Espera por Tipo</a>
+      <a class="nav-link active" href="#">Tempo de Espera</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
@@ -239,6 +228,7 @@ $data_termino = date('d/m/Y');
 
             <div class="card uper">
                 <div class="card-body">
+                    <h3>Total Tempo de Espera Por Tipo de Solicitação</h3>
                     <div class="row">
                         <div class="col-md-1">
                             &nbsp;
@@ -255,7 +245,7 @@ $data_termino = date('d/m/Y');
 
             <div class="card uper">
                 <div class="card-body">
-                    <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                    <table class="table table-striped" cellspacing="0" width="100%">
                         <tr>
                             <td align="center"><b>Tipo de Solicitação</b></td>
                             <td align="center" width="25%"><b>Total de Dias</b></td>

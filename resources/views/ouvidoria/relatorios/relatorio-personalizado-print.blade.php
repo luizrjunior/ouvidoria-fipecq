@@ -1,8 +1,10 @@
 @php
-$institutoras = array();
 $y = 0;
+$total = 0;
 $id_old = "";
+$institutoras = array();
 @endphp
+
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
@@ -18,9 +20,6 @@ $id_old = "";
     @endforeach
 @endif
 
-@php
-$total = 0;
-@endphp
 @if (count($institutoras) > 0)
     @foreach ($institutoras as $institutora)
         @php
@@ -62,22 +61,22 @@ $total = 0;
             <div class="row justify-content-center">
                 <div class="col-md-12" style="text-align:center;">
                     <img src="{{ url('images/logo_ouvidoria.png') }}" class="p-4">
-                    <br>
-                    <br>
-                    <h3>Relatório Personalizado</h3>
                 </div>
             </div>
+
+            <br>
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     
                     <div class="card uper">
                         <div class="card-body">
+                            <h3>Relatório Personalizado</h3>
                             <div class="row">
                                 <div class="col-md-1">
                                     &nbsp;
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-10">
                                     <div id="bar-chart" style="height: 400px;"></div>
                                 </div>
                                 <div class="col-md-1">
@@ -91,7 +90,7 @@ $total = 0;
             
                     <div class="card uper">
                         <div class="card-body">
-                            <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                            <table class="table table-striped" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center"><b>Institutora</b></td>
                                     <td align="center" width="25%"><b>Total</b></td>
@@ -122,6 +121,8 @@ $total = 0;
                             </table>
                         </div>
                     </div>
+
+                    <br>
             
                 </div>
             </div>
@@ -144,22 +145,16 @@ $total = 0;
     <script src="{{ asset('Flot/jquery.flot.js') }}"></script>
     <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
     <script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
-    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-    <script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
     <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
     <script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
     <!-- Page script -->
     <script>
         $(function () {
-            /*
-            * BAR CHART
-            * ---------
-            */
+            @php
+            $total = 0;
+            @endphp
             var bar_data = {
                 data : [
-                    @php
-                    $total = 0;
-                    @endphp
                     @if (count($institutoras) > 0)
                         @foreach ($institutoras as $institutora)
                             @php
@@ -172,9 +167,9 @@ $total = 0;
                             @endphp
                         @endforeach
                     @endif
-                    ],
-                    color: '#3c8dbc'
-                };
+                ],
+                color: '#3c8dbc'
+            };
     
             $.plot('#bar-chart', [bar_data], {
                 grid  : {
@@ -186,7 +181,6 @@ $total = 0;
                     bars: {
                         show    : true,
                         barWidth: 0.3,
-                        // align   : 'center'
                     }
                 },
                 xaxis : {
@@ -194,7 +188,6 @@ $total = 0;
                     tickLength: 0
                 }
             });
-            /* END BAR CHART */
         });
     </script>
         

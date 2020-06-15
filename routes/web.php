@@ -152,8 +152,8 @@ Route::post('/relatorio/relatorios', 'RelatorioController@relatorios')
 Route::post('/relatorio/relatorio-personalizado', 'RelatorioController@relatorioPersonalizado')
     ->name('relatorio.relatorio-personalizado');
 
-Route::post('/relatorio/comparativo', 'RelatorioController@comparativo')
-    ->name('relatorio.comparativo');
+Route::post('/relatorio/relatorio-comparativo', 'RelatorioController@relatorioComparativo')
+    ->name('relatorio.relatorio-comparativo');
 
 /**
  * BENEFICIARIO

@@ -33,6 +33,9 @@ function abrirRelatorio(expr) {
         case '5':
             $("#formRelatorios").prop('action', top.urlRelPersonalizado);
             break;
+        case '6':
+            $("#formRelatorios").prop('action', top.urlRelComparativo);
+            break;
     }
     $("#formRelatorios").submit();
 }

@@ -456,9 +456,11 @@ class OuvidoriaController extends Controller
 
             if ($request->situacao_id == 3) {
                 $msg = self::MESSAGE_ADD_SUCCESS_CONCLUIDA;
-                if ($ouvidoria->solicitante->email != "") {
-                    $para = $ouvidoria->solicitante->email;
-                    $this->enviarEmailOuvidoriaConcluida($para);
+                if ($ouvidoria->solicitante_id != "") {
+                    if ($ouvidoria->solicitante->email != "") {
+                        $para = $ouvidoria->solicitante->email;
+                        $this->enviarEmailOuvidoriaConcluida($para);
+                    }
                 }
             }
         }

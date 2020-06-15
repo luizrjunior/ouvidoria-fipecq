@@ -1,32 +1,11 @@
-@extends('layouts.app')
-
-@section('javascript')
-<script type="text/javascript">
-    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
-    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
-    top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
-    top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
-    top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
-    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
-</script>
-<script type="text/javascript" 
-    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
-<script type="text/javascript" 
-    src="{{ asset('/js/ouvidoria/relatorios/relatorios.js') }}"></script>
-<!-- FLOT CHARTS -->
-<script src="{{ asset('Flot/jquery.flot.js') }}"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
-<!-- Page script -->
 @php
-$institutoras = array();
+$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
+$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
 $y = 0;
 $id_old = "";
+$institutoras = array();
 @endphp
+
 @if (count($ouvidorias) > 0)
     @foreach ($ouvidorias as $ouvidoria)
         @php
@@ -42,54 +21,70 @@ $id_old = "";
     @endforeach
 @endif
 
+@extends('layouts.app')
+
+@section('javascript')
+<script type="text/javascript">
+    top.urlRelTipoOuvidoria = '{{ url("/relatorio/tipo-solicitacao") }}';
+    top.urlRelFaixaEtaria = '{{ url("/relatorio/faixa-etaria") }}';
+    top.urlRelTempoEspera = '{{ url("/relatorio/tempo-espera") }}';
+    top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
+    top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
+    top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+    top.urlRelComparativo = '{{ url("/relatorio/relatorio-comparativo") }}';
+</script>
+<script type="text/javascript" 
+    src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
+<script type="text/javascript" 
+    src="{{ asset('/js/ouvidoria/relatorios/relatorios.js') }}"></script>
+<!-- FLOT CHARTS -->
+<script src="{{ asset('Flot/jquery.flot.js') }}"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
+<!-- Page script -->
 <script>
     $(function () {
-        /*
-        * BAR CHART
-        * ---------
-        */
+        @php
+        $i = 0;
+        $total = 0;
+        @endphp
         var bar_data = {
             data : [
-                @php
-                $i = 0;
-                $total = 0;
-                @endphp
-                @if (count($institutoras) > 0)
-                    @foreach ($institutoras as $institutora)
-                        @php
-                        $qtde = $institutora['qtde'];
-                        @endphp
-                        [{{ $qtde }}, {{ $i }}],
-                        @php
-                        $i++;
-                        $total += $qtde;
-                        @endphp
-                    @endforeach
-                @endif
-                ],
-                color: '#FFD700'
-            };
-
-        // Setup labels for use on the Y-axis  
-        var tickLabels = [
-            @php
-            $i = 0;
-            $total = 0;
-            @endphp
             @if (count($institutoras) > 0)
                 @foreach ($institutoras as $institutora)
                     @php
-                    $nome = $institutora['nome'];
                     $qtde = $institutora['qtde'];
                     @endphp
-                    [{{ $i }}, '{{ $nome }}'],
+                    [{{ $qtde }}, {{ $i }}],
                     @php
                     $i++;
                     $total += $qtde;
                     @endphp
                 @endforeach
             @endif
-            ];
+            ],
+            color: '#FFD700'
+        };
+
+        // Setup labels for use on the Y-axis  
+        @php
+        $i = 0;
+        @endphp
+        var tickLabels = [
+            @if (count($institutoras) > 0)
+                @foreach ($institutoras as $institutora)
+                    @php
+                    $nome = $institutora['nome'];
+                    @endphp
+                    [{{ $i }}, '{{ $nome }}'],
+                    @php
+                    $i++;
+                    @endphp
+                @endforeach
+            @endif
+        ];
 
         $.plot('#bar-chart', [bar_data], {
             grid  : {
@@ -109,24 +104,11 @@ $id_old = "";
                 ticks: tickLabels
             }
         });
-        /* END BAR CHART */
-
     });
 </script>
 @endsection
 
 @section('content')
-@php
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-    @endphp
-@endif
-
 <style>
   .uper {
     margin-top: 40px;
@@ -135,22 +117,25 @@ $data_termino = date('d/m/Y');
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="#">Institutora</a>
+        <a class="nav-link active" href="#">Institutora</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="abrirRelatorio('6')">Relatório Comparativo</a>
     </li>
 </ul>
 
@@ -205,6 +190,7 @@ $data_termino = date('d/m/Y');
 
             <div class="card uper">
                 <div class="card-body">
+                    <h3>Total Por Institutora</h3>
                     <div class="row">
                         <div class="col-md-1">
                             &nbsp;
@@ -221,7 +207,7 @@ $data_termino = date('d/m/Y');
 
             <div class="card uper">
                 <div class="card-body">
-                    <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                    <table class="table table-striped" cellspacing="0" width="100%">
                         <tr>
                             <td align="center"><b>Institutora</b></td>
                             <td align="center" width="25%"><b>Total</b></td>

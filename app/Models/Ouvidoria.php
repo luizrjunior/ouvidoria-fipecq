@@ -45,5 +45,10 @@ class Ouvidoria extends Model
     {
         return $this->belongsTo('App\Models\Situacao', 'situacao_id');
     }
+    
+    public function canalAtendimento()
+    {
+        return $this->belongsTo('App\Models\CanalAtendimento', 'canal_atendimento_id');
+    }
 
 }

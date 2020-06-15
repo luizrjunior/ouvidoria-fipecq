@@ -1,15 +1,6 @@
 @php
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-    @endphp
-@endif
-
-@php
+$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
+$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
 $bgColor = [
     1 => '#6495ED',
     2 => '#4169E1',
@@ -52,6 +43,7 @@ $tiposSolicitacao = array();
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
     top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
     top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+    top.urlRelComparativo = '{{ url("/relatorio/relatorio-comparativo") }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
@@ -63,20 +55,14 @@ $tiposSolicitacao = array();
 <script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
 <script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
 <!-- Page script -->
 <script>
     $(function () {
-        /*
-        * DONUT CHART
-        * -----------
-        */
         @php
         $i = 1;
         $total = 0;
         @endphp
-        var donutData = [
+        var data = [
         @if (count($tiposSolicitacao) > 0)
             @foreach ($tiposSolicitacao as $tipoSolicitacao)
                 @php
@@ -84,7 +70,7 @@ $tiposSolicitacao = array();
                 $qtde = $tipoSolicitacao['qtde'];
                 $color = $bgColor[$i];
                 @endphp
-                { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
+            { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
                 @php
                 $i++;
                 $total += $qtde;
@@ -93,17 +79,13 @@ $tiposSolicitacao = array();
         @endif
         ];
 
-        $.plot('#donut-chart', donutData, {
+        $.plot('#donut-chart', data, {
             series: {
                 pie: {
-                    show       : true,
-                    radius     : 1,
-                    innerRadius: 0.5,
+                    show: true,
                     label      : {
                         show     : true,
-                        radius   : 2 / 3,
                         formatter: labelFormatter,
-                        threshold: 0.1
                     }
                 }
             },
@@ -112,24 +94,17 @@ $tiposSolicitacao = array();
                 clickable: true
             },
             legend: {
-                show: true
+                show: false
             }
         });
-        /*
-        * END DONUT CHART
-        */
     });
 
-    /*
-    * Custom Label formatter
-    * ----------------------
-    */
     function labelFormatter(label, series) {
-        return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+        return '<div style="font-size:13px; font-weight: 600; color: #000000;">'
             + label
-            + '<br>'
+            + ': '
             + Math.round(series.percent) + '%</div>'
-    }
+    }    
 </script>
 @endsection
 
@@ -142,22 +117,25 @@ $tiposSolicitacao = array();
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Tipo de Solicitação</a>
+        <a class="nav-link active" href="#">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="abrirRelatorio('6')">Relatório Comparativo</a>
     </li>
 </ul>
 
@@ -170,11 +148,8 @@ $tiposSolicitacao = array();
             <input type="hidden" id="print" name="print" value="">
 
             <div class="card uper">
-                <div class="card-header">
-                    Filtros de Pesquisa
-                </div>
+                <div class="card-header">Filtros de Pesquisa</div>
                 <div class="card-body">
-
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label for="data_inicio" class="control-label">Período de (*)</label>
@@ -191,7 +166,6 @@ $tiposSolicitacao = array();
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group row">
                         <div class="col-md-6">
                             &nbsp;
@@ -206,20 +180,17 @@ $tiposSolicitacao = array();
                             </button>
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <div class="card uper">
                 <div class="card-body">
+                    <h3>Total Por Tipo de Solicitação</h3>
                     <div class="row">
-                        <div class="col-md-1">
-                            &nbsp;
-                        </div>
                         <div class="col-md-10">
                             <div id="donut-chart" style="height: 400px;"></div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             &nbsp;
                         </div>
                     </div>
@@ -228,7 +199,7 @@ $tiposSolicitacao = array();
 
             <div class="card uper">
                 <div class="card-body">
-                    <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                    <table class="table table-striped" cellspacing="0" width="100%">
                         <tr>
                             <td align="center"><b>Tipo de Solicitação</b></td>
                             <td align="center" width="25%"><b>Total</b></td>

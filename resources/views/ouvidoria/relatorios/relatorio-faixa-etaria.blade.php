@@ -1,3 +1,20 @@
+@php
+$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
+$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
+$bgColor = [
+    1 => '#6495ED',
+    2 => '#4169E1',
+    3 => '#1E90FF',
+    4 => '#00BFFF',
+    5 => '#87CEFA',
+    6 => '#87CEEB',
+    7 => '#ADD8E6',
+    8 => '#FFFFFF',
+    9 => '#B0C4DE',
+    10 => '#0000FF',
+];
+@endphp
+
 @extends('layouts.app')
 
 @section('javascript')
@@ -7,6 +24,7 @@
     top.urlRelInstitutora = '{{ url("/relatorio/institutora") }}';
     top.urlRelatorios = '{{ url("/relatorio/relatorios") }}';
     top.urlRelPersonalizado = '{{ url("/relatorio/relatorio-personalizado") }}';
+    top.urlRelComparativo = '{{ url("/relatorio/relatorio-comparativo") }}';
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
@@ -18,37 +36,14 @@
 <script src="{{ asset('Flot/jquery.flot.resize.js') }}"></script>
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
 <script src="{{ asset('Flot/jquery.flot.pie.js') }}"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="{{ asset('Flot/jquery.flot.categories.js') }}"></script>
 <!-- Page script -->
-@php
-$bgColor = [
-    1 => '#6495ED',
-    2 => '#4169E1',
-    3 => '#1E90FF',
-    4 => '#00BFFF',
-    5 => '#87CEFA',
-    6 => '#87CEEB',
-    7 => '#ADD8E6',
-    8 => '#4682B4',
-    9 => '#B0C4DE',
-    10 => '#0000FF',
-];
-@endphp
-
 <script>
     $(function () {
-    /*
-    * DONUT CHART
-    * -----------
-    */
-    @php
-    $i = 1;
-    @endphp
-    var donutData = [
         @php
+        $i = 1;
         $total = 0;
         @endphp
+        var data = [
         @if (count($faixasEtarias) > 0)
             @foreach ($faixasEtarias as $faixaEtaria)
                 @php
@@ -56,7 +51,7 @@ $bgColor = [
                 $qtde = $faixaEtaria['qtde'];
                 $color = $bgColor[$i];
                 @endphp
-                { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
+            { label: '{{ $nome }}', data: {{ $qtde }}, color: '{{ $color}}' },
                 @php
                 $i++;
                 $total += $qtde;
@@ -64,17 +59,14 @@ $bgColor = [
             @endforeach
         @endif
         ];
-    $.plot('#donut-chart', donutData, {
+
+        $.plot('#donut-chart', data, {
             series: {
                 pie: {
-                    show       : true,
-                    radius     : 1,
-                    innerRadius: 0.5,
+                    show: true,
                     label      : {
                         show     : true,
-                        radius   : 2 / 3,
                         formatter: labelFormatter,
-                        threshold: 0.1
                     }
                 }
             },
@@ -83,39 +75,21 @@ $bgColor = [
                 clickable: true
             },
             legend: {
-                show: true
+                show: false
             }
         });
-        /*
-        * END DONUT CHART
-        */
     });
 
-    /*
-    * Custom Label formatter
-    * ----------------------
-    */
     function labelFormatter(label, series) {
-        return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+        return '<div style="font-size:13px; font-weight: 600; color: #000000;">'
             + label
-            + '<br>'
+            + ': '
             + Math.round(series.percent) + '%</div>'
-    }
+    }    
 </script>
 @endsection
 
 @section('content')
-@php
-$data_inicio = date('01/m/Y');
-$data_termino = date('d/m/Y');
-@endphp
-@if (isset($data))
-    @php
-    $data_inicio = $data['data_inicio'];
-    $data_termino = $data['data_termino'];
-    @endphp
-@endif
-
 <style>
   .uper {
     margin-top: 40px;
@@ -124,22 +98,25 @@ $data_termino = date('d/m/Y');
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="#">Faixa Etária</a>
+        <a class="nav-link active" href="#">Faixa Etária</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera por Tipo</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="abrirRelatorio('6')">Relatório Comparativo</a>
     </li>
 </ul>
 
@@ -194,6 +171,7 @@ $data_termino = date('d/m/Y');
 
             <div class="card uper">
                 <div class="card-body">
+                    <h3>Total Por Faixa Etária</h3>
                     <div class="row">
                         <div class="col-md-1">
                             &nbsp;
@@ -210,9 +188,9 @@ $data_termino = date('d/m/Y');
 
             <div class="card uper">
                 <div class="card-body">
-                    <table class="table table-hover table-bordered" cellspacing="0" width="100%">
+                    <table class="table table-striped" cellspacing="0" width="100%">
                         <tr>
-                            <td align="center"><b>Faixas Etárias</b></td>
+                            <td align="center"><b>Faixa Etária</b></td>
                             <td align="center" width="25%"><b>Total</b></td>
                             <td align="center" width="25%"><b>%</b></td>
                         </tr>
