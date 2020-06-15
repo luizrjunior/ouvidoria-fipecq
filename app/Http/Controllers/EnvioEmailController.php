@@ -73,13 +73,15 @@ class EnvioEmailController extends Controller
                     ->where('tipo_email_id', 1)->get();
                 if (count($envioEmailOuvidoria) == 0) {
                     $ouvidoria = Ouvidoria::find($ouvidoria_id);
-                    if ($ouvidoria->solicitante->email != "") {
-                        Mail::to($ouvidoria->solicitante->email)
-                        ->send(new SendMailPesquisaSatisfacao($ouvidoria));
-                        $envioEmail = new EnvioEmail();
-                        $envioEmail->tipo_email_id = 1;
-                        $envioEmail->ouvidoria_id = $ouvidoria->id;
-                        $envioEmail->save();
+                    if ($ouvidoria->solicitante_id != "") {
+                        if ($ouvidoria->solicitante->email != "") {
+                            Mail::to($ouvidoria->solicitante->email)
+                            ->send(new SendMailPesquisaSatisfacao($ouvidoria));
+                            $envioEmail = new EnvioEmail();
+                            $envioEmail->tipo_email_id = 1;
+                            $envioEmail->ouvidoria_id = $ouvidoria->id;
+                            $envioEmail->save();
+                        }
                     }
                 }
             }
