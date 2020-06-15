@@ -19,8 +19,6 @@
     <!-- Styles Extras -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('bootstrap/4.4.1/css/bootstrap-datepicker.css') }}" rel="stylesheet"/>
-    <!-- Morris charts -->
-    <link rel="stylesheet" href="{{ asset('morris.js/morris.css') }}">
     
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/ce01a1c161.js" crossorigin="anonymous"></script>
