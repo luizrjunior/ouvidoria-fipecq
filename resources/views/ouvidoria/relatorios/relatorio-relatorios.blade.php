@@ -53,7 +53,7 @@ $data_termino = date('d/m/Y');
         <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Instituidora</a>
     </li>
     <li class="nav-item">
         <a class="nav-link active" href="#">Relatórios</a>
@@ -115,7 +115,7 @@ $data_termino = date('d/m/Y');
 
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <label for="checkbox" class="control-label">Institutoras</label>
+                            <label for="checkbox" class="control-label">Instituidoras</label>
                         </div>
                     </div>
                     

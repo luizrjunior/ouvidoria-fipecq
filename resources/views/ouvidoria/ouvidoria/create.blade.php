@@ -131,7 +131,7 @@ $checked = old('anonima') == "A" ? "checked" : "";
 
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <label for="institutora_id" class="control-label">Institutora</label>
+                            <label for="institutora_id" class="control-label">Instituidora</label>
                         </div>
                         <div class="col-md-9">
                             <select id="institutora_id" name="institutora_id" 

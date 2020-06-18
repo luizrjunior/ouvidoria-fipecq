@@ -92,7 +92,7 @@ $institutoras = array();
                         <div class="card-body">
                             <table class="table table-striped" cellspacing="0" width="100%">
                                 <tr>
-                                    <td align="center"><b>Institutora</b></td>
+                                    <td align="center"><b>Instituidora</b></td>
                                     <td align="center" width="25%"><b>Total</b></td>
                                     <td align="center" width="25%"><b>%</b></td>
                                 </tr>

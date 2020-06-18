@@ -126,7 +126,7 @@ $institutoras = array();
         <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" href="#">Institutora</a>
+        <a class="nav-link active" href="#">Instituidora</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
@@ -190,7 +190,7 @@ $institutoras = array();
 
             <div class="card uper">
                 <div class="card-body">
-                    <h3>Total Por Institutora</h3>
+                    <h3>Total Por Instituidora</h3>
                     <div class="row">
                         <div class="col-md-1">
                             &nbsp;
@@ -209,7 +209,7 @@ $institutoras = array();
                 <div class="card-body">
                     <table class="table table-striped" cellspacing="0" width="100%">
                         <tr>
-                            <td align="center"><b>Institutora</b></td>
+                            <td align="center"><b>Instituidora</b></td>
                             <td align="center" width="25%"><b>Total</b></td>
                             <td align="center" width="25%"><b>%</b></td>
                         </tr>

@@ -126,7 +126,7 @@ $tiposSolicitacao = array();
         <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Institutora</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Instituidora</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
