@@ -11,9 +11,11 @@ $bgColor = [
     9 => '#B0C4DE',
     10 => '#0000FF',
 ];
+
 $y = 0;
 $total = 0;
 $id_old = "";
+
 $tiposSolicitacao = array();
 @endphp
 

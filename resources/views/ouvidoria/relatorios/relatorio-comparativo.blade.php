@@ -1,6 +1,7 @@
 @php
-$ano_inicio = $data['ano_inicio'] ? $data['ano_inicio'] : date('Y') - 1;
-$ano_termino = $data['ano_termino'] ? $data['ano_termino'] : date('Y');
+$ano_inicio = $data['ano_inicio'];
+$ano_termino = $data['ano_termino'];
+
 $bgColor = [
     1 => '#6495ED',
     2 => '#F98E76',
@@ -25,10 +26,12 @@ $bgColorRgb = [
     9 => '#B0C4DE',
     10 => '#0000FF',
 ];
+
 $y = 0;
 $id_old = "";
 $qtdeAnoInicio = 0;
 $qtdeAnoTermino = 0;
+
 $arrCanaisAtendimentos = array();
 $arrTiposOuvidorias = array();
 @endphp
@@ -471,7 +474,7 @@ $arrTiposOuvidorias = array();
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Tipo de Solicitação</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('0')">Tipo de Solicitação</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>

@@ -2,6 +2,7 @@
 $y = 0;
 $total = 0;
 $id_old = "";
+
 $institutoras = array();
 @endphp
 

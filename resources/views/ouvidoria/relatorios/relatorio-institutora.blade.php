@@ -1,8 +1,10 @@
 @php
-$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
-$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
+$data_inicio = $data['data_inicio'];
+$data_termino = $data['data_termino'];
+
 $y = 0;
 $id_old = "";
+
 $institutoras = array();
 @endphp
 

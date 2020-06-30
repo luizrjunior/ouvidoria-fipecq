@@ -1,6 +1,7 @@
 @php
-$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
-$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
+$data_inicio = $data['data_inicio'];
+$data_termino = $data['data_termino'];
+
 $bgColor = [
     1 => '#6495ED',
     2 => '#4169E1',
@@ -200,8 +201,11 @@ $bgColor = [
                                 @php
                                 $nome = $faixaEtaria['nome'];
                                 $qtde = $faixaEtaria['qtde'];
-                                $ouvidoriaController = new \App\Http\Controllers\RelatorioController();
-                                $perc = $ouvidoriaController->obterPercentual($qtde, $total);
+                                $perc = 0;
+                                if ($qtde > 0) {
+                                    $ouvidoriaController = new \App\Http\Controllers\RelatorioController();
+                                    $perc = $ouvidoriaController->obterPercentual($qtde, $total);
+                                }
                                 @endphp
                         <tr>
                             <td align="center">{{ $nome }}</td>

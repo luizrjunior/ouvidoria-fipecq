@@ -170,6 +170,22 @@ $(document).ready(function () {
         carregarSelectSubClassificacoes();
     });
 
+    $("#checkTodosTipoOuvidoria").click(function () {
+        if ( $(this).is(':checked') ){
+            $('.tipo-ouvidoria').attr("checked", true);
+        }else{
+            $('.tipo-ouvidoria').attr("checked", false);
+        }
+    });
+
+    $("#checkTodosInstituidoras").click(function () {
+        if ( $(this).is(':checked') ){
+            $('.instituitora').attr("checked", true);
+        }else{
+            $('.instituitora').attr("checked", false);
+        }
+    });
+
     if (top.valorCategoria != "") {
         carregarSelectSetores();
     }

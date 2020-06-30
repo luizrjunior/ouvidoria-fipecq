@@ -11,6 +11,7 @@ $bgColor = [
     9 => '#B0C4DE',
     10 => '#0000FF',
 ];
+
 $total = 0;
 @endphp
 

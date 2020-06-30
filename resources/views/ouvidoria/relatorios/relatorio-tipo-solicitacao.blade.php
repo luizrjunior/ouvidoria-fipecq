@@ -1,6 +1,7 @@
 @php
-$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
-$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
+$data_inicio = $data['data_inicio'];
+$data_termino = $data['data_termino'];
+
 $bgColor = [
     1 => '#6495ED',
     2 => '#4169E1',
@@ -13,8 +14,10 @@ $bgColor = [
     9 => '#B0C4DE',
     10 => '#0000FF',
 ];
+
 $y = 0;
 $id_old = "";
+
 $tiposSolicitacao = array();
 @endphp
 

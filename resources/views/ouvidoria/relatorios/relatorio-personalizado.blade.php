@@ -4,22 +4,23 @@ $routeCarregarAssuntos = route('ouvidoria.carrregar-assuntos');
 $routeCarregarClassificacoes = route('ouvidoria.carrregar-classificacoes');
 $routeCarregarSubClassificacoes = route('ouvidoria.carrregar-sub-classificacoes');
 
-$data_inicio = $data['data_inicio'] ? $data['data_inicio'] : date('01/m/Y');
-$data_termino = $data['data_termino'] ? $data['data_termino'] : date('d/m/Y');
+$data_inicio = $data['data_inicio'];
+$data_termino = $data['data_termino'];
 
-$tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'] ? $data['tipo_ouvidoria_id_psq'] : "";
-$tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'] ? $data['tipo_solicitante_id_psq'] : "";
+$tipo_ouvidoria_id_psq = $data['tipo_ouvidoria_id_psq'];
+$tipo_solicitante_id_psq = $data['tipo_solicitante_id_psq'];
 
-$categoria_id_psq = $data['categoria_id_psq'] ? $data['categoria_id_psq'] : "";
+$categoria_id_psq = $data['categoria_id_psq'];
 
-$setor_id_psq = $data['setor_id_psq'] ? $data['setor_id_psq'] : "";
-$assunto_id_psq = $data['assunto_id_psq'] ? $data['assunto_id_psq'] : "";
+$setor_id_psq = $data['setor_id_psq'];
+$assunto_id_psq = $data['assunto_id_psq'];
 
-$classificacao_id_psq = $data['classificacao_id_psq'] ? $data['classificacao_id_psq'] : "";
-$sub_classificacao_id_psq = $data['sub_classificacao_id_psq'] ? $data['sub_classificacao_id_psq'] : "";
+$classificacao_id_psq = $data['classificacao_id_psq'];
+$sub_classificacao_id_psq = $data['sub_classificacao_id_psq'];
 
 $y = 0;
 $id_old = "";
+
 $institutoras = array();
 @endphp
 
