@@ -41,6 +41,6 @@
 </div>
 
 <div class="col-md-3">
-    <img src="{{ url('images/logo_ouvidoria.png') }}" class="p-4">
+    <img src="{{ url('images/logo_ouvidoria.png') }}" width="280px" class="p-4">
 </div>
 

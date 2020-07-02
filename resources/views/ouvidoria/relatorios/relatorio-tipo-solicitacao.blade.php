@@ -120,19 +120,19 @@ $tiposSolicitacao = array();
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Tipo de Solicitação</a>
+        <a class="nav-link active" href="#">Tipo Solicitação</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="abrirRelatorio('1')">Faixa Etária</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo de Espera</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('2')">Tempo Espera</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="abrirRelatorio('3')">Instituidora</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Relatórios</a>
+        <a class="nav-link" href="#" onclick="abrirRelatorio('4')">Instituidora Comparativo</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="abrirRelatorio('5')">Relatório Personalizado</a>

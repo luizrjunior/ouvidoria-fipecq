@@ -42,9 +42,9 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Bem Vindo a Ouvidoria da FIPECq Vida</h3>
+                    <h3>Bem Vindo à Ouvidoria da FIPECq Vida</h3>
                     <br/>
-                    A Ouvidoria da FIPECq Vida foi inaugurada em junho de 2014, e desde então, tem sido uma importante ferramenta de comunicação entre nosso Associado e a gestão da Caixa de Assistência. Por meio da Ouvidoria o usuário poderia enviar elogios, sugestões, denúncias, pedidos de informação, solicitação e reclamações inerentes aos serviços prestados pela Caixa de Assistência Social da FIPECq Vida e seus parceiros, que por algum motivo, não puderam ser solucionadas pelos habituais canais de atendimento.
+                    A Ouvidoria da FIPECq Vida foi inaugurada em junho de 2014, e desde então, tem sido uma importante ferramenta de comunicação entre nosso Associado e a gestão da Caixa de Assistência. Por meio da Ouvidoria o usuário pode enviar elogios, sugestões, denúncias, pedidos de informação, solicitação e reclamações inerentes aos serviços prestados pela Caixa de Assistência Social da FIPECq Vida e seus parceiros, que por algum motivo, não puderam ser solucionadas pelos habituais canais de atendimento.
                     <br/><br/>
                     A Ouvidoria tem a responsabilidade de representar a voz dos usuários (Associados, parceiros, fornecedores, funcionários etc.) dentro da FIPECq Vida, propondo melhorias contínuas, sugerindo ações e soluções para tornar a gestão da FIPECq Vida mais transparente, ética e social.
                     <br/><br/>

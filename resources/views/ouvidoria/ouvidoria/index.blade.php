@@ -104,9 +104,8 @@ $bgColor = array(
                     </div>
                     <div class="col-md-6">
                         <label for="nome_psq" class="control-label">Nome</label>
-                        <input type="text" id="nome_psq" name="nome_psq" 
-                               class="form-control" value="{{ $nome_psq }}" 
-                               placeholder="Informe Nome do Solicitante">
+                        <input type="text" id="nome_psq" name="nome_psq" class="form-control maiuscula" value="{{ $nome_psq }}" 
+                            placeholder="Informe Nome do Solicitante">
                     </div>
                 </div>
 

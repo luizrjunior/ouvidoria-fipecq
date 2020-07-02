@@ -148,8 +148,8 @@ $comentario = old('comentario') ? old('comentario') : "";
                             <label for="nome" class="control-label">Nome (*)</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
-                            id="nome" name="nome" value="{{ $nome }}" />
+                            <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }} maiuscula" 
+                                id="nome" name="nome" value="{{ $nome }}" />
                             <span class="text-danger">{{ $errors->first('nome') }}</span>
                         </div>
                     </div>

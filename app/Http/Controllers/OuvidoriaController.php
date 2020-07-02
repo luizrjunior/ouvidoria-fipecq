@@ -191,12 +191,8 @@ class OuvidoriaController extends Controller
 
     private function getOuvidorias(Array $data = null)
     {
-        if ($data['data_inicio'] != "") {
-            $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio'])->format('Y-m-d');
-        }
-        if ($data['data_termino'] != "") {
-            $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
-        }
+        $data['data_inicio'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio'])->format('Y-m-d');
+        $data['data_termino'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino'])->format('Y-m-d');
 
         return Ouvidoria::select('fv_ouv_ouvidoria.id',
                 'fv_ouv_ouvidoria.protocolo as protocolo',
@@ -218,7 +214,7 @@ class OuvidoriaController extends Controller
                     $query->where('fv_ouv_solicitante.cpf', '=', $data['cpf_psq']);
                 }
                 if ($data['nome_psq'] != "") {
-                    $query->where('fv_ouv_solicitante.nome', 'LIKE', "%" . $data['nome_psq'] . "%");
+                    $query->where('fv_ouv_solicitante.nome', 'LIKE', "%" . strtoupper($data['nome_psq']) . "%");
                 }
                 if ($data['tipo_ouvidoria_id_psq'] != "") {
                     $query->where('fv_ouv_ouvidoria.tp_ouvidoria_id', $data['tipo_ouvidoria_id_psq']);
@@ -327,7 +323,7 @@ class OuvidoriaController extends Controller
             if ($request->solicitante_id == "") {
                 $solicitante = new Solicitante([
                     'cpf' => $request->cpf,
-                    'nome' => $request->nome,
+                    'nome' => strtoupper($request->nome),
                     'email' => $request->email,
                     'telefone' => $request->telefone,
                     'celular' => $request->celular,
@@ -341,7 +337,7 @@ class OuvidoriaController extends Controller
             } else {
                 $solicitante = Solicitante::find($request->solicitante_id);
                 $solicitante->cpf = $request->cpf;
-                $solicitante->nome = $request->nome;
+                $solicitante->nome = strtoupper($request->nome);
                 $solicitante->email = $request->email;
                 $solicitante->telefone = $request->telefone;
                 $solicitante->celular = $request->celular;

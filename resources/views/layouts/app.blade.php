@@ -22,6 +22,11 @@
     
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/ce01a1c161.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+        input.maiuscula {
+          text-transform: uppercase;
+        }
+    </style>    
   </head>
 
   <body>

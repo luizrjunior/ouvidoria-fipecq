@@ -515,8 +515,8 @@ class RelatorioController extends Controller
             $data['ano_termino'] = date('Y');
         }
 
-        $canaisAtendimentos = CanalAtendimento::orderBy('id')->get();
-        $tiposOuvidorias = TipoOuvidoria::orderBy('id')->get();
+        $canaisAtendimentos = CanalAtendimento::where('status', 1)->orderBy('id')->get();
+        $tiposOuvidorias = TipoOuvidoria::where('status', 1)->orderBy('id')->get();
 
         $ouvidoriasAnoInicioCA = $this->getOuvidoriasAnoInicioCA($data);
         $ouvidoriasAnoTerminoCA = $this->getOuvidoriasAnoTerminoCA($data);
