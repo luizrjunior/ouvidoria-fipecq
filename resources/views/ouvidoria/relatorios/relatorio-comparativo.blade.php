@@ -1,6 +1,9 @@
 @php
-$ano_inicio = $data['ano_inicio'];
-$ano_termino = $data['ano_termino'];
+$data_inicio_1 = $data['data_inicio_1'];
+$data_termino_1 = $data['data_termino_1'];
+
+$data_inicio_2 = $data['data_inicio_2'];
+$data_termino_2 = $data['data_termino_2'];
 
 $bgColor = [
     1 => '#6495ED',
@@ -44,8 +47,8 @@ $arrTiposOuvidorias = array();
         if ($id != $id_old) {
             $y = 1;
         }
-        $arrCanaisAtendimentos[$ano_inicio][$id]['qtde'] = $y;
-        $arrCanaisAtendimentos[$ano_inicio][$id]['nome'] = $ouvidoriaAnoInicioCA->canalAtendimento->descricao;
+        $arrCanaisAtendimentos['1'][$id]['qtde'] = $y;
+        $arrCanaisAtendimentos['1'][$id]['nome'] = $ouvidoriaAnoInicioCA->canalAtendimento->descricao;
         $id_old = $id;
         $y++;
         @endphp
@@ -57,8 +60,8 @@ $arrTiposOuvidorias = array();
             @php
             $id = $canalAtendimento->id;
             $descricao = $canalAtendimento->descricao;
-            $arrCanaisAtendimentos[$ano_inicio][$id]['qtde'] = 0;
-            $arrCanaisAtendimentos[$ano_inicio][$id]['nome'] = $descricao;
+            $arrCanaisAtendimentos['1'][$id]['qtde'] = 0;
+            $arrCanaisAtendimentos['1'][$id]['nome'] = $descricao;
             @endphp
         @endforeach
     @endif
@@ -72,8 +75,8 @@ $arrTiposOuvidorias = array();
         if ($id != $id_old) {
             $y = 1;
         }
-        $arrCanaisAtendimentos[$ano_termino][$id]['qtde'] = $y;
-        $arrCanaisAtendimentos[$ano_termino][$id]['nome'] = $ouvidoriaAnoTerminoCA->canalAtendimento->descricao;
+        $arrCanaisAtendimentos['2'][$id]['qtde'] = $y;
+        $arrCanaisAtendimentos['2'][$id]['nome'] = $ouvidoriaAnoTerminoCA->canalAtendimento->descricao;
         $id_old = $id;
         $y++;
         @endphp
@@ -85,8 +88,8 @@ $arrTiposOuvidorias = array();
             @php
             $id = $canalAtendimento->id;
             $descricao = $canalAtendimento->descricao;
-            $arrCanaisAtendimentos[$ano_termino][$id]['qtde'] = 0;
-            $arrCanaisAtendimentos[$ano_termino][$id]['nome'] = $descricao;
+            $arrCanaisAtendimentos['2'][$id]['qtde'] = 0;
+            $arrCanaisAtendimentos['2'][$id]['nome'] = $descricao;
             @endphp
         @endforeach
     @endif
@@ -101,8 +104,8 @@ $arrTiposOuvidorias = array();
         if ($id != $id_old) {
             $y = 1;
         }
-        $arrTiposOuvidorias[$ano_inicio][$id]['qtde'] = $y;
-        $arrTiposOuvidorias[$ano_inicio][$id]['nome'] = $ouvidoriaAnoInicioTS->tipoOuvidoria->nome;
+        $arrTiposOuvidorias['1'][$id]['qtde'] = $y;
+        $arrTiposOuvidorias['1'][$id]['nome'] = $ouvidoriaAnoInicioTS->tipoOuvidoria->nome;
         $id_old = $id;
         $y++;
         $qtdeAnoInicio++;
@@ -115,8 +118,8 @@ $arrTiposOuvidorias = array();
             @php
             $id = $tipoOuvidoria->id;
             $nome = $tipoOuvidoria->nome;
-            $arrTiposOuvidorias[$ano_inicio][$id]['qtde'] = 0;
-            $arrTiposOuvidorias[$ano_inicio][$id]['nome'] = $nome;
+            $arrTiposOuvidorias['1'][$id]['qtde'] = 0;
+            $arrTiposOuvidorias['1'][$id]['nome'] = $nome;
             @endphp
         @endforeach
     @endif
@@ -130,8 +133,8 @@ $arrTiposOuvidorias = array();
         if ($id != $id_old) {
             $y = 1;
         }
-        $arrTiposOuvidorias[$ano_termino][$id]['qtde'] = $y;
-        $arrTiposOuvidorias[$ano_termino][$id]['nome'] = $ouvidoriaAnoTerminoTS->tipoOuvidoria->nome;
+        $arrTiposOuvidorias['2'][$id]['qtde'] = $y;
+        $arrTiposOuvidorias['2'][$id]['nome'] = $ouvidoriaAnoTerminoTS->tipoOuvidoria->nome;
         $id_old = $id;
         $y++;
         $qtdeAnoTermino++;
@@ -144,8 +147,8 @@ $arrTiposOuvidorias = array();
             @php
             $id = $tipoOuvidoria->id;
             $nome = $tipoOuvidoria->nome;
-            $arrTiposOuvidorias[$ano_termino][$id]['qtde'] = 0;
-            $arrTiposOuvidorias[$ano_termino][$id]['nome'] = $nome;
+            $arrTiposOuvidorias['2'][$id]['qtde'] = 0;
+            $arrTiposOuvidorias['2'][$id]['nome'] = $nome;
             @endphp
         @endforeach
     @endif
@@ -166,10 +169,6 @@ $arrTiposOuvidorias = array();
 </script>
 <script type="text/javascript" 
     src="{{ asset('/js/plugins/jquery.maskedinput.js') }}"></script>
-<script>
-    $("#ano_inicio").mask("9999");
-    $("#ano_termino").mask("9999");
-</script>
 <script type="text/javascript" 
     src="{{ asset('/js/ouvidoria/relatorios/relatorio-comparativo.js') }}"></script>
 <script src="{{ asset('morris/chart.min.js') }}"></script>
@@ -229,15 +228,15 @@ $arrTiposOuvidorias = array();
 
         // Chart Data
         var chartData = {
-            labels: [$("#ano_inicio").val(), $("#ano_termino").val()],
+            labels: ["1º Periodo de " + $("#data_inicio_1").val() + " até " + $("#data_termino_1").val(), "2º Periodo de " + $("#data_inicio_2").val() + " até " + $("#data_termino_2").val()],
             datasets: [
                 @if (count($canaisAtendimentos) > 0)
                     @foreach($canaisAtendimentos as $canalAtendimento)
                         @php
                         $id = $canalAtendimento->id;
                         $descricao = $canalAtendimento->descricao;
-                        $qtdeInicio = $arrCanaisAtendimentos[$ano_inicio][$id]['qtde'];
-                        $qtdeTermino = $arrCanaisAtendimentos[$ano_termino][$id]['qtde'];
+                        $qtdeInicio = $arrCanaisAtendimentos['1'][$id]['qtde'];
+                        $qtdeTermino = $arrCanaisAtendimentos['2'][$id]['qtde'];
                         $color = $bgColor[$id];
                         $colorRgb = $bgColorRgb[$id];
                         @endphp
@@ -333,13 +332,13 @@ $arrTiposOuvidorias = array();
                     @endif
                     ],
                 datasets:[{
-                    label:$("#ano_inicio").val(),
+                    label:"1º Periodo de " + $("#data_inicio_1").val() + " até " + $("#data_termino_1").val(),
                     data:[
                         @if (count($tiposOuvidorias) > 0)
                             @foreach ($tiposOuvidorias as $tipoOuvidoria)
                                 @php
                                 $id = $tipoOuvidoria->id;
-                                $qtdeInicio = $arrTiposOuvidorias[$ano_inicio][$id]['qtde'];
+                                $qtdeInicio = $arrTiposOuvidorias['1'][$id]['qtde'];
                                 @endphp
                             {{ $qtdeInicio }},
                             @endforeach
@@ -350,13 +349,13 @@ $arrTiposOuvidorias = array();
                     borderColor:"transparent"
                 },
                 {
-                    label:$("#ano_termino").val(),
+                    label:"2º Periodo de " + $("#data_inicio_2").val() + " até " + $("#data_termino_2").val(),
                     data:[
                         @if (count($tiposOuvidorias) > 0)
                             @foreach ($tiposOuvidorias as $tiposOuvidorias)
                                 @php
                                 $id = $tiposOuvidorias->id;
-                                $qtdeTermino = $arrTiposOuvidorias[$ano_termino][$id]['qtde'];
+                                $qtdeTermino = $arrTiposOuvidorias['2'][$id]['qtde'];
                                 @endphp
                             {{ $qtdeTermino }},
                             @endforeach
@@ -427,14 +426,14 @@ $arrTiposOuvidorias = array();
             labels: [""],
             datasets: [
                 {
-                    label: $("#ano_inicio").val(), 
+                    label: "1º Periodo de " + $("#data_inicio_1").val() + " até " + $("#data_termino_1").val(), 
                     data: [{{ $qtdeAnoInicio }}], 
                     backgroundColor: "#28D094", 
                     hoverBackgroundColor: "rgba(22,211,154,.9)", 
                     borderColor: "transparent"
                 },
                 {
-                    label: $("#ano_termino").val(), 
+                    label: "2º Periodo de " + $("#data_inicio_2").val() + " até " + $("#data_termino_2").val(), 
                     data: [{{ $qtdeAnoTermino }}], 
                     backgroundColor: "#F98E76", 
                     hoverBackgroundColor: "rgba(249,142,118,.9)", 
@@ -507,22 +506,41 @@ $arrTiposOuvidorias = array();
             <div class="card uper">
                 <div class="card-header">Filtros de Pesquisa</div>
                 <div class="card-body">
+
                     <div class="form-group row">
                         <div class="col-md-6">
-                            <label for="ano_inicio" class="control-label">Período de (*)</label>
+                            <label for="data_inicio_1" class="control-label">1º Período de (*)</label>
                             <div class='input-group date'>
-                                <input type='text' id="ano_inicio"
-                                    name="ano_inicio" class="form-control" value="{{ $ano_inicio }}">
+                                <input type='text' id="data_inicio_1" name="data_inicio_1" class="form-control" 
+                                    value="{{ $data_inicio_1 }}">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="ano_termino" class="control-label">Até (*)</label>
+                            <label for="data_termino_1" class="control-label">Até (*)</label>
                             <div class='input-group date'>
-                                <input type="text" id="ano_termino"
-                                    name="ano_termino" class="form-control" value="{{ $ano_termino }}">
+                                <input type="text" id="data_termino_1" name="data_termino_1" class="form-control" 
+                                    value="{{ $data_termino_1 }}">
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="data_inicio_2" class="control-label">2º Período de (*)</label>
+                            <div class='input-group date'>
+                                <input type='text' id="data_inicio_2" name="data_inicio_2" class="form-control" 
+                                    value="{{ $data_inicio_2 }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="data_termino_2" class="control-label">Até (*)</label>
+                            <div class='input-group date'>
+                                <input type="text" id="data_termino_2" name="data_termino_2" class="form-control" 
+                                    value="{{ $data_termino_2 }}">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <div class="col-md-6">
                             &nbsp;
@@ -537,6 +555,7 @@ $arrTiposOuvidorias = array();
                             </button>
                         </div>
                     </div>
+
                 </div>
             </div>
 

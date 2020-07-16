@@ -508,11 +508,18 @@ class RelatorioController extends Controller
     public function relatorioComparativo(Request $request)
     {
         $data = $request->except('_token');
-        if (empty($data['ano_inicio'])) {
-            $data['ano_inicio'] = date('Y') - 1;
+        if (empty($data['data_inicio_1'])) {
+            $data['data_inicio_1'] = "01/01/" . (date('Y') - 1);
         }
-        if (empty($data['ano_termino'])) {
-            $data['ano_termino'] = date('Y');
+        if (empty($data['data_termino_1'])) {
+            $data['data_termino_1'] = "31/12/" . (date('Y') - 1);
+        }
+
+        if (empty($data['data_inicio_2'])) {
+            $data['data_inicio_2'] = "01/01/" . date('Y');
+        }
+        if (empty($data['data_termino_2'])) {
+            $data['data_termino_2'] = "31/12/" . date('Y');
         }
 
         $canaisAtendimentos = CanalAtendimento::where('status', 1)->orderBy('id')->get();
@@ -534,43 +541,47 @@ class RelatorioController extends Controller
 
     private function getOuvidoriasAnoInicioCA(Array $data = null)
     {
+        $data['data_inicio_1'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio_1'])->format('Y-m-d');
+        $data['data_termino_1'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino_1'])->format('Y-m-d');
+
         return Ouvidoria::where(function ($query) use ($data) {
                 $query->whereNotNull('canal_atendimento_id');
-                if (isset($data['ano_inicio']) && $data['ano_inicio'] != "") {
-                    $query->where('created_at', '>=', $data['ano_inicio'] . '-01-01 00:00:00');
-                    $query->where('created_at', '<=', $data['ano_inicio'] . '-12-31 23:59:59');
-                }
+                $query->where('created_at', '>=', $data['data_inicio_1'] . ' 00:00:00');
+                $query->where('created_at', '<=', $data['data_termino_1'] . ' 23:59:59');
             })->orderBy('canal_atendimento_id')->get();
     }
 
     private function getOuvidoriasAnoTerminoCA(Array $data = null)
     {
+        $data['data_inicio_2'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio_2'])->format('Y-m-d');
+        $data['data_termino_2'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino_2'])->format('Y-m-d');
+
         return Ouvidoria::where(function ($query) use ($data) {
                 $query->whereNotNull('canal_atendimento_id');
-                if (isset($data['ano_termino']) && $data['ano_termino'] != "") {
-                    $query->where('created_at', '>=', $data['ano_termino'] . '-01-01 00:00:00');
-                    $query->where('created_at', '<=', $data['ano_termino'] . '-12-31 23:59:59');
-                }
+                $query->where('created_at', '>=', $data['data_inicio_2'] . ' 00:00:00');
+                $query->where('created_at', '<=', $data['data_termino_2'] . ' 23:59:59');
             })->orderBy('canal_atendimento_id')->get();
     }
 
     private function getOuvidoriasAnoInicioTS(Array $data = null)
     {
+        $data['data_inicio_1'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio_1'])->format('Y-m-d');
+        $data['data_termino_1'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino_1'])->format('Y-m-d');
+
         return Ouvidoria::where(function ($query) use ($data) {
-                if (isset($data['ano_inicio']) && $data['ano_inicio'] != "") {
-                    $query->where('created_at', '>=', $data['ano_inicio'] . '-01-01 00:00:00');
-                    $query->where('created_at', '<=', $data['ano_inicio'] . '-12-31 23:59:59');
-                }
+                $query->where('created_at', '>=', $data['data_inicio_1'] . ' 00:00:00');
+                $query->where('created_at', '<=', $data['data_termino_1'] . ' 23:59:59');
             })->orderBy('tp_ouvidoria_id')->get();
     }
 
     private function getOuvidoriasAnoTerminoTS(Array $data = null)
     {
+        $data['data_inicio_2'] = \DateTime::createFromFormat('d/m/Y', $data['data_inicio_2'])->format('Y-m-d');
+        $data['data_termino_2'] = \DateTime::createFromFormat('d/m/Y', $data['data_termino_2'])->format('Y-m-d');
+
         return Ouvidoria::where(function ($query) use ($data) {
-                if (isset($data['ano_termino']) && $data['ano_termino'] != "") {
-                    $query->where('created_at', '>=', $data['ano_termino'] . '-01-01 00:00:00');
-                    $query->where('created_at', '<=', $data['ano_termino'] . '-12-31 23:59:59');
-                }
+                $query->where('created_at', '>=', $data['data_inicio_2'] . ' 00:00:00');
+                $query->where('created_at', '<=', $data['data_termino_2'] . ' 23:59:59');
             })->orderBy('tp_ouvidoria_id')->get();
     }
 

@@ -39,3 +39,29 @@ function abrirRelatorio(expr) {
     }
     $("#formRelatorios").submit();
 }
+
+$(document).ready(function () {
+    $("#data_inicio_1").mask("99/99/9999");
+    $('#data_inicio_1').datepicker({	
+        format: "dd/mm/yyyy",	
+        language: "pt-BR"
+    });
+
+    $("#data_termino_1").mask("99/99/9999");
+    $('#data_termino_1').datepicker({	
+        format: "dd/mm/yyyy",	
+        language: "pt-BR"
+    });
+
+    $("#data_inicio_2").mask("99/99/9999");
+    $('#data_inicio_2').datepicker({	
+        format: "dd/mm/yyyy",	
+        language: "pt-BR"
+    });
+
+    $("#data_termino_2").mask("99/99/9999");
+    $('#data_termino_2').datepicker({	
+        format: "dd/mm/yyyy",	
+        language: "pt-BR"
+    });
+});
